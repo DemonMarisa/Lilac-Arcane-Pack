@@ -1,0 +1,13 @@
+LAPConfig: {
+	DisplayName: Lilac Arcane Pack Config
+
+	ParticleLimit: {
+		Label: Particle Limit
+		Tooltip: ""
+	}
+
+	ScreenShakeStrength: {
+		Label: Screen Shake Strength Percentage
+		Tooltip: ""
+	}
+}

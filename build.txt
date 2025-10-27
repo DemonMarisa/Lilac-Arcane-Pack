@@ -1,0 +1,3 @@
+displayName = Lilac Arcane Pack
+author = Demon Lilies
+version = 0.0.0.1
