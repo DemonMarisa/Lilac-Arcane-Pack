@@ -8,7 +8,6 @@ namespace LAP.Assets.Effects
 {
     public class LAPShaderRegister : ModSystem
     {        
-        // 当未提供特定着色器时，用作基本绘图的默认值。此着色器仅渲染顶点颜色数据，无需修改。
         private const string ShaderPath = "LAP/Assets/Effects/Overlays/";
         internal const string ShaderPrefix = "LAP:";
         public static Effect MetaballShader;
@@ -17,6 +16,7 @@ namespace LAP.Assets.Effects
         public static Effect FlowWithAShader;
         public static Effect PolarDistortShader;
         public static Effect PolarDistortShaderWithR;
+        public static Effect DisplacemenShader;
         public override void Load()
         {
             if (Main.dedServ)
@@ -27,23 +27,26 @@ namespace LAP.Assets.Effects
                 return ModContent.Request<Effect>($"{ShaderPath}{path}", AssetRequestMode.ImmediateLoad).Value;
             }
 
+            DisplacemenShader = LoadShader("DisplacemenShader");
+            RegisterMiscShader(DisplacemenShader, "LPADisplacementPass", "DisplacemenShader");
+
             MetaballShader = LoadShader("MetaBallShader");
-            RegisterMiscShader(MetaballShader, "UCAMetalBallPass", "MetaBallShader");
+            RegisterMiscShader(MetaballShader, "LAPMetalBallPass", "MetaBallShader");
 
             EdgeMeltsShader = LoadShader("EdgeMeltsShader");
-            RegisterMiscShader(EdgeMeltsShader, "UCAEdgeMeltsPass", "EdgeMeltsShader");
+            RegisterMiscShader(EdgeMeltsShader, "LAPEdgeMeltsPass", "EdgeMeltsShader");
 
             StandardFlowShader = LoadShader("StandardFlowShader");
-            RegisterMiscShader(StandardFlowShader, "UCAStandardFlowPass", "StandardFlowShader");
+            RegisterMiscShader(StandardFlowShader, "LAPStandardFlowPass", "StandardFlowShader");
 
             FlowWithAShader = LoadShader("FlowWithAShader");
-            RegisterMiscShader(StandardFlowShader, "UCAFlowWithAPass", "FlowWithAShader");
+            RegisterMiscShader(StandardFlowShader, "LAPFlowWithAPass", "FlowWithAShader");
 
             PolarDistortShader = LoadShader("PolarDistortShader");
-            RegisterMiscShader(PolarDistortShader, "UCAPolarDistortPass", "PolarDistortShader");
+            RegisterMiscShader(PolarDistortShader, "LAPPolarDistortPass", "PolarDistortShader");
 
             PolarDistortShaderWithR = LoadShader("PolarDistortShaderWithR");
-            RegisterMiscShader(PolarDistortShaderWithR, "UCAPolarDistortPass", "PolarDistortShaderWithR");
+            RegisterMiscShader(PolarDistortShaderWithR, "LAPPolarDistortPass", "PolarDistortShaderWithR");
         }
 
         public static void RegisterMiscShader(Effect shader, string passName, string registrationName)
