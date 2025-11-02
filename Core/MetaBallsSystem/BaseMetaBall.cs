@@ -41,7 +41,7 @@ namespace LAP.Core.MetaBallsSystem
             if (!MetaBallManager.MetaBallCollection.Contains(this))
                 MetaBallManager.MetaBallCollection.Add(this);
 
-            Type = MetaBallManager.MetaBallCollection.Count + 1;
+            Type = MetaBallManager.MetaBallCollection.Count;
 
             // Disallow render target creation on servers.
             if (Main.netMode == NetmodeID.Server)

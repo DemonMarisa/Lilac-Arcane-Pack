@@ -21,5 +21,9 @@ namespace LAP.Content.Configs
         [Range(0, 10f)]
         [DefaultValue(1f)]
         public float ScreenShakeStrength { get; set; }
+
+        [BackgroundColor(211, 211, 211, 192)]
+        [DefaultValue(false)]
+        public bool PlayerMagnoliaMainTheme { get; set; }
     }
 }

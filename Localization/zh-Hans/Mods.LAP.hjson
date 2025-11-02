@@ -1,22 +1,7 @@
 Items: {
-	TestSword: {
-		// DisplayName: Test Sword
-		// Tooltip: ""
+	TestItem: {
+		// DisplayName: ������Ʒ
+		Tooltip: ����
 	}
 }
 
-Configs: {
-	LAPConfig: {
-		DisplayName: UnOfficial Calamity Amend Config
-
-		ParticleLimit: {
-			Label: 粒子上限
-			Tooltip: 推荐至少设置为1万
-		}
-
-		ScreenShakeStrength: {
-			Label: 屏幕震动幅度
-			Tooltip: 0为不会震动，10为10倍震动
-		}
-	}
-}

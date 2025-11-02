@@ -1,2 +1,6 @@
-Add a lots of Utilities/System
-Used for the development of my multiple mods
+﻿这个mod添加了一些方法和常用字段
+比如适配多人的MouseWorld
+许多方法
+粒子系统/元球系统/震屏系统/一些常用的shader
+模组Github
+https://github.com/DemonMarisa/Lilac-Arcane-Pack

@@ -1,0 +1,11 @@
+LAPConfig: {
+	ParticleLimit: {
+		Label: Particle Limit
+		Tooltip: ""
+	}
+
+	ScreenShakeStrength: {
+		Label: Screen Shake Strength
+		Tooltip: ""
+	}
+}

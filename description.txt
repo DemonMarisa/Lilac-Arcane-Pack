@@ -1,4 +1,6 @@
-这个mod添加了一些方法和常用字段
-比如适配多人的MouseWorld
-许多方法
-粒子系统/元球系统/震屏系统/一些常用的shader
+锘胯繖涓猰od娣诲姞浜嗕竴浜涙柟娉曞拰甯哥敤瀛楁
+姣斿閫傞厤澶氫汉鐨凪ouseWorld
+璁稿鏂规硶
+绮掑瓙绯荤粺/鍏冪悆绯荤粺/闇囧睆绯荤粺/涓�浜涘父鐢ㄧ殑shader
+妯＄粍Github
+https://github.com/DemonMarisa/Lilac-Arcane-Pack

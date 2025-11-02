@@ -3,20 +3,9 @@ Items: {
 		DisplayName: Test Sword
 		Tooltip: ""
 	}
-}
 
-Configs: {
-	LAPConfig: {
-		DisplayName: L A P Config
-
-		ParticleLimit: {
-			Label: Particle Limit
-			Tooltip: ""
-		}
-
-		ScreenShakeStrength: {
-			Label: Screen Shake Strength
-			Tooltip: ""
-		}
+	TestItem: {
+		DisplayName: Test Item
+		Tooltip: dont use
 	}
 }
