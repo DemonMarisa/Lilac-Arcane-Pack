@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace UCA.Core.GlobalInstance.Projectiles
+namespace LAP.Core.GlobalInstance.Projectiles
 {
     public partial class LAPGlobalProj : GlobalProjectile
     {
@@ -16,7 +16,7 @@ namespace UCA.Core.GlobalInstance.Projectiles
             }
         }
 
-        public override void OnHitNPC(Projectile projectile, Terraria.NPC target, Terraria.NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             OnceHitEffect = false;
         }

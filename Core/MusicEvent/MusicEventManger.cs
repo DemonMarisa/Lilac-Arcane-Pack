@@ -21,7 +21,7 @@ namespace LAP.Core.MusicEvent
         /// <summary>
         /// 当前事件的倒计时器。
         /// </summary>
-        public static TimeSpan CurrentTrackTimer;
+        public static TimeSpan CurrentTrackTimer = TimeSpan.Zero;
         /// <summary>
         /// 标记我们是处于播放阶段 (true) 还是静音淡出阶段 (false)。
         /// </summary>

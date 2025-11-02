@@ -1,6 +1,7 @@
 ﻿using LAP.Assets.Musics;
 using LAP.Content.Configs;
 using LAP.Core.MusicEvent;
+using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -30,6 +31,8 @@ namespace LAP.Content
             Item.height = 42;
             Item.rare = ItemRarityID.Orange;
             Item.shootSpeed = 10;
+
+            Item.LAP().DrawUCASmallIcon = true;
         }
         public override bool AltFunctionUse(Player player) => true;
         public override bool CanUseItem(Player player)

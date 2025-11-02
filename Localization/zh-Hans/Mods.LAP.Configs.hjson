@@ -1,8 +1,4 @@
 LAPConfig: {
-	LAPConfig: {
-		DisplayName: Lilac Arcane Pack
-	}
-
 	ParticleLimit: {
 		Label: 粒子上限
 		Tooltip: 推荐至少设置为1万
@@ -11,5 +7,12 @@ LAPConfig: {
 	ScreenShakeStrength: {
 		Label: 屏幕震动幅度
 		Tooltip: 0为不会震动，10为10倍震动
+	}
+
+	DisplayName: Lilac Arcane Pack Config
+
+	PlayerMagnoliaMainTheme: {
+		Label: 播放进入世界时的BGM
+		Tooltip: ""
 	}
 }

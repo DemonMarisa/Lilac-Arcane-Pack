@@ -8,4 +8,11 @@ LAPConfig: {
 		Label: Screen Shake Strength
 		Tooltip: ""
 	}
+
+	DisplayName: L A P Config
+
+	PlayerMagnoliaMainTheme: {
+		Label: Player Magnolia Main Theme
+		Tooltip: ""
+	}
 }

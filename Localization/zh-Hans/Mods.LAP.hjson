@@ -1,7 +1,11 @@
 Items: {
+	TestSword: {
+		// DisplayName: Test Sword
+		// Tooltip: ""
+	}
+
 	TestItem: {
-		// DisplayName: 测试物品
-		Tooltip: 别用
+		// DisplayName: Test Item
+		Tooltip: 鍒敤
 	}
 }
-

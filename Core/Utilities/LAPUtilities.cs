@@ -1,8 +1,8 @@
 ﻿using LAP.Core.AnimationHandle;
+using LAP.Core.GlobalInstance.Items;
+using LAP.Core.GlobalInstance.Projectiles;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using UCA.Core.GlobalInstance.Projectiles;
 
 namespace LAP.Core.Utilities
 {
@@ -11,6 +11,11 @@ namespace LAP.Core.Utilities
         public static LAPGlobalProj LAP(this Projectile proj)
         {
             return proj.GetGlobalProjectile<LAPGlobalProj>();
+        }
+
+        public static LAPGlobalItem LAP(this Item item)
+        {
+            return item.GetGlobalItem<LAPGlobalItem>();
         }
 
         public static bool PressLeftAndRightClick()
