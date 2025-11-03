@@ -2,11 +2,19 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace LAP.Core.Utilities
 {
     public static partial class LAPUtilities
     {
+        public static bool CheckType<T>(Projectile projectile) where T : ModProjectile
+        {
+            if (projectile.type == ModContent.ProjectileType<T>())
+                return true;
+
+            return false;
+        }
         /// <summary>
         /// 用于搜索距离射弹最近的npc单位，并返回NPC实例。通常情况下与上方的追踪方法配套
         /// 这个方法会同时实现穿墙、数组、boss优先度的搜索。不过只能用于射弹。但也足够

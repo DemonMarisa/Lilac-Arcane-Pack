@@ -15,7 +15,6 @@ namespace LAP.Core.MusicEvent
         // 待播放列表
         public static List<MusicEventEntry> PlayList = [];
         // 进入世界时的初始化
-        public bool OnEnterWorld = true;
         public bool CanInitializeEvent = true;
         public static MusicEventEntry CurrentEvent = null;
         /// <summary>
@@ -25,11 +24,11 @@ namespace LAP.Core.MusicEvent
         /// <summary>
         /// 标记我们是处于播放阶段 (true) 还是静音淡出阶段 (false)。
         /// </summary>
-        public static bool IsInPlayback;
+        public static bool IsInPlayback = true;
         /// <summary>
         /// 存储上一次更新的现实世界时间，用于计算时间差。
         /// </summary>
-        private static DateTime lastUpdateTime;
+        public static DateTime lastUpdateTime;
         public static void AddMusicEventEntry(string musicPath, TimeSpan length, Func<bool> shouldPlay, TimeSpan outroSilence)
         {
             if (Main.dedServ)
@@ -65,7 +64,7 @@ namespace LAP.Core.MusicEvent
             }
             else
             {
-                int MusicID = MusicLoader.GetMusicSlot(Mod, MusicRegister.MainThemeMagnoliaPath);
+                int MusicID = MusicLoader.GetMusicSlot(CurrentEvent.Song);
                 // 如果当前事件的播放条件突然变为false，立即停止它。
                 if (!CurrentEvent.ShouldPlay())
                 {
@@ -87,6 +86,8 @@ namespace LAP.Core.MusicEvent
                 Main.musicBox2 = Song;
                 Main.musicFade[Song] = 1f;
                 CanInitializeEvent = false;
+                lastUpdateTime = DateTime.Now;
+                return;
             }
             HandleTimer();
             // 检查计时器状态
@@ -129,7 +130,9 @@ namespace LAP.Core.MusicEvent
             TimeSpan deltaTime = now - lastUpdateTime;
             // 从倒计时器中减去现实经过的时间
             if (Main.instance.IsActive)
+            {
                 CurrentTrackTimer -= deltaTime;
+            }
             lastUpdateTime = now; // 储存旧时间
         }
     }
