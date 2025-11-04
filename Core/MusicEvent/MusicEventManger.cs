@@ -73,10 +73,6 @@ namespace LAP.Core.MusicEvent
                         CurrentEvent = PlayList[i];
                         PlayList.Remove(PlayList[i]);
                     }
-                    else
-                    {
-                        PlayList.Remove(PlayList[i]);
-                    }
                 }
                 CanInitializeEvent = true;
             }

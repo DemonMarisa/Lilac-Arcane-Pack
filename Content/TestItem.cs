@@ -31,6 +31,7 @@ namespace LAP.Content
             Item.height = 42;
             Item.rare = ItemRarityID.Orange;
             Item.shootSpeed = 10;
+            Item.shoot = ProjectileID.BloodArrow;
 
             Item.LAP().DrawUCASmallIcon = true;
         }
@@ -53,6 +54,7 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            Main.NewText("物品的Shoot");
             return false;
         }
     }

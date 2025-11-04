@@ -10,113 +10,73 @@ namespace LAP.Core.GlobalInstance.Items
 {
     public partial class LAPGlobalItem : GlobalItem
     {
+        /// <summary>
+        /// 武器的等级
+        /// </summary>
         public int WeaponTier = -1;
+        /// <summary>
+        /// 是否启用了遗产的数据膨胀
+        /// </summary>
         public bool UseCICalStatInflation = false;
-
+        /// <summary>
+        /// 是否使用自定义膨胀倍率
+        /// 直接应用你填入的膨胀倍率并使用这个武器的全局膨胀
+        /// </summary>
         public bool UseCustomStatInflationMult = false;
+        /// <summary>
+        /// 自定义的数据膨胀倍率
+        /// </summary>
         public float StatInflationMult = 1f;
-
+        /// <summary>
+        /// 这个武器的全局膨胀倍率
+        /// </summary>
         public float GlobalMult = 1f;
+        /// <summary>
+        /// 输出增伤信息
+        /// </summary>
         public float DmageMult = 1f;
-        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
+        public float GetCalculatedDamageMult()
         {
-            if (!CrossModSupport.UseCICalStatInflation)
-                return;
-
-            if (!UseCICalStatInflation)
-                return;
-
+            float mult = 1f;
             if (UseCustomStatInflationMult)
             {
-                damage *= StatInflationMult;
-                DmageMult = StatInflationMult;
+                mult = StatInflationMult;
             }
             else
             {
-                if (WeaponTier == AllWeaponTier.PostMoonLord)
-                {
-                    damage *= 1.3f;
-                    DmageMult = 1.3f;
-                }
-                if (WeaponTier == AllWeaponTier.PostProvidence)
-                {
-                    damage *= 2.2f;
-                    DmageMult = 2.2f;
-                }
-                if (WeaponTier == AllWeaponTier.PostSentinelst)
-                {
-                    damage *= 2.4f;
-                    DmageMult = 2.4f;
-                }
-
-                if (WeaponTier == AllWeaponTier.PostPolterghast)
-                {
-                    damage *= 2.4f;
-                    DmageMult = 2.4f;
-                }
-
-                if (WeaponTier == AllWeaponTier.PostOldDuke)
-                {
-                    damage *= 2.5f;
-                    DmageMult = 2.5f;
-                }
-
-                if (WeaponTier == AllWeaponTier.PostDOG)
-                {
-                    damage *= 3f;
-                    DmageMult = 3f;
-                }
-
-                if (WeaponTier == AllWeaponTier.PostYharon)
-                {
-                    damage *= 5f;
-                    DmageMult = 5f;
-                }
-
-                if (WeaponTier == AllWeaponTier.PostExoMech)
-                {
-                    damage *= 7f;
-                    DmageMult = 7f;
-                }
-
-                if (WeaponTier == AllWeaponTier.PostScal)
-                {
-                    damage *= 8f;
-                    DmageMult = 8f;
-                }
-
-                if (WeaponTier == AllWeaponTier.DemonShadow)
-                {
-                    damage *= 10f;
-                    DmageMult = 10f;
-                }
+                if (WeaponTier == AllWeaponTier.PostMoonLord) mult = 1.3f;
+                else if (WeaponTier == AllWeaponTier.PostProvidence) mult = 2.2f;
+                else if (WeaponTier == AllWeaponTier.PostSentinelst) mult = 2.4f;
+                else if (WeaponTier == AllWeaponTier.PostPolterghast) mult = 2.4f;
+                else if (WeaponTier == AllWeaponTier.PostOldDuke) mult = 2.5f;
+                else if (WeaponTier == AllWeaponTier.PostDOG) mult = 3f;
+                else if (WeaponTier == AllWeaponTier.PostYharon) mult = 5f;
+                else if (WeaponTier == AllWeaponTier.PostExoMech) mult = 7f;
+                else if (WeaponTier == AllWeaponTier.PostScal) mult = 8f;
+                else if (WeaponTier == AllWeaponTier.DemonShadow) mult = 10f;
             }
-            damage *= GlobalMult;
-            DmageMult *= GlobalMult;
+            mult *= GlobalMult;
+            return mult;
+        }
+        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
+        {
+            if (!CrossModSupport.UseCICalStatInflation || !UseCICalStatInflation)
+                return;
+            DmageMult = GetCalculatedDamageMult();
+            damage *= DmageMult;
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (!CrossModSupport.UseCICalStatInflation)
+            if (!CrossModSupport.UseCICalStatInflation || !UseCICalStatInflation)
                 return;
-
-            if (!UseCICalStatInflation)
-                return;
-
             string t = Language.GetTextValue("Mods.LAP.WeaponBoost.DamageMult");
             t = t.FormatWith(DmageMult.ToString());
-
             TooltipLine myLine = new TooltipLine(Mod, "LAP_WeaponBoostDamage", t);
-
             int targetIndex = tooltips.FindIndex(line => line.Name == "PrefixDamage");
-
             if (targetIndex != -1)
-            {
                 tooltips.Insert(targetIndex, myLine);
-            }
             else
-            {
                 tooltips.Add(myLine);
-            }
         }
     }
 }
