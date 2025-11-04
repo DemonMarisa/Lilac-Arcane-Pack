@@ -13,7 +13,7 @@ namespace LAP.Core.LAPConditions
                 predicate
             );
         }
-        public static readonly Condition FirstEnterWorld = Create("FirstEnterWorld", () => MiscConditions.FirstEnterWorld);
+        // public static readonly Condition FirstEnterWorld = Create("HasEnterWorld", () => MiscConditions.HasEnterWorld);
         public static readonly Condition DownedBOC = Create("DownedBOC", () => DownedBoss.DownedBOC);
         public static readonly Condition DownedEOW = Create("DownedEOW", () => DownedBoss.DownedEOW);
         public static readonly Condition DownedBloodMoon = Create("DownedBloodMoon", () => DownedBoss.DownedBloodMoon);

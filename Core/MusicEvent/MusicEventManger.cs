@@ -33,6 +33,20 @@ namespace LAP.Core.MusicEvent
         {
             if (Main.dedServ)
                 return;
+            // 如果待播的音乐事件超过64个不会添加
+            if (PlayList.Count > 64)
+                return;
+            if (CurrentEvent is not null)
+            {
+                if (CurrentEvent.Song == musicPath)
+                    return;
+            }
+            // 添加时候不能添加相同的BGM，防止因为条件问题出问题
+            foreach (MusicEventEntry musicEventEntry in PlayList)
+            {
+                if (musicEventEntry.Song == musicPath)
+                    return;
+            }
             MusicEventEntry entry = new(musicPath, length, outroSilence, shouldPlay);
             PlayList.Add(entry);
         }
@@ -59,6 +73,10 @@ namespace LAP.Core.MusicEvent
                         CurrentEvent = PlayList[i];
                         PlayList.Remove(PlayList[i]);
                     }
+                    else
+                    {
+                        PlayList.Remove(PlayList[i]);
+                    }
                 }
                 CanInitializeEvent = true;
             }
@@ -70,6 +88,8 @@ namespace LAP.Core.MusicEvent
                 {
                     Main.musicFade[MusicID] = 0f; // 立即淡出
                     CurrentEvent = null;
+                    CurrentTrackTimer = TimeSpan.Zero;
+                    CanInitializeEvent = false;
                     return;
                 }
                 HandleEvent(MusicID);
