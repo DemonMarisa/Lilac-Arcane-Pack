@@ -64,6 +64,12 @@ namespace LAP.Core.MetaBallsSystem
                 return;
             }
 
+            if (Main.gameMenu)
+            {
+                orig();
+                return;
+            }
+
             orig();
 
             foreach (BaseMetaBall baseMetaBall in MetaBallCollection)

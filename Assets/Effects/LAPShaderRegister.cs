@@ -17,6 +17,7 @@ namespace LAP.Assets.Effects
         public static Effect PolarDistortShader;
         public static Effect PolarDistortShaderWithR;
         public static Effect DisplacemenShader;
+        public static Effect SlashTrailShader;
         public override void Load()
         {
             if (Main.dedServ)
@@ -47,6 +48,9 @@ namespace LAP.Assets.Effects
 
             PolarDistortShaderWithR = LoadShader("PolarDistortShaderWithR");
             RegisterMiscShader(PolarDistortShaderWithR, "LAPPolarDistortPass", "PolarDistortShaderWithR");
+
+            SlashTrailShader = LoadShader("SlashTrailShader");
+            RegisterMiscShader(SlashTrailShader, "UCASlashTrailShaderPass", "SlashTrailShader");
         }
 
         public static void RegisterMiscShader(Effect shader, string passName, string registrationName)

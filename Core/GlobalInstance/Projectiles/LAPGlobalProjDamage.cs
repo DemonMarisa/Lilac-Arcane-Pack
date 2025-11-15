@@ -1,4 +1,5 @@
 ﻿using LAP.Core.CrossModSupports;
+using LAP.Core.GlobalInstance.Items;
 using LAP.Core.Utilities;
 using Terraria;
 using Terraria.DataStructures;
@@ -21,17 +22,15 @@ namespace LAP.Core.GlobalInstance.Projectiles
                 FatherMult = gp.FatherMult;
             }
             // 检查生成弹幕的源物品有没有应用增伤
-            if (source is EntitySource_ItemUse iu)
+            if (source is EntitySource_ItemUse iu && iu.Entity is Item item && item.TryGetGlobalItem(out LAPGlobalItem gi) && gi.UseCICalStatInflation)
             {
-                if (!iu.Item.LAP().UseCICalStatInflation)
-                    return;
                 UseBoost = true;
                 FatherMult = iu.Item.LAP().GetCalculatedDamageMult();
             }
         }
         public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (UseBoost)
+            if (projectile.DamageType == DamageClass.Summon && UseBoost)
             {
                 modifiers.FinalDamage *= FatherMult;
             }

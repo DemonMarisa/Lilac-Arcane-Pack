@@ -56,24 +56,6 @@ namespace LAP.Core.Graphics.DrawNode
             OnSpawn();
             return this;
         }        
-        /// <summary>
-        /// 在世界内生成粒子
-        /// </summary>
-        /// <returns></returns>
-        public DrawNode SpawnToPixel()
-        {
-            if (Main.netMode == NetmodeID.Server)
-                return this;
-            // 初始化时间
-            Time = 0;
-            // 如果粒子数量过多，则清除第一个粒子并添加
-            if (NodeManager.ActivePixelNode.Count > LAPConfig.Instance.ParticleLimit)
-                NodeManager.ActivePixelNode.RemoveAt(0);
-            // 用于控制总数的列表
-            NodeManager.ActivePixelNode.Add(this);
-            OnSpawn();
-            return this;
-        }
         public virtual void OnSpawn() { } 
         public virtual void Update() { }
         public virtual void OnKill() { }

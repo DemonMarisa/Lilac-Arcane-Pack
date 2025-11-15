@@ -1,5 +1,4 @@
 ﻿using LAP.Core.Graphics.DrawNode;
-using LAP.Core.Graphics.PixelRender;
 using LAP.Core.MetaBallsSystem;
 using LAP.Core.ParticleSystem;
 using Terraria;
@@ -13,15 +12,12 @@ namespace UCA.Core.ILEditingManger
         {
             On_Main.DrawDust += MetaBallManager.DrawRenderTarget;
             On_Main.DrawDust += BaseParticleManager.DrawParticles;
-            On_Main.DrawDust += PixelRenderSystem.DrawTarget_Dust;
             On_Main.DrawDust += NodeManager.DrawNode;
         }
-
         public override void Unload()
         {
             On_Main.DrawDust -= MetaBallManager.DrawRenderTarget;
             On_Main.DrawDust -= BaseParticleManager.DrawParticles;
-            On_Main.DrawDust -= PixelRenderSystem.DrawTarget_Dust;
             On_Main.DrawDust -= NodeManager.DrawNode;
         }
     }

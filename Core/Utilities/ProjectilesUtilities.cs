@@ -212,5 +212,16 @@ namespace LAP.Core.Utilities
         {
             return new Vector2(proj.width / 2, proj.height / 2);
         }
+        public static void SetHeldProj(this Projectile proj, Player Owner, bool SetHeldProj = true, bool SetOwnerDir = true)
+        {
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
+            if (SetOwnerDir)
+                Owner.ChangeDir(Owner.LocalMouseWorld().X > Owner.Center.X ? 1 : -1);
+            if (SetHeldProj)
+                Owner.heldProj = proj.whoAmI;
+            if (Owner.dead)
+                proj.Kill();
+        }
     }
 }

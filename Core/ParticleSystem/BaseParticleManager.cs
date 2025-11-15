@@ -36,7 +36,6 @@ namespace LAP.Core.ParticleSystem
         //    On_Main.DrawDust -= DrawParticles;
         //}
         #endregion
-
         /// <summary>
         /// 清除世界状态时调用（例如退出世界时）。
         /// </summary>

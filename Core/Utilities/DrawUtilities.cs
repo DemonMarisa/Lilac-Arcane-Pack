@@ -6,6 +6,7 @@ using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.UI.Chat;
@@ -39,15 +40,6 @@ namespace LAP.Core.Utilities
             SpriteEffects flipSprite = (proj.spriteDirection * Main.player[proj.owner].gravDir == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             Main.spriteBatch.Draw(texture, drawPosition, null, lightColor, drawRotation + rotOffset, rotationPoint, proj.scale * Main.player[proj.owner].gravDir * scale, flipSprite, 0f);
-        }
-
-        public static void FastApplyEdgeMeltsShader(float Opacity, Vector2 TextureSize, Color color, float EdgeWidth = 0.01f, int Pass = 0)
-        {
-            LAPShaderRegister.EdgeMeltsShader.Parameters["progress"].SetValue(Opacity);
-            LAPShaderRegister.EdgeMeltsShader.Parameters["InPutTextureSize"].SetValue(TextureSize);
-            LAPShaderRegister.EdgeMeltsShader.Parameters["EdgeColor"].SetValue(color.ToVector4());
-            LAPShaderRegister.EdgeMeltsShader.Parameters["EdgeWidth"].SetValue(EdgeWidth);
-            LAPShaderRegister.EdgeMeltsShader.CurrentTechnique.Passes[Pass].Apply();
         }
 
         public static void SetRasterizerState()
@@ -354,6 +346,14 @@ namespace LAP.Core.Utilities
         {
             set.A = 0;
             return set;
+        }
+
+        public static Color HUEtoRGB(float H)
+        {
+            float R = Math.Abs(H * 6 - 3) - 1;
+            float G = 2 - Math.Abs(H * 6 - 2);
+            float B = 2 - Math.Abs(H * 6 - 4);
+            return new Color(R, G, B);
         }
     }
 }

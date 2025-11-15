@@ -19,7 +19,7 @@ namespace LAP.Core.ParticleSystem
         /// <summary>
         /// 该粒子存在了多少帧，一般不需要手动修改这个值
         /// </summary>
-        public int Time;
+        public int Time = 0;
 
         /// <summary>
         /// 粒子的存在时间上限
@@ -62,8 +62,6 @@ namespace LAP.Core.ParticleSystem
         {
             if (Main.netMode == NetmodeID.Server)
                 return this;
-            // 初始化时间
-            Time = 0;
             if (UseBlendStateID == BlendStateID.Alpha)
             {
                 if (!Important && BaseParticleManager.ActiveParticlesAlpha.Count > LAPConfig.Instance.ParticleLimit)
@@ -93,8 +91,6 @@ namespace LAP.Core.ParticleSystem
         {
             if (Main.netMode == NetmodeID.Server)
                 return this;
-            // 初始化时间
-            Time = 0;
             if (UseBlendStateID == BlendStateID.Alpha)
             {
                 if (!Important && BaseParticleManager.PriorityActiveParticlesAlpha.Count > LAPConfig.Instance.ParticleLimit)
