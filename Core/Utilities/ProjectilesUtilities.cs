@@ -186,6 +186,8 @@ namespace LAP.Core.Utilities
         /// <param name="maxAngleChage">角度限制，默认为空. </param>
         public static void HomingTarget(this Projectile proj, Vector2 target, float distRequired, float speed, float inertia, float? maxAngleChage = null)
         {
+            if (distRequired > 0 && Vector2.Distance(proj.Center, target) > distRequired)
+                return;
             //开始追踪target
             Vector2 home = (target - proj.Center).SafeNormalize(Vector2.UnitY);
             Vector2 velo = (proj.velocity * inertia + home * speed) / (inertia + 1f);
@@ -222,6 +224,10 @@ namespace LAP.Core.Utilities
                 Owner.heldProj = proj.whoAmI;
             if (Owner.dead)
                 proj.Kill();
+        }
+        public static bool FinalExtraUpdate(this Projectile proj)
+        {
+            return proj.numUpdates == -1;
         }
     }
 }
