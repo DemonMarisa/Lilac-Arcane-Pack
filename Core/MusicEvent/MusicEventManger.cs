@@ -58,6 +58,11 @@ namespace LAP.Core.MusicEvent
             PlayList.Clear();
             CurrentEvent = null;
         }
+        public override void OnWorldUnload()
+        {
+            PlayList.Clear();
+            CurrentEvent = null;
+        }
         public override void UpdateUI(GameTime gameTime)
         {
             // 服务器上不处理BGM

@@ -24,6 +24,16 @@ namespace LAP.Content.Configs
 
         [BackgroundColor(211, 211, 211, 192)]
         [DefaultValue(false)]
-        public bool PlayerMagnoliaMainTheme { get; set; }
+        public bool PerformanceMode { get; set; }
+
+        [BackgroundColor(211, 211, 211, 192)]
+        [Range(0, 10f)]
+        [DefaultValue(1f)]
+        public float PlayerDamageMult { get; set; }
+
+        [BackgroundColor(211, 211, 211, 192)]
+        [Range(0, 1f)]
+        [DefaultValue(1f)]
+        public float PlayerDrMult { get; set; }
     }
 }

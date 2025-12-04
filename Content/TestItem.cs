@@ -45,7 +45,6 @@ namespace LAP.Content
                 MusicEventManger.CurrentTrackTimer = TimeSpan.Zero;
                 return true;
             }
-            MusicEventManger.AddMusicEventEntry(MusicRegister.MainThemeMagnoliaPath, TimeSpan.FromSeconds(141d), () => LAPConfig.Instance.PlayerMagnoliaMainTheme, TimeSpan.FromSeconds(5d));
             return true;
         }
         public override bool? UseItem(Player player)

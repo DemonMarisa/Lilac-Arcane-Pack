@@ -15,4 +15,9 @@ LAPConfig: {
 		Label: Player Magnolia Main Theme
 		Tooltip: ""
 	}
+
+	PerformanceMode: {
+		Label: Performance Mode
+		Tooltip: ""
+	}
 }

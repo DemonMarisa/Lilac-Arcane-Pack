@@ -15,4 +15,9 @@ LAPConfig: {
 		Label: 播放进入世界时的BGM
 		Tooltip: ""
 	}
+
+	PerformanceMode: {
+		Label: 性能模式
+		Tooltip: 开启降低一些特效以提升性能
+	}
 }

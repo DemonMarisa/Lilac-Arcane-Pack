@@ -12,5 +12,11 @@ namespace LAP.Core.Utilities
             rg = new RecipeGroup(creator, AllItem);
             RecipeGroup.RegisterGroup(name, rg);
         }
+        public static void CreatRecipeGroup(ref RecipeGroup rg, string name, params int[] AllItem)
+        {
+            Func<string> creator = () => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(AllItem[0])}";
+            rg = new RecipeGroup(creator, AllItem);
+            RecipeGroup.RegisterGroup(name, rg);
+        }
     }
 }

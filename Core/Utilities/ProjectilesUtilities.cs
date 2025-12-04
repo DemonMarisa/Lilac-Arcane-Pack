@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LAP.Core.GlobalInstance.Projectiles;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -228,6 +229,23 @@ namespace LAP.Core.Utilities
         public static bool FinalExtraUpdate(this Projectile proj)
         {
             return proj.numUpdates == -1;
+        }
+
+        public static void SetCantSplit(this Projectile proj)
+        {
+            proj.GetGlobalProjectile<LAPGlobalProj>().canSplit = false;
+        }
+        public static void SetIsHeldProj(this Projectile proj, bool isheldproj)
+        {
+            proj.GetGlobalProjectile<LAPGlobalProj>().isHeldProj = isheldproj;
+        }
+        public static bool CantSplit(this Projectile proj)
+        {
+            return proj.GetGlobalProjectile<LAPGlobalProj>().canSplit;
+        }
+        public static bool IsHeldProj(this Projectile proj)
+        {
+            return proj.GetGlobalProjectile<LAPGlobalProj>().isHeldProj;
         }
     }
 }
