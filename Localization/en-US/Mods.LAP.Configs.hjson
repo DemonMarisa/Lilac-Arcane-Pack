@@ -20,4 +20,14 @@ LAPConfig: {
 		Label: Performance Mode
 		Tooltip: ""
 	}
+
+	PlayerAttackMult: {
+		Label: Player Attack Mult
+		Tooltip: ""
+	}
+
+	PlayerInjuryMult: {
+		Label: Player Injury Mult
+		Tooltip: ""
+	}
 }

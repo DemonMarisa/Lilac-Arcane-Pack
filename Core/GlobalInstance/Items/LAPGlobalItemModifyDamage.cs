@@ -65,7 +65,7 @@ namespace LAP.Core.GlobalInstance.Items
             DmageMult = GetCalculatedDamageMult();
             damage *= DmageMult;
         }
-        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        public void ModifyInflationTooltips(List<TooltipLine> tooltips)
         {
             if (!CrossModSupport.UseCICalStatInflation || !UseCICalStatInflation)
                 return;

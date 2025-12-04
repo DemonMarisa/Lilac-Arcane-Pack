@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using LAP.Content.Configs;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace LAP.Core.GlobalInstance.Players
@@ -12,6 +13,8 @@ namespace LAP.Core.GlobalInstance.Players
                 ExternalDR = ExternalDR / (1f + ExternalDR);
                 modifiers.SourceDamage *= 1 - ExternalDR;
             }
+            if (LAPConfig.Instance.PlayerInjuryMult != 1f)
+                modifiers.SourceDamage *= LAPConfig.Instance.PlayerInjuryMult;
         }
     }
 }

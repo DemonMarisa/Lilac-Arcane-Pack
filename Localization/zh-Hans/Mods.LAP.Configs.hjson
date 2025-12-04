@@ -20,4 +20,14 @@ LAPConfig: {
 		Label: 性能模式
 		Tooltip: 开启降低一些特效以提升性能
 	}
+
+	PlayerAttackMult: {
+		Label: 玩家伤害乘数
+		Tooltip: ""
+	}
+
+	PlayerInjuryMult: {
+		Label: 玩家受伤乘数
+		Tooltip: ""
+	}
 }

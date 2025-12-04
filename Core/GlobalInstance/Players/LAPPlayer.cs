@@ -1,4 +1,6 @@
-﻿using Terraria.ModLoader;
+﻿using LAP.Content.Configs;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace LAP.Core.GlobalInstance.Players
 {
@@ -15,10 +17,16 @@ namespace LAP.Core.GlobalInstance.Players
         public override void PostUpdateMiscEffects()
         {
             Player.GetDamage<GenericDamageClass>() *= DamageMult;
+            UpdatePlayerAttackMult();
         }
         public override void PostUpdate()
         {
             UpdateMouseWorld();
+        }
+        public void UpdatePlayerAttackMult()
+        {
+            if (LAPConfig.Instance.PlayerAttackMult != 1f)
+                Player.GetDamage<GenericDamageClass>() *= LAPConfig.Instance.PlayerAttackMult;
         }
     }
 }

@@ -29,11 +29,11 @@ namespace LAP.Content.Configs
         [BackgroundColor(211, 211, 211, 192)]
         [Range(0, 10f)]
         [DefaultValue(1f)]
-        public float PlayerDamageMult { get; set; }
+        public float PlayerAttackMult { get; set; }
 
         [BackgroundColor(211, 211, 211, 192)]
-        [Range(0, 1f)]
+        [Range(0, 10f)]
         [DefaultValue(1f)]
-        public float PlayerDrMult { get; set; }
+        public float PlayerInjuryMult { get; set; }
     }
 }

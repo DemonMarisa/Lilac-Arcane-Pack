@@ -42,5 +42,10 @@ namespace LAP.Core.Utilities
             ProjID = ModContent.ProjectileType<T>();
             return HasProj<T>(player);
         }
+
+        public static int GetRealManaCost(this Player player, int cost)
+        {
+            return (int)(cost * player.manaCost);
+        }
     }
 }
