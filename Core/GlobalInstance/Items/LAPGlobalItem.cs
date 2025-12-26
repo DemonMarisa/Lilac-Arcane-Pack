@@ -19,5 +19,11 @@ namespace LAP.Core.GlobalInstance.Items
         public int WeaponSkillManaCost = -1;
         // 记录当前战技真正消耗的魔力值
         public int WeaponSkillRealManaCost = -1;
+        /// <summary>
+        /// 大于0时会自动插入一次专注值消耗，你需要手动计算这个值
+        /// </summary>
+        public int WeaponSkillFocusCost = -1;
+        // 记录当前战技真正消耗的魔力值
+        public int WeaponSkillRealFocusCost = -1;
     }
 }

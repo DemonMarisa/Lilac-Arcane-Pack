@@ -9,7 +9,7 @@ LAPConfig: {
 		Tooltip: 0为不会震动，10为10倍震动
 	}
 
-	DisplayName: Lilac Arcane Pack Config
+	DisplayName: Lilac Arcane Pack 设置
 
 	PlayerMagnoliaMainTheme: {
 		Label: 播放进入世界时的BGM
@@ -29,5 +29,59 @@ LAPConfig: {
 	PlayerInjuryMult: {
 		Label: 玩家受伤乘数
 		Tooltip: ""
+	}
+
+	HeadRotFollowMouse: {
+		Label: 玩家头部会看鼠标
+		Tooltip: 开启后，玩家的方向和头部会看鼠标
+	}
+
+	DeBugInfo: {
+		Label: Debug信息
+		Tooltip: ""
+	}
+}
+
+LAPUIConfig: {
+	DisplayName: Lilac Arcane Pack UI设置
+
+	CDUIOffsetX: {
+		Label: CD UI绘制位置的X偏移量
+		Tooltip: ""
+	}
+
+	CDUIOffsetY: {
+		Label: CD UI绘制位置的Y偏移量
+		Tooltip: ""
+	}
+
+	CDUIOrigMode: {
+		Label: CD UI绘制锚点模式
+		Tooltip:
+			'''
+			1模式以左侧为锚点
+			2模式以中间为锚点
+			3模式以右侧为锚点
+			'''
+	}
+
+	CDChangePosByBuffCount: {
+		Label: CDUI会随着Buff数量改变位置
+		Tooltip: 开启后会随着Buff行数改变Y高度
+	}
+
+	FocusBarOffsetX: {
+		// Label: Focus Bar Offset X
+		// Tooltip: ""
+	}
+
+	FocusBarOffsetY: {
+		// Label: Focus Bar Offset Y
+		// Tooltip: ""
+	}
+
+	DrawFocusBar: {
+		// Label: Draw Focus Bar
+		// Tooltip: ""
 	}
 }

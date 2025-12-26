@@ -8,25 +8,11 @@ namespace LAP.Core.GlobalInstance.Players
     {
         // 外围的玩家伤害减免
         public float ExternalDR = 0;
-        public float DamageMult = 1;
-        public override void ResetEffects()
+        public float DamageMult = 1;// 在PostUpdateMisc里增加
+        public void ResetDRandDamage()
         {
             ExternalDR = 0;
             DamageMult = 1;
-        }
-        public override void PostUpdateMiscEffects()
-        {
-            Player.GetDamage<GenericDamageClass>() *= DamageMult;
-            UpdatePlayerAttackMult();
-        }
-        public override void PostUpdate()
-        {
-            UpdateMouseWorld();
-        }
-        public void UpdatePlayerAttackMult()
-        {
-            if (LAPConfig.Instance.PlayerAttackMult != 1f)
-                Player.GetDamage<GenericDamageClass>() *= LAPConfig.Instance.PlayerAttackMult;
         }
     }
 }

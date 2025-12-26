@@ -1,0 +1,20 @@
+ShiftTag: holding SHIFT to extend tips
+Focus: Focue Point:
+FocusRegen: Current Focue Point Renge:
+FocusIntroduction:
+	'''
+	Maximum Point is 100, recovery rate is 2/s. 
+	When there is no Boss nearby, the recovery speed increases by 500%.
+	It is used for some focus-consuming mechanics in my other mods.
+	'''
+NoUseFocusText:
+	'''
+	The mod you are currently loading doesn't use the focus Point (at least it doesn't say it does).
+	You can go into the settings to disable the rendering of this bar.
+	:(
+	'''
+TestInfo:
+	'''
+	test version:
+	Maximum and recovery values increase as bosses are defeated
+	'''

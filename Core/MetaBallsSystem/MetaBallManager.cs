@@ -107,9 +107,12 @@ namespace LAP.Core.MetaBallsSystem
                     continue;
 
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-                baseMetaBall.PrepareShader();
-                Main.spriteBatch.Draw(baseMetaBall.AlphaTexture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+              
+                if (baseMetaBall.PreDrawRT2D())
+                {
+                    baseMetaBall.PrepareShader();
+                    Main.spriteBatch.Draw(baseMetaBall.AlphaTexture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                }
 
                 Main.spriteBatch.End();
             }

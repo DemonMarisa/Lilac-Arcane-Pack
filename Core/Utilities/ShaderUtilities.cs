@@ -9,11 +9,12 @@ namespace LAP.Core.Utilities
     {
         public static void FastApplyEdgeMeltsShader(float Opacity, Vector2 TextureSize, Color color, float EdgeWidth = 0.01f, int Pass = 0)
         {
-            LAPShaderRegister.EdgeMeltsShader.Parameters["progress"].SetValue(Opacity);
-            LAPShaderRegister.EdgeMeltsShader.Parameters["InPutTextureSize"].SetValue(TextureSize);
-            LAPShaderRegister.EdgeMeltsShader.Parameters["EdgeColor"].SetValue(color.ToVector4());
-            LAPShaderRegister.EdgeMeltsShader.Parameters["EdgeWidth"].SetValue(EdgeWidth);
-            LAPShaderRegister.EdgeMeltsShader.CurrentTechnique.Passes[Pass].Apply();
+            Effect shader = LAPShaderRegister.EdgeMeltsShader.Value;
+            shader.Parameters["progress"].SetValue(Opacity);
+            shader.Parameters["InPutTextureSize"].SetValue(TextureSize);
+            shader.Parameters["EdgeColor"].SetValue(color.ToVector4());
+            shader.Parameters["EdgeWidth"].SetValue(EdgeWidth);
+            shader.CurrentTechnique.Passes[Pass].Apply();
         }
         /// <summary>
         /// 快速使用拖尾Shader
@@ -29,13 +30,14 @@ namespace LAP.Core.Utilities
         /// <param name="UseAlphaMult">，是否使用用于Alpha裁剪的材质的像素透明度</param>
         public static void ApplyTrailShader(Vector2 UVOffset, Vector2 NoiseTextureScale, float DissolveThreshold, Vector2 DissolveTextureScale, Vector2 DissolveTexturUVOffset, bool UseAlphaMult)
         {
-            LAPShaderRegister.SlashTrailShader.Parameters["UVOffset"].SetValue(UVOffset);
-            LAPShaderRegister.SlashTrailShader.Parameters["NoiseTextureScale"].SetValue(NoiseTextureScale);
-            LAPShaderRegister.SlashTrailShader.Parameters["DissolveThreshold"].SetValue(DissolveThreshold);
-            LAPShaderRegister.SlashTrailShader.Parameters["DissolveTextureScale"].SetValue(DissolveTextureScale);
-            LAPShaderRegister.SlashTrailShader.Parameters["DissolveTexturUVOffset"].SetValue(DissolveTexturUVOffset);
-            LAPShaderRegister.SlashTrailShader.Parameters["UseAlphaMult"].SetValue(UseAlphaMult);
-            LAPShaderRegister.SlashTrailShader.CurrentTechnique.Passes[0].Apply();
+            Effect shader = LAPShaderRegister.SlashTrailShader.Value;
+            shader.Parameters["UVOffset"].SetValue(UVOffset);
+            shader.Parameters["NoiseTextureScale"].SetValue(NoiseTextureScale);
+            shader.Parameters["DissolveThreshold"].SetValue(DissolveThreshold);
+            shader.Parameters["DissolveTextureScale"].SetValue(DissolveTextureScale);
+            shader.Parameters["DissolveTexturUVOffset"].SetValue(DissolveTexturUVOffset);
+            shader.Parameters["UseAlphaMult"].SetValue(UseAlphaMult);
+            shader.CurrentTechnique.Passes[0].Apply();
         }
         public static void SetTexture(Texture2D texture2D, int Index)
         {

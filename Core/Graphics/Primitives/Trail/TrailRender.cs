@@ -10,6 +10,8 @@ namespace LAP.Core.Graphics.Primitives.Trail
 
         public static void RenderTrail(TrailDrawDate[] drawDate, DrawSetting drawSetting)
         {
+            if (drawDate.Length < 3)
+                return;
             DrawTrail(drawDate, drawSetting);
         }
 

@@ -5,7 +5,7 @@ float2 FlowTextureSize;
 float2 targetSize;
 // 偏移
 float uTime;
-// 用于染色的颜色 (从C#代码传入)
+// 用于染色的颜色
 float4 uColor;
 // 末端淡出的长度比例, 例如 0.2 代表最后 20% 的长度会淡出
 float uFadeoutLength;

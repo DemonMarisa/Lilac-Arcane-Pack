@@ -37,17 +37,14 @@ namespace LAP.Core.MetaBallsSystem
 
         protected sealed override void Register()
         {
-            // Store this metaball instance in the personalized manager so that it can be kept track of for rendering purposes.
             if (!MetaBallManager.MetaBallCollection.Contains(this))
                 MetaBallManager.MetaBallCollection.Add(this);
 
             Type = MetaBallManager.MetaBallCollection.Count;
 
-            // Disallow render target creation on servers.
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            // Generate render targets.
             Main.QueueMainThreadAction(() =>
             {
                 AlphaTexture?.Dispose();
@@ -63,6 +60,10 @@ namespace LAP.Core.MetaBallsSystem
             Main.spriteBatch.Draw(LAPTextureRegister.WhiteCube.Value, new Vector2(960, 540), null, Color.White, 0, LAPTextureRegister.WhiteCube.Size() / 2, 10, SpriteEffects.None, 0f);
         }
 
+        public virtual bool PreDrawRT2D()
+        {
+            return true;
+        }
         public virtual void PrepareShader()
         {
 
@@ -72,13 +73,12 @@ namespace LAP.Core.MetaBallsSystem
             Main.graphics.GraphicsDevice.Textures[1] = BgTexture;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
 
-            LAPShaderRegister.MetaballShader.Parameters["renderTargetSize"].SetValue(AlphaTexture.Size());
-            LAPShaderRegister.MetaballShader.Parameters["bakcGroundSize"].SetValue(BgTexture.Size());
-            LAPShaderRegister.MetaballShader.Parameters["edgeColor"].SetValue(EdgeColor.ToVector4());
-            LAPShaderRegister.MetaballShader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
-
-            LAPShaderRegister.MetaballShader.CurrentTechnique.Passes[0].Apply();
-
+            Effect shader = LAPShaderRegister.MetaballShader.Value;
+            shader.Parameters["renderTargetSize"].SetValue(AlphaTexture.Size());
+            shader.Parameters["bakcGroundSize"].SetValue(BgTexture.Size());
+            shader.Parameters["edgeColor"].SetValue(EdgeColor.ToVector4());
+            shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
+            shader.CurrentTechnique.Passes[0].Apply();
         }
     }
 }

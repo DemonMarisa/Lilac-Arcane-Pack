@@ -1,4 +1,5 @@
 ﻿using LAP.Core.Keybind;
+using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
@@ -15,9 +16,16 @@ namespace LAP.Core.GlobalInstance.Items
             {
                 tooltips.IntegrateHotkey(LAPKeybind.WeaponSkillHotKey);
             }
+
             if (WeaponSkillManaCost >= 0)
             {
-                tooltips.ReplaceManaCost(WeaponSkillRealManaCost);
+                int RealMana = Main.LocalPlayer.GetRealManaCost(WeaponSkillManaCost);
+                tooltips.ReplaceManaCost(RealMana);
+            }
+            if (WeaponSkillFocusCost >= 0)
+            {
+                int RealFocus = Main.LocalPlayer.GetRealFocusCost(WeaponSkillFocusCost);
+                tooltips.ReplaceFocusCost(RealFocus);
             }
         }
     }

@@ -1,6 +1,6 @@
 displayName = Lilac Arcane Pack
 author = Demon Lilies
-version = 0.0.0.7
+version = 0.0.0.10
 hideCode = false
 hideResources = false
 weakReferences = CalamityMod

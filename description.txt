@@ -2,5 +2,6 @@
 比如适配多人的MouseWorld
 许多方法
 粒子系统/元球系统/震屏系统/一些常用的shader
+同时也是一个资产库，添加了大量的灰度图
 模组Github
 https://github.com/DemonMarisa/Lilac-Arcane-Pack

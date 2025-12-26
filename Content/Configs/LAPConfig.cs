@@ -12,6 +12,10 @@ namespace LAP.Content.Configs
         public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message) => true;
 
         [BackgroundColor(211, 211, 211, 192)]
+        [DefaultValue(false)]
+        public bool DeBugInfo { get; set; }
+
+        [BackgroundColor(211, 211, 211, 192)]
         [Range(5000, 50000)]
         [Increment(1)]
         [DefaultValue(15000)]
@@ -35,5 +39,9 @@ namespace LAP.Content.Configs
         [Range(0, 10f)]
         [DefaultValue(1f)]
         public float PlayerInjuryMult { get; set; }
+
+        [BackgroundColor(211, 211, 211, 192)]
+        [DefaultValue(true)]
+        public bool HeadRotFollowMouse { get; set; }
     }
 }

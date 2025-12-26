@@ -1,4 +1,5 @@
-﻿using LAP.Core.GlobalInstance.Players;
+﻿using LAP.Content.Particles;
+using LAP.Core.GlobalInstance.Players;
 using Terraria;
 using Terraria.Map;
 using Terraria.ModLoader;
@@ -27,7 +28,12 @@ namespace LAP.Core.Utilities
             }
             return InComingDamage;
         }
-
+        public static void NCHeal(this Player player, int amount)
+        {
+            player.statLife += amount;
+            if (Main.myPlayer == player.whoAmI)
+                player.HealEffect(amount);
+        }
         public static bool HasProj<T>(this Player player) where T : ModProjectile => HasProj(player, ModContent.ProjectileType<T>());
         public static bool HasProj(this Player player, int projID) => player.ownedProjectileCounts[projID] > 0;
         /// <summary>
@@ -46,6 +52,30 @@ namespace LAP.Core.Utilities
         public static int GetRealManaCost(this Player player, int cost)
         {
             return (int)(cost * player.manaCost);
+        }
+        public static float FocusRatio(this Player player)
+        {
+            return (float)player.LAP().statFocus / (float)player.LAP().statFocusMax2;
+        }
+        public static int StatFocus(this Player player)
+        {
+            return player.LAP().statFocus;
+        }
+        public static int StatFocusMax2(this Player player)
+        {
+            return player.LAP().statFocusMax2;
+        }
+        public static int StatFocusMax(this Player player)
+        {
+            return player.LAP().statFocusMax;
+        }
+        public static int FocusRegen(this Player player)
+        {
+            return player.LAP().FocusRegen;
+        }
+        public static float FocusCost(this Player player)
+        {
+            return player.LAP().FocusCost;
         }
     }
 }

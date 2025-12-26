@@ -9,7 +9,7 @@ LAPConfig: {
 		Tooltip: ""
 	}
 
-	DisplayName: L A P Config
+	DisplayName: Lilac Arcane Pack Config
 
 	PlayerMagnoliaMainTheme: {
 		Label: Player Magnolia Main Theme
@@ -28,6 +28,60 @@ LAPConfig: {
 
 	PlayerInjuryMult: {
 		Label: Player Injury Mult
+		Tooltip: ""
+	}
+
+	HeadRotFollowMouse: {
+		Label: Player's head follow mouse
+		Tooltip: Player's direction and head will follow the mouse.
+	}
+
+	DeBugInfo: {
+		Label: De Bug Info
+		Tooltip: ""
+	}
+}
+
+LAPUIConfig: {
+	DisplayName: Lilac Arcane Pack UI Config
+
+	CDUIOffsetX: {
+		Label: CD UI Position Offset X
+		Tooltip: ""
+	}
+
+	CDUIOffsetY: {
+		Label: CD UI Position Offset Y
+		Tooltip: ""
+	}
+
+	CDUIOrigMode: {
+		Label: CD UI Draw Origin Mode
+		Tooltip:
+			'''
+			1 : uses the left side as the Origin
+			2 : uses the center as the Origin
+			3 : uses the right side as the Origin
+			'''
+	}
+
+	CDChangePosByBuffCount: {
+		Label: CD UI Change Position By Buff Count
+		Tooltip: CD UI will change position depending on the number of buffs
+	}
+
+	FocusBarOffsetX: {
+		Label: Focus Bar Offset X
+		Tooltip: ""
+	}
+
+	FocusBarOffsetY: {
+		Label: Focus Bar Offset Y
+		Tooltip: ""
+	}
+
+	DrawFocusBar: {
+		Label: Draw Focus Bar
 		Tooltip: ""
 	}
 }

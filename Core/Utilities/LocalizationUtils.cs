@@ -54,6 +54,14 @@ namespace LAP.Core.Utilities
                 tooltips.FindAndReplace("[LAPManaCost]", newKey);
             }
         }
+        public static void ReplaceFocusCost(this List<TooltipLine> tooltips, int Cost)
+        {
+            if (!Main.dedServ)
+            {
+                string newKey = Cost.ToString();
+                tooltips.FindAndReplace("[LAPFocusCost]", newKey);
+            }
+        }
         public static void IntegrateHotkey(this List<TooltipLine> tooltips, ModKeybind mhk)
         {
             if (!Main.dedServ && mhk != null)

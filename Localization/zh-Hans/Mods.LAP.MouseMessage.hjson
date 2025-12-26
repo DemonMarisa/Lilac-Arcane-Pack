@@ -1,0 +1,20 @@
+ShiftTag: 按住Shift查看详情
+Focus: 专注值：
+FocusRegen: 当前恢复速度：
+FocusIntroduction:
+	'''
+	专注值基础上限为100，恢复速度为2FP/s。
+	附近没有Boss时，回复速度会提高500%。
+	用于我其他Mod的一些消耗专注值的机制。
+	'''
+NoUseFocusText:
+	'''
+	你现在加载的Mod没有使用专注值机制（至少没有说自己用了）
+	可以去设置中关闭这个条的渲染
+	:(
+	'''
+TestInfo:
+	'''
+	目前为测试版本：
+	最大值与恢复值随击败的Boss提升
+	'''

@@ -1,5 +1,4 @@
-﻿using LAP.Core.MiscDate;
-using System.Linq;
+﻿using LAP.Core.IDSets;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -15,7 +14,8 @@ namespace LAP.Core.GlobalInstance.Projectiles
         public bool isWeaponSkillProj = false;
         public override void SetDefaults(Projectile projectile)
         {
-            if (LAPList.rangedProjectileExceptionList.Any(x => projectile.type == x))
+            // 检查是否可以分裂，查找到对应的值就不分裂
+            if (LAPIDSet.CantSplitProj.Contains(projectile.type) || projectile.minion || !projectile.friendly || projectile.hostile || projectile.damage < 5)
                 canSplit = false;
         }
     }

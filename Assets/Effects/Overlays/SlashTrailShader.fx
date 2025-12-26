@@ -47,7 +47,7 @@ float4 SlashTrailShader(VertexShaderOutput input) : COLOR
 
 technique SpriteDrawing
 {
-    pass UCASlashTrailShaderPass
+    pass LAPSlashTrailShaderPass
     {
         PixelShader = compile ps_3_0 SlashTrailShader();
     }

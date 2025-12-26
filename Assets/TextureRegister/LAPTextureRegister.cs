@@ -1,29 +1,62 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace LAP.Assets.TextureRegister
 {
-    public class LAPTextureRegister : ModSystem
+    public class Tex2DWithPath
     {
-        public static string InvisibleTexturePath => "UCA/Assets/Textures/InvisibleProj";
-        public static Asset<Texture2D> ShadowNebula { get; private set; }
-        public static Asset<Texture2D> InvisibleProj { get; private set; }
-        public static Asset<Texture2D> WhiteCircle { get; private set; }
-        public static Asset<Texture2D> WhiteCube { get; private set; }
+        public Asset<Texture2D> Texture { get; }
+        public string Path { get; }
+        public Tex2DWithPath(Asset<Texture2D> texture, string path)
+        {
+            Path = path;
+            Texture = texture;
+        }
+        public Tex2DWithPath(string path)
+        {
+            Path = path;
+            Texture = ModContent.Request<Texture2D>($"{Path}");
+        }
+        public Texture2D Value => Texture.Value;
+        public int Height => Texture.Height();
+        public int Width => Texture.Width();
+        public Vector2 Size()
+        {
+            return new Vector2(Value.Width, Value.Height);
+        }
+    }
+    public partial class LAPTextureRegister : ModSystem
+    {
+        public static string InvisibleTexturePath => "LAP/Assets/TextureRegister/Textures/InvisibleProj";
+        public static Tex2DWithPath InvisibleProj { get; private set; }
+        public static Tex2DWithPath WhiteCircle { get; private set; }
+        public static Tex2DWithPath WhiteCube { get; private set; }
         public override void Load()
         {
-            ShadowNebula = ModContent.Request<Texture2D>($"LAP/Assets/TextureRegister/ExtraTextures/MetaBallBG/ShadowNebula");
-            InvisibleProj = ModContent.Request<Texture2D>($"LAP/Assets/TextureRegister/Textures/InvisibleProj");
-            WhiteCircle = ModContent.Request<Texture2D>($"LAP/Assets/TextureRegister/Textures/WhiteCircle");
-            WhiteCube = ModContent.Request<Texture2D>($"LAP/Assets/TextureRegister/Textures/WhiteCube");
+            InvisibleProj = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/InvisibleProj");
+            WhiteCircle = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteCircle");
+            WhiteCube = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteCube");
+            LoadMAGNOLIATextures();
+            LoadExp33Texture();
+            LoadExtraTexture();
+            LoadParticleTextures();
+            LoadLILIESTextures();
+            LoadUI();
         }
         public override void Unload()
         {
-            ShadowNebula = null;
             InvisibleProj = null;
             WhiteCircle = null;
             WhiteCube = null;
+            UnloadMAGNOLIATextures();
+            UnloadExp33Textures();
+            UnloadExtraTextures();
+            UnloadParticleTextures();
+            UnLoadLILIESTextures();
+            UnloadUI();
         }
     }
 }

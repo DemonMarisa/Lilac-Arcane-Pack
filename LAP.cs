@@ -19,6 +19,7 @@ namespace LAP
         public Mod CalamityHunt = null;
         public Mod CalamityMod = null;
         public Mod CalamityModMusic = null;
+        public Mod UnofficialCalamityEnhanced = null;
         public override void Load()
         {
             Instance = this;
@@ -49,6 +50,9 @@ namespace LAP
 
             WrathoftheGods = null;
             ModLoader.TryGetMod("NoxusBoss", out WrathoftheGods);
+
+            UnofficialCalamityEnhanced = null;
+            ModLoader.TryGetMod("UnCalExtra", out UnofficialCalamityEnhanced);
         }
 
         public override void Unload()

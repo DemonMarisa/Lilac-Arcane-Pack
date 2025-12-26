@@ -75,7 +75,7 @@ namespace LAP.Core.BaseClass
         public override void OnKill(int timeLeft)
         {
             //根据提供的恢复量给予治疗
-            Healer.Heal(HealAmt);
+            Healer.NCHeal(HealAmt);
             ExKill();
         }
         // 额外的Kill

@@ -9,15 +9,18 @@ namespace LAP.Core.GlobalInstance.Players
 {
     public partial class LAPPlayer : ModPlayer
     {
-        public Vector2 oldSyncedMouseWorld;
+        internal Vector2 oldSyncedMouseWorld;
         public Vector2 SyncedMouseWorld;
-        public bool OldMouseLeft;
+
+        internal bool OldMouseLeft;
         public bool MouseLeft;
-        public bool OldMouseRight;
+
+        internal bool OldMouseRight;
         public bool MouseRight;
+
+        internal bool OldJustPressedWeaponSKill;
         public bool JustPressedWeaponSKill;
-        public bool OldJustPressedWeaponSKill;
-        public void UpdateMouseWorld()
+        public void UpdateNet()
         {
             if (Main.myPlayer == Player.whoAmI)
             {
@@ -81,7 +84,7 @@ namespace LAP.Core.GlobalInstance.Players
                 OldMouseLeft = Main.mouseLeft;
                 OldMouseRight = Main.mouseRight;
                 oldSyncedMouseWorld = Main.MouseWorld;
-                JustPressedWeaponSKill = LAPKeybind.WeaponSkillHotKey.JustPressed;
+                OldJustPressedWeaponSKill = LAPKeybind.WeaponSkillHotKey.JustPressed;
             }
         }
     }

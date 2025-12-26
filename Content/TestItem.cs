@@ -1,6 +1,11 @@
 ﻿using LAP.Assets.Musics;
 using LAP.Content.Configs;
+using LAP.Content.CustomCDs;
+using LAP.Content.Particles;
+using LAP.Core.LAPUI.CustomCD;
+using LAP.Core.LAPUI.FocusBar;
 using LAP.Core.MusicEvent;
+using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -21,8 +26,8 @@ namespace LAP.Content
         {
             Item.width = 42;
             Item.damage = 55;
-            Item.useAnimation = 30;
-            Item.useTime = 30;
+            Item.useAnimation = 15;
+            Item.useTime = 15;
             Item.useTurn = true;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.knockBack = 5f;
@@ -38,13 +43,6 @@ namespace LAP.Content
         public override bool AltFunctionUse(Player player) => true;
         public override bool CanUseItem(Player player)
         {
-            if (player.altFunctionUse == 2)
-            {
-                MusicEventManger.PlayList.Clear();
-                MusicEventManger.CurrentEvent = null;
-                MusicEventManger.CurrentTrackTimer = TimeSpan.Zero;
-                return true;
-            }
             return true;
         }
         public override bool? UseItem(Player player)
@@ -53,7 +51,8 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Main.NewText("物品的Shoot");
+            FocusBarManger.InitializeCDUI();
+            Main.LocalPlayer.LAP().statFocus = 0;
             return false;
         }
     }
