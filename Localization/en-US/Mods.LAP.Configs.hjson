@@ -71,17 +71,17 @@ LAPUIConfig: {
 	}
 
 	FocusBarOffsetX: {
-		Label: Focus Bar Offset X
+		Label: Focus Bar Draw Offset X
 		Tooltip: ""
 	}
 
 	FocusBarOffsetY: {
-		Label: Focus Bar Offset Y
+		Label: Focus Bar Draw Offset Y
 		Tooltip: ""
 	}
 
 	DrawFocusBar: {
-		Label: Draw Focus Bar
+		Label: Can Draw Focus Bar
 		Tooltip: ""
 	}
 }

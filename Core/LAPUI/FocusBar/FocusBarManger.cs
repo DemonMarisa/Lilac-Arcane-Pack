@@ -44,6 +44,10 @@ namespace LAP.Core.LAPUI.FocusBar
             InitializeCDUI();
             BarRatio = 1f;
         }
+        public override void OnWorldLoad()
+        {
+            InitializeCDUI();
+        }
         public static void InitializeCDUI()
         {
             if (FocusBarTarget is null)

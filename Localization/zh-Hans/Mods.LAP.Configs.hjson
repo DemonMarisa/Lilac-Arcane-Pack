@@ -71,17 +71,17 @@ LAPUIConfig: {
 	}
 
 	FocusBarOffsetX: {
-		// Label: Focus Bar Offset X
-		// Tooltip: ""
+		Label: 专注值UI绘制位置的X偏移量
+		Tooltip: ""
 	}
 
 	FocusBarOffsetY: {
-		// Label: Focus Bar Offset Y
-		// Tooltip: ""
+		Label: 专注值UI绘制位置的Y偏移量
+		Tooltip: ""
 	}
 
 	DrawFocusBar: {
-		// Label: Draw Focus Bar
-		// Tooltip: ""
+		Label: 是否绘制专注值UI
+		Tooltip: ""
 	}
 }

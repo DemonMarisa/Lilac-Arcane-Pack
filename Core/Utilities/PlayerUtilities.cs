@@ -77,5 +77,6 @@ namespace LAP.Core.Utilities
         {
             return player.LAP().FocusCost;
         }
+        public static Item ActiveItem(this Player player) => Main.mouseItem.IsAir ? player.HeldItem : Main.mouseItem;
     }
 }
