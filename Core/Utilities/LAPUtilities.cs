@@ -49,5 +49,11 @@ namespace LAP.Core.Utilities
         {
             return player.LAP().SyncedMouseWorld;
         }
+        public static Vector2 GetVector2(Vector2 BeginPos, Vector2 EndPos)
+        {
+            Vector2 vector = EndPos - BeginPos;
+            vector = vector.SafeNormalize(Vector2.UnitX);
+            return vector;
+        }
     }
 }

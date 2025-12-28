@@ -1,14 +1,27 @@
-﻿using LAP.Core.GlobalInstance.Projectiles;
+﻿using CalamityMod.Balancing;
+using LAP.Core.GlobalInstance.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace LAP.Core.Utilities
 {
     public static partial class LAPUtilities
     {
+        /// <summary>
+        /// 新建射弹，但是指定伤害类型
+        /// </summary>
+        /// <returns></returns>
+        public static Projectile NewProjWithClass(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner , DamageClass damageclass, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
+        {
+            int p = Projectile.NewProjectile(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+            Main.projectile[p].DamageType = damageclass;
+            return Main.projectile[p];
+        }
         public static bool CheckType<T>(Projectile projectile) where T : ModProjectile
         {
             if (projectile.type == ModContent.ProjectileType<T>())
@@ -97,8 +110,13 @@ namespace LAP.Core.Utilities
 
                 //搜索符合条件的敌人, 准备返回这个NPC实例
                 float curNpcDist = Vector2.Distance(npc.Center, center);
-                if (curNpcDist < distStoraged && (ignoreTiles || Collision.CanHit(center, 1, 1, npc.Center, 1, 1)))
+                if (curNpcDist < distStoraged)
                 {
+                    if (!ignoreTiles)
+                    {
+                        if (!Collision.CanHit(center, 1, 1, npc.Center, 1, 1))
+                            continue;
+                    }
                     distStoraged = curNpcDist;
                     acceptableTarget = npc;
                     if (tryGetBoss != null & bossFirst)
@@ -111,7 +129,40 @@ namespace LAP.Core.Utilities
             //返回这个NPC实例
             return acceptableTarget;
         }
-
+        /// <summary>
+        /// 搜索距离指定位置最近的NPC
+        /// </summary>
+        /// <param name="maxDist">最大搜索距离</param>
+        /// <param name="ignoreTiles">穿墙搜索, 默认为</param>
+        /// <returns>返回一个NPC实例</returns>
+        public static NPC FindClosestTarget(Vector2 center, float maxDist, bool ignoreTiles = true)
+        {
+            float distStoraged = maxDist;
+            NPC acceptableTarget = null;
+            foreach (NPC npc in Main.ActiveNPCs)
+            {
+                float exDist = npc.width + npc.height;
+                if (!npc.active || npc.friendly || npc.lifeMax < 5 || !npc.CanBeChasedBy(center, false))
+                    continue;
+                //单位不可被追踪 或者 超出索敌距离则continue
+                if (Vector2.Distance(center, npc.Center) > distStoraged + exDist)
+                    continue;
+                //搜索符合条件的敌人, 准备返回这个NPC实例
+                float curNpcDist = Vector2.Distance(npc.Center, center);
+                if (curNpcDist < distStoraged)
+                {
+                    if (!ignoreTiles)
+                    {
+                        if (!Collision.CanHitLine(center, 1, 1, npc.Center, 1, 1))
+                            continue;
+                    }
+                    distStoraged = curNpcDist;
+                    acceptableTarget = npc;
+                }
+            }
+            //返回这个NPC实例
+            return acceptableTarget;
+        }
         public static NPC FindClosestNPCExceptSpecific(Vector2 center, float maxDistance, List<NPC> noUseTarget, bool ignoreTiles = true)
         {
             NPC acceptableTarget = null;
@@ -210,7 +261,31 @@ namespace LAP.Core.Utilities
             //设定速度
             proj.velocity = velo;
         }
-
+        public static void HomingTarget(Vector2 center, Vector2 target, ref Vector2 velocity, float distRequired, float speed, float inertia, float? maxAngleChage = null)
+        {
+            if (distRequired > 0 && Vector2.Distance(center, target) > distRequired)
+                return;
+            //开始追踪target
+            Vector2 home = (target - center).SafeNormalize(Vector2.UnitY);
+            Vector2 velo = (target * inertia + home * speed) / (inertia + 1f);
+            //这里给了一个角度限制
+            if (maxAngleChage.HasValue)
+            {
+                float curAngle = target.ToRotation();
+                float tarAngle = velo.ToRotation();
+                float angleDiffer = MathHelper.WrapAngle(tarAngle - curAngle);
+                //转弧度
+                float maxRadians = MathHelper.ToRadians(maxAngleChage.Value);
+                if (Math.Abs(angleDiffer) > maxRadians)
+                {
+                    float clampedAngle = curAngle + Math.Sign(angleDiffer) * maxRadians;
+                    float setSpeed = velo.Length();
+                    velo = new Vector2((float)Math.Cos(clampedAngle), (float)Math.Sin(clampedAngle)) * setSpeed;
+                }
+            }
+            //设定速度
+            target = velo;
+        }
         public static Vector2 HalfProjectile(this Projectile proj)
         {
             return new Vector2(proj.width / 2, proj.height / 2);
@@ -246,6 +321,40 @@ namespace LAP.Core.Utilities
         public static bool IsHeldProj(this Projectile proj)
         {
             return proj.GetGlobalProjectile<LAPGlobalProj>().isHeldProj;
+        }
+        public static void SpawnLifeStealProj(this Player player, NPC target, Projectile projSource, int projType, int OverridehealAmt = 0, bool usemoonLeech = false, bool shared = true)
+        {
+            if (target != null && !target.canGhostHeal)
+                return;
+            int statLife = player.statLife;
+            int whoAmI = player.whoAmI;
+            if (Main.netMode != NetmodeID.SinglePlayer)
+            {
+                if (shared)
+                {
+                    foreach (Player Activeplayer in Main.ActivePlayers)
+                    {
+                        if (!Activeplayer.active)
+                            continue;
+                        if (Activeplayer.statLife < statLife)
+                        {
+                            statLife = Activeplayer.statLife;
+                            whoAmI = Activeplayer.whoAmI;
+                        }
+                    }
+                }
+            }
+            if (!usemoonLeech || (usemoonLeech && !player.moonLeech))
+            {
+                if (projSource.owner == Main.myPlayer)
+                {
+                    Projectile.NewProjectile(projSource.GetSource_FromThis(), projSource.Center, Vector2.Zero, projType, 0, 0f, projSource.owner, whoAmI, OverridehealAmt);
+                }
+            }
+        }
+        public static Player Owner(this Projectile proj)
+        {
+            return Main.player[proj.whoAmI];
         }
     }
 }

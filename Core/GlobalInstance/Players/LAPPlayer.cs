@@ -9,6 +9,10 @@ namespace LAP.Core.GlobalInstance.Players
         // 外围的玩家伤害减免
         public float ExternalDR = 0;
         public float DamageMult = 1;// 在PostUpdateMisc里增加
+        public override void OnConsumeAmmo(Item weapon, Item ammo)
+        {
+
+        }
         public void ResetDRandDamage()
         {
             ExternalDR = 0;

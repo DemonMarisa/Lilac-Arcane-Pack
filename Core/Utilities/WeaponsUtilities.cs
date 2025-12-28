@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CalamityMod;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace LAP.Core.Utilities
 {
@@ -27,13 +29,6 @@ namespace LAP.Core.Utilities
             return vector;
         }
 
-        public static Vector2 GetVector2(Vector2 BeginPos, Vector2 EndPos)
-        {
-            Vector2 vector = EndPos - BeginPos;
-            vector = vector.SafeNormalize(Vector2.UnitX);
-            return vector;
-        }
-
         public static Vector2 BetterRotatedBy(this Vector2 spinningpoint, double radians, Vector2 center = default, float Xmult = 1f, float Ymult = 1f)
         {
             float num = (float)Math.Cos(radians);
@@ -43,6 +38,14 @@ namespace LAP.Core.Utilities
             result.X += (vector.X * num - vector.Y * num2) * Xmult;
             result.Y += (vector.X * num2 + vector.Y * num) * Ymult;
             return result;
+        }
+        public static float GetDamage<T>(this Player player, float baseDamage) where T : DamageClass
+        {
+            return player.GetTotalDamage<T>().ApplyTo(baseDamage);
+        }
+        public static int GetIntDamage<T>(this Player player, float baseDamage) where T : DamageClass
+        {
+            return (int)player.GetDamage<T>(baseDamage);
         }
     }
 }

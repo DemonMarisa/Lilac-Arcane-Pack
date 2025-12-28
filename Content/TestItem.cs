@@ -55,5 +55,9 @@ namespace LAP.Content
             Main.LocalPlayer.LAP().statFocus = 0;
             return false;
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe().AddIngredient(ItemID.Sunflower);
+        }
     }
 }

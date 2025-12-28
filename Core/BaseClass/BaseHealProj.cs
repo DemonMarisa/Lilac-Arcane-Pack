@@ -5,16 +5,17 @@ using Terraria.ModLoader;
 
 namespace LAP.Core.BaseClass
 {
-    public abstract class BaseHealProj : ModProjectile
+    public abstract class BaseHealProj : ModProjectile, ILocalizedModType
     {
+        public override string LocalizationCategory => "HealProj";
         public override string Texture => LAPTextureRegister.InvisibleTexturePath;
         // 需要搭配方法使用
         #region 别名
         public virtual float FlySpeed => 12f;
         public virtual float Acceleration => 35f;
         public virtual int HealAmt => Main.rand.Next(5, 10);
-
         public virtual bool UsePredictMult => true;
+        public virtual float HealAmtOverride => Projectile.ai[0];
         public Player Healer => Main.player[Projectile.owner];
         #endregion
 
@@ -74,8 +75,15 @@ namespace LAP.Core.BaseClass
         }
         public override void OnKill(int timeLeft)
         {
-            //根据提供的恢复量给予治疗
-            Healer.NCHeal(HealAmt);
+            if (HealAmtOverride != 0)
+            {
+                Healer.NCHeal((int)HealAmtOverride);
+            }
+            else
+            {
+                //根据提供的恢复量给予治疗
+                Healer.NCHeal(HealAmt);
+            }
             ExKill();
         }
         // 额外的Kill

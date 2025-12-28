@@ -36,6 +36,8 @@ namespace LAP.Core.Utilities
         }
         public static bool HasProj<T>(this Player player) where T : ModProjectile => HasProj(player, ModContent.ProjectileType<T>());
         public static bool HasProj(this Player player, int projID) => player.ownedProjectileCounts[projID] > 0;
+        public static int HasProjCount(this Player player, int projID) => player.ownedProjectileCounts[projID];
+        public static int HasProjCount<T>(this Player player) where T : ModProjectile => player.ownedProjectileCounts[ProjectileType<T>()];
         /// <summary>
         /// 重载一个out传参，输出你判定的拥有的proj的ID以方便后续可能需要的计算，或者别的
         /// </summary>

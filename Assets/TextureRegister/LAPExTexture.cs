@@ -15,6 +15,9 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath HarshNoise { get; private set; }
         public static Tex2DWithPath Noise { get; private set; }
         public static Tex2DWithPath Wood { get; private set; }
+        public static Tex2DWithPath UltimaRayEnd { get; private set; }
+        public static Tex2DWithPath UltimaRayMid { get; private set; }
+        public static Tex2DWithPath UltimaRayStart { get; private set; }
         public static void LoadExtraTexture()
         {
             ShadowNebula = new Tex2DWithPath($"{ExtraPath}/MetaBallBG/ShadowNebula");
@@ -27,6 +30,9 @@ namespace LAP.Assets.TextureRegister
             HarshNoise = new Tex2DWithPath($"{ExtraPath}/HarshNoise");
             Noise = new Tex2DWithPath($"{ExtraPath}/Noise");
             Wood = new Tex2DWithPath($"{ExtraPath}/Wood");
+            UltimaRayEnd = new Tex2DWithPath($"{ExtraPath}/Laser/UltimaRayEnd");
+            UltimaRayMid = new Tex2DWithPath($"{ExtraPath}/Laser/UltimaRayMid");
+            UltimaRayStart = new Tex2DWithPath($"{ExtraPath}/Laser/UltimaRayStart");
         }
         public static void UnloadExtraTextures()
         {
@@ -40,6 +46,8 @@ namespace LAP.Assets.TextureRegister
             HarshNoise = null;
             Noise = null;
             Wood = null;
+            UltimaRayMid = null;
+            UltimaRayStart = null;
         }
     }
 }

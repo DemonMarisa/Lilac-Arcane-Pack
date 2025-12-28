@@ -11,5 +11,13 @@ namespace LAP.Core.Utilities
                 return;
             NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, Index);
         }
+        /// <summary>
+        /// 判断传入的玩家Index是否为本地玩家
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsLocalPlayer(int PlayerIndex)
+        {
+            return PlayerIndex == Main.myPlayer;
+        }
     }
 }

@@ -1,7 +1,6 @@
-using LAP.Assets.Musics;
+global using static Terraria.ModLoader.ModContent;
 using LAP.Core.NetCode;
 using System.IO;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace LAP
