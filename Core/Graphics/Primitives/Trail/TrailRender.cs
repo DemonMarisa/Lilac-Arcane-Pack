@@ -7,7 +7,6 @@ namespace LAP.Core.Graphics.Primitives.Trail
 {
     public class TrailRender
     {
-
         public static void RenderTrail(TrailDrawDate[] drawDate, DrawSetting drawSetting)
         {
             if (drawDate.Length < 3)
@@ -18,15 +17,11 @@ namespace LAP.Core.Graphics.Primitives.Trail
         public static void DrawTrail(TrailDrawDate[] DrawDate, DrawSetting drawSetting)
         {
             List<VertexPositionColorTexture2D> Vertexlist = new List<VertexPositionColorTexture2D>();
-
             for (int i = 0; i < DrawDate.Length; i++)
             {
                 float progress = (float)i / DrawDate.Length;
                 // 绘制位置
-                Vector2 DrawPos = DrawDate[i].PosDate - (drawSetting.usePosTransformation ? Main.screenPosition : Vector2.Zero);
-
-                if (drawSetting.usePixelTransformation)
-                    DrawPos = DrawPos / 2;
+                Vector2 DrawPos = DrawDate[i].PosDate;
 
                 // 每个片的高度与旋转
                 Vector2 PrimitivesHeight = DrawDate[i].PrimitivesOffset;
@@ -36,7 +31,6 @@ namespace LAP.Core.Graphics.Primitives.Trail
                 Vertexlist.Add(new VertexPositionColorTexture2D(DrawPos - PrimitivesHeight.RotatedBy(PrimitivesHeightRot), DrawColor, new Vector3(progress, 0, 0)));
                 Vertexlist.Add(new VertexPositionColorTexture2D(DrawPos + PrimitivesHeight.RotatedBy(PrimitivesHeightRot), DrawColor, new Vector3(progress, 1, 0)));
             }
-
             Main.graphics.GraphicsDevice.Textures[0] = drawSetting.texture;
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, Vertexlist.ToArray(), 0, Vertexlist.Count - 2);
         }

@@ -23,10 +23,8 @@ namespace LAP.Core.Graphics.Primitives.Trail
         public float PrimitivesHeightRot = primitivesHeightRot;
     }
 
-    public struct DrawSetting(Texture2D texture,bool usePosTransformation, bool usePixelTransformation)
+    public struct DrawSetting(Texture2D texture)
     {
         public Texture2D texture = texture;
-        public bool usePosTransformation = usePosTransformation;
-        public bool usePixelTransformation = usePixelTransformation;
     }
 }

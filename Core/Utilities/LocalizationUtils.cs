@@ -85,5 +85,14 @@ namespace LAP.Core.Utilities
             else if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
                 ChatHelper.BroadcastChatMessage(NetworkText.FromKey(key), textColor.Value);
         }
+        public static LocalizedText GetItemName<T>() where T : ModItem
+        {
+            return GetTextFromModItem(ItemType<T>(), "DisplayName");
+        }
+
+        public static LocalizedText GetTextFromModItem(int itemID, string suffix)
+        {
+            return ItemLoader.GetItem(itemID).GetLocalization(suffix);
+        }
     }
 }

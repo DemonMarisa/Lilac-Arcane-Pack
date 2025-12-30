@@ -1,10 +1,12 @@
-﻿using CalamityMod.Balancing;
+﻿using LAP.Content.Configs;
 using LAP.Core.GlobalInstance.Projectiles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -348,13 +350,89 @@ namespace LAP.Core.Utilities
             {
                 if (projSource.owner == Main.myPlayer)
                 {
-                    Projectile.NewProjectile(projSource.GetSource_FromThis(), projSource.Center, Vector2.Zero, projType, 0, 0f, projSource.owner, whoAmI, OverridehealAmt);
+                    Projectile.NewProjectile(projSource.GetSource_FromThis(), projSource.Center, Vector2.Zero, projType, 0, 0f, whoAmI, OverridehealAmt);
                 }
+            }
+        }
+        public static void HomeInNPC(this Projectile proj, float distance, float speed, float inertia, float? maxAngleChage = null, bool ignoreTile = true)
+        {
+            NPC npc = proj.FindClosestTarget(distance, false, ignoreTile);
+            if (npc is not null)
+            {
+                proj.HomingTarget(npc.Center, distance, speed, inertia, maxAngleChage);
             }
         }
         public static Player Owner(this Projectile proj)
         {
             return Main.player[proj.whoAmI];
+        }
+
+        public static void DrawAfterimages(Projectile proj, int mode, Color lightColor, int typeOneIncrement = 1, Texture2D texture = null)
+        {
+            if (texture is null)
+                texture = TextureAssets.Projectile[proj.type].Value;
+            int frameHeight = texture.Height / Main.projFrames[proj.type];
+            int frameY = frameHeight * proj.frame;
+            float scale = proj.scale;
+            float rotation = proj.rotation;
+            Rectangle rectangle = new Rectangle(0, frameY, texture.Width, frameHeight);
+            Vector2 origin = rectangle.Size() / 2f;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (proj.spriteDirection == -1)
+                spriteEffects = SpriteEffects.FlipHorizontally;
+            bool failedToDrawAfterimages = false;
+            if (!LAPConfig.Instance.PerformanceMode)
+            {
+                Vector2 centerOffset = proj.Size / 2f;
+                Color alphaColor = proj.GetAlpha(lightColor);
+                switch (mode)
+                {
+                    case 0:
+                        for (int i = 0; i < proj.oldPos.Length; ++i)
+                        {
+                            Vector2 drawPos = proj.oldPos[i] + centerOffset - Main.screenPosition + new Vector2(0f, proj.gfxOffY);
+                            Color color = alphaColor * ((float)(proj.oldPos.Length - i) / (float)proj.oldPos.Length);
+                            Main.spriteBatch.Draw(texture, drawPos, new Rectangle?(rectangle), color, rotation, origin, scale, spriteEffects, 0f);
+                        }
+                        break;
+                    case 1:
+                        int increment = Math.Max(1, typeOneIncrement);
+                        Color drawColor = alphaColor;
+                        int afterimageCount = ProjectileID.Sets.TrailCacheLength[proj.type];
+                        float afterimageColorCount = (float)afterimageCount * 1.5f;
+                        int k = 0;
+                        while (k < afterimageCount)
+                        {
+                            Vector2 drawPos = proj.oldPos[k] + centerOffset - Main.screenPosition + new Vector2(0f, proj.gfxOffY);
+                            if (k > 0)
+                            {
+                                float colorMult = (float)(afterimageCount - k);
+                                drawColor *= colorMult / afterimageColorCount;
+                            }
+                            Main.spriteBatch.Draw(texture, drawPos, new Rectangle?(rectangle), drawColor, rotation, origin, scale, spriteEffects, 0f);
+                            k += increment;
+                        }
+                        break;
+                    case 2:
+                        for (int i = 0; i < proj.oldPos.Length; ++i)
+                        {
+                            float afterimageRot = proj.oldRot[i];
+                            SpriteEffects sfxForThisAfterimage = proj.oldSpriteDirection[i] == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+                            Vector2 drawPos = proj.oldPos[i] + centerOffset - Main.screenPosition + new Vector2(0f, proj.gfxOffY);
+                            Color color = alphaColor * ((float)(proj.oldPos.Length - i) / (float)proj.oldPos.Length);
+                            Main.spriteBatch.Draw(texture, drawPos, new Rectangle?(rectangle), color, afterimageRot, origin, scale, sfxForThisAfterimage, 0f);
+                        }
+                        break;
+                    default:
+                        failedToDrawAfterimages = true;
+                        break;
+                }
+            }
+            if (LAPConfig.Instance.PerformanceMode || ProjectileID.Sets.TrailCacheLength[proj.type] <= 0 || failedToDrawAfterimages)
+            {
+                Vector2 startPos = proj.Center;
+                Main.spriteBatch.Draw(texture, startPos - Main.screenPosition + new Vector2(0f, proj.gfxOffY), rectangle, proj.GetAlpha(lightColor), rotation, origin, scale, spriteEffects, 0f);
+            }
         }
     }
 }

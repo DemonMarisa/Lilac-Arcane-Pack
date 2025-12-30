@@ -1,4 +1,5 @@
 ﻿using LAP.Content.Configs;
+using LAP.Core.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -37,7 +38,7 @@ namespace LAP.Core.Graphics.DrawNode
         /// 0表示节点刚生成，1表示节点消失。
         /// </summary>
         public float LifetimeRatio => Time / (float)Lifetime;
-        public DrawLayer Layer = DrawLayer.BeforeDust;
+        public DrawLayer Layer = DrawLayer.BeforeDusts;
         /// <summary>
         /// 在世界内生成粒子
         /// </summary>
@@ -48,10 +49,8 @@ namespace LAP.Core.Graphics.DrawNode
                 return this;
             // 初始化时间
             Time = 0;
-            // 如果粒子数量过多，则清除第一个粒子并添加
-            if (NodeManager.ActiveNode.Count > LAPConfig.Instance.ParticleLimit)
+            if (NodeManager.ActiveNode.Count > 1000)
                 NodeManager.ActiveNode.RemoveAt(0);
-            // 用于控制总数的列表
             NodeManager.ActiveNode.Add(this);
             OnSpawn();
             return this;

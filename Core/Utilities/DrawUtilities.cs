@@ -31,7 +31,26 @@ namespace LAP.Core.Utilities
             gD.Clear(Color.Transparent);
             return true;
         }
-
+        public static void ResetRT2D(this RenderTarget2D rt)
+        {
+            Vector2 size = rt.Size();
+            Vector2 ScreenSize = new Vector2(Main.screenWidth, Main.screenHeight);
+            if (size != ScreenSize)
+            {
+                Main.QueueMainThreadAction(() =>
+                {
+                    rt = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+                });
+            }
+        }
+        public static RenderTarget2D NewRT2D(float Mult = 1f)
+        {
+            return new RenderTarget2D(Main.graphics.GraphicsDevice, (int)(Main.screenWidth * Mult), (int)(Main.screenHeight * Mult));
+        }
+        public static Vector2 ScreenSize()
+        {
+            return new Vector2(Main.screenWidth, Main.screenHeight);
+        }
         public static void BaseProjPreDraw(this Projectile proj, Texture2D texture, Color lightColor, float rotOffset = 0f, float scale = 1f)
         {
             Vector2 drawPosition = proj.Center - Main.screenPosition;

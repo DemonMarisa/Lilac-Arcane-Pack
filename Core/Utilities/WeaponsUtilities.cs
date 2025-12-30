@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace LAP.Core.Utilities
@@ -46,6 +47,12 @@ namespace LAP.Core.Utilities
         public static int GetIntDamage<T>(this Player player, float baseDamage) where T : DamageClass
         {
             return (int)player.GetDamage<T>(baseDamage);
+        }
+        public static bool CheckWoodenAmmo(int type, Player player)
+        {
+            if (player.hasMoltenQuiver && type == ProjectileID.FireArrow)
+                return true;
+            return type == ProjectileID.WoodenArrowFriendly;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using LAP.Core.LAPConditions;
 using LAP.Core.MiscDate;
-using Stubble.Core.Classes;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;

@@ -6,9 +6,10 @@ using Terraria.ModLoader;
 
 namespace LAP.Assets.Effects
 {
-    public class LAPShaderRegister : ModSystem
+    public partial class LAPShaderRegister : ModSystem
     {        
         private const string ShaderPath = "LAP/Assets/Effects/Overlays/";
+        private const string ScreenShaderPath = "LAP/Assets/Effects/ScreenShaders/";
         internal const string ShaderPrefix = "LAP:";
         public static Asset<Effect> MetaballShader { get; private set; }
         public static Asset<Effect> EdgeMeltsShader { get; private set; }
@@ -26,11 +27,6 @@ namespace LAP.Assets.Effects
         {
             if (Main.dedServ)
                 return;
-
-            static Asset<Effect> LoadShader(string path)
-            {
-                return ModContent.Request<Effect>($"{ShaderPath}{path}");
-            }
 
             DisplacemenShader = LoadShader("DisplacemenShader");
             RegisterMiscShader(DisplacemenShader, "LPADisplacementPass", "DisplacemenShader");
@@ -67,6 +63,8 @@ namespace LAP.Assets.Effects
 
             FocusBar = LoadShader("FocusBar");
             RegisterMiscShader(FocusBar, "Pass0", "FocusBar");
+
+            LoadScreen();
         }
         public override void Unload()
         {
@@ -82,7 +80,15 @@ namespace LAP.Assets.Effects
             GassBlur = null;
             Fill = null;
             FocusBar = null;
+
+            UnLoadScreen();
         }
+
+        public static Asset<Effect> LoadShader(string path)
+        {
+            return Request<Effect>($"{ShaderPath}{path}");
+        }
+
         public static void RegisterMiscShader(Asset<Effect> shader, string passName, string registrationName)
         {
             Asset<Effect> shaderPointer = shader;

@@ -2,6 +2,7 @@
 using LAP.Content.Configs;
 using LAP.Content.CustomCDs;
 using LAP.Content.Particles;
+using LAP.Core.Graphics.PixelatedRender;
 using LAP.Core.LAPUI.CustomCD;
 using LAP.Core.LAPUI.FocusBar;
 using LAP.Core.MusicEvent;
@@ -51,8 +52,6 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            FocusBarManger.InitializeCDUI();
-            Main.LocalPlayer.LAP().statFocus = 0;
             return false;
         }
         public override void AddRecipes()

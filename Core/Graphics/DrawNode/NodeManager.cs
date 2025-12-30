@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using LAP.Core.ParticleSystem;
+using LAP.Core.Enums;
 
 namespace LAP.Core.Graphics.DrawNode
 {
@@ -58,7 +59,7 @@ namespace LAP.Core.Graphics.DrawNode
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < ActiveNode.Count; i++)
                 {
-                    if (ActiveNode[i].Layer == DrawLayer.BeforeDust)
+                    if (ActiveNode[i].Layer == DrawLayer.BeforeDusts)
                         ActiveNode[i].Draw(Main.spriteBatch);
                 }
                 Main.spriteBatch.End();
@@ -68,7 +69,7 @@ namespace LAP.Core.Graphics.DrawNode
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < ActiveNode.Count; i++)
                 {
-                    if (ActiveNode[i].Layer == DrawLayer.AfterDust)
+                    if (ActiveNode[i].Layer == DrawLayer.AfterDusts)
                         ActiveNode[i].Draw(Main.spriteBatch);
                 }
                 Main.spriteBatch.End();

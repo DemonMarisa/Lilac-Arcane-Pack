@@ -50,7 +50,7 @@ namespace LAP.Core.IDSets
                 LoadCalamityMushroomItemIDs();
             }
         }
-        // 只有当 CalamityMod 加载时，才允许 JIT 编译这个方法。
+
         [JITWhenModsEnabled("CalamityMod")]
         public static void LoadCalamityMushroomItemIDs()
         {

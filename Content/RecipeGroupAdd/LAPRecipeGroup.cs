@@ -18,6 +18,7 @@ namespace LAP.Content.RecipeGroupAdd
         public static RecipeGroup AnyStoneBlock;
         public static RecipeGroup AnyArkhalis;
         public static RecipeGroup AnyDartGun;
+        public static RecipeGroup AnyCursedFlameIchor;
         public override void AddRecipeGroups()
         {
             int[] anyCopperBar = [ItemID.CopperBar, ItemID.TinBar];
@@ -49,6 +50,9 @@ namespace LAP.Content.RecipeGroupAdd
 
             int[] anyDartRifle = [ItemID.DartRifle, ItemID.DartPistol];
             LAPUtilities.CreatRecipeGroup(ref AnyDartGun, PreFix + AnyDartGun, anyDartRifle);
+
+            int[] anyCursedFlameIchor = [ItemID.CursedFlame, ItemID.Ichor];
+            LAPUtilities.CreatRecipeGroup(ref AnyCursedFlameIchor, PreFix + AnyCursedFlameIchor, anyCursedFlameIchor);
         }
         public override void Unload()
         {
@@ -62,6 +66,7 @@ namespace LAP.Content.RecipeGroupAdd
             AnyStoneBlock = null;
             AnyArkhalis = null;
             AnyDartGun = null;
+            AnyCursedFlameIchor = null;
         }
     }
 }

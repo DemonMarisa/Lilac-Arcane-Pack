@@ -18,6 +18,9 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath UltimaRayEnd { get; private set; }
         public static Tex2DWithPath UltimaRayMid { get; private set; }
         public static Tex2DWithPath UltimaRayStart { get; private set; }
+        public static Tex2DWithPath StandardFlow1 { get; private set; }
+        public static Tex2DWithPath StandardFlow2 { get; private set; }
+        public static Tex2DWithPath StandardFlow3 { get; private set; }
         public static void LoadExtraTexture()
         {
             ShadowNebula = new Tex2DWithPath($"{ExtraPath}/MetaBallBG/ShadowNebula");
@@ -33,6 +36,9 @@ namespace LAP.Assets.TextureRegister
             UltimaRayEnd = new Tex2DWithPath($"{ExtraPath}/Laser/UltimaRayEnd");
             UltimaRayMid = new Tex2DWithPath($"{ExtraPath}/Laser/UltimaRayMid");
             UltimaRayStart = new Tex2DWithPath($"{ExtraPath}/Laser/UltimaRayStart");
+            StandardFlow1 = new Tex2DWithPath($"{ExtraPath}/StandardFlow1");
+            StandardFlow2 = new Tex2DWithPath($"{ExtraPath}/StandardFlow2");
+            StandardFlow3 = new Tex2DWithPath($"{ExtraPath}/StandardFlow3");
         }
         public static void UnloadExtraTextures()
         {
@@ -48,6 +54,9 @@ namespace LAP.Assets.TextureRegister
             Wood = null;
             UltimaRayMid = null;
             UltimaRayStart = null;
+            StandardFlow1 = null;
+            StandardFlow2 = null;
+            StandardFlow3 = null;
         }
     }
 }

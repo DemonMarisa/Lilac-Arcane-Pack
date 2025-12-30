@@ -1,5 +1,6 @@
 ﻿using LAP.Content.Particles;
 using LAP.Core.GlobalInstance.Players;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Map;
 using Terraria.ModLoader;
@@ -80,5 +81,19 @@ namespace LAP.Core.Utilities
             return player.LAP().FocusCost;
         }
         public static Item ActiveItem(this Player player) => Main.mouseItem.IsAir ? player.HeldItem : Main.mouseItem;
+        public static float RemainingMinion(this Player player)
+        {
+            return player.maxMinions - player.slotsMinions;
+        }
+        public static int ApplyWeaponAttackSpeed(this Player player, Item item, int time,int Min)
+        {
+            float a = player.GetWeaponAttackSpeed(item);
+            float Mult = 1f / a;
+            int RealAttack = (int)(time * Mult);
+            if (RealAttack < Min)
+                return Min;
+            else
+                return RealAttack;
+        }
     }
 }
