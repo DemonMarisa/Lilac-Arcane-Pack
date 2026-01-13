@@ -25,7 +25,9 @@ namespace LAP.Core.ParticleSystem
         /// 粒子的存在时间上限
         /// </summary>
         public int Lifetime = 0;
+        public bool UseScreenCut = true;
 
+        public float ScreenCut = 1.1f;
         /// <summary>
         /// 位置与向量
         /// </summary>

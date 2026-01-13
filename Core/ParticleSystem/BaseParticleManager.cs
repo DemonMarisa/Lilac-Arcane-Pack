@@ -76,7 +76,7 @@ namespace LAP.Core.ParticleSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < PriorityActiveParticlesAlpha.Count; i++)
                 {
-                    if (LAPUtilities.OutOffScreen(PriorityActiveParticlesAlpha[i].Position))
+                    if (PriorityActiveParticlesAlpha[i].UseScreenCut && LAPUtilities.OutOffScreen(PriorityActiveParticlesAlpha[i].Position, PriorityActiveParticlesAlpha[i].ScreenCut))
                         continue;
                     PriorityActiveParticlesAlpha[i].Draw(Main.spriteBatch);
                 }
@@ -87,7 +87,7 @@ namespace LAP.Core.ParticleSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < PriorityActiveParticlesAdditive.Count; i++)
                 {
-                    if (LAPUtilities.OutOffScreen(PriorityActiveParticlesAdditive[i].Position))
+                    if (PriorityActiveParticlesAdditive[i].UseScreenCut && LAPUtilities.OutOffScreen(PriorityActiveParticlesAdditive[i].Position, PriorityActiveParticlesAdditive[i].ScreenCut))
                         continue;
                     PriorityActiveParticlesAdditive[i].Draw(Main.spriteBatch);
                 }
@@ -98,7 +98,7 @@ namespace LAP.Core.ParticleSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < PriorityActiveParticlesNonPremultiplied.Count; i++)
                 {
-                    if (LAPUtilities.OutOffScreen(PriorityActiveParticlesNonPremultiplied[i].Position))
+                    if (PriorityActiveParticlesNonPremultiplied[i].UseScreenCut && LAPUtilities.OutOffScreen(PriorityActiveParticlesNonPremultiplied[i].Position, PriorityActiveParticlesNonPremultiplied[i].ScreenCut))
                         continue;
                     PriorityActiveParticlesNonPremultiplied[i].Draw(Main.spriteBatch);
                 }
@@ -111,7 +111,7 @@ namespace LAP.Core.ParticleSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < ActiveParticlesAlpha.Count; i++)
                 {
-                    if (LAPUtilities.OutOffScreen(ActiveParticlesAlpha[i].Position))
+                    if (ActiveParticlesAlpha[i].UseScreenCut && LAPUtilities.OutOffScreen(ActiveParticlesAlpha[i].Position, ActiveParticlesAlpha[i].ScreenCut))
                         continue;
                     ActiveParticlesAlpha[i].Draw(Main.spriteBatch);
                 }
@@ -122,7 +122,7 @@ namespace LAP.Core.ParticleSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < ActiveParticlesAdditive.Count; i++)
                 {
-                    if (LAPUtilities.OutOffScreen(ActiveParticlesAdditive[i].Position))
+                    if (ActiveParticlesAdditive[i].UseScreenCut && LAPUtilities.OutOffScreen(ActiveParticlesAdditive[i].Position, ActiveParticlesAdditive[i].ScreenCut))
                         continue;
                     ActiveParticlesAdditive[i].Draw(Main.spriteBatch);
                 }
@@ -133,7 +133,7 @@ namespace LAP.Core.ParticleSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < ActiveParticlesNonPremultiplied.Count; i++)
                 {
-                    if (LAPUtilities.OutOffScreen(ActiveParticlesNonPremultiplied[i].Position))
+                    if (ActiveParticlesNonPremultiplied[i].UseScreenCut && LAPUtilities.OutOffScreen(ActiveParticlesNonPremultiplied[i].Position, ActiveParticlesNonPremultiplied[i].ScreenCut))
                         continue;
                     ActiveParticlesNonPremultiplied[i].Draw(Main.spriteBatch);
                 }

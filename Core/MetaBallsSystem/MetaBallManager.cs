@@ -1,4 +1,5 @@
-﻿using LAP.Core.Utilities;
+﻿using LAP.Core.Graphics.RenderTargetsManager;
+using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -25,16 +26,6 @@ namespace LAP.Core.MetaBallsSystem
         {
             if (Main.dedServ)
                 return;
-
-            Main.QueueMainThreadAction(() =>
-            {
-                // 卸载资源
-                foreach (BaseMetaBall baseMetaBall in MetaBallCollection)
-                {
-                    baseMetaBall.AlphaTexture?.Dispose();
-                    baseMetaBall.AlphaTexture = null;
-                }
-            });
             MetaBallCollection.Clear();
 
             On_Main.CheckMonoliths -= PrepareRenderTarget;
@@ -77,7 +68,7 @@ namespace LAP.Core.MetaBallsSystem
                 if (!baseMetaBall.Active())
                     continue;
 
-                LAPUtilities.SwapToTarget(baseMetaBall.AlphaTexture);
+                LAPUtilities.SwapToTarget(RT2DManager.RT2D_ScreenSize[baseMetaBall.AlphaTextureIndex]);
 
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
 
@@ -105,15 +96,12 @@ namespace LAP.Core.MetaBallsSystem
             {
                 if (!baseMetaBall.Active())
                     continue;
-
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-              
                 if (baseMetaBall.PreDrawRT2D())
                 {
                     baseMetaBall.PrepareShader();
                     Main.spriteBatch.Draw(baseMetaBall.AlphaTexture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 }
-
                 Main.spriteBatch.End();
             }
         }

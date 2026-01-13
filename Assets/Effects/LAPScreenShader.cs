@@ -7,14 +7,18 @@ namespace LAP.Assets.Effects
     public partial class LAPShaderRegister : ModSystem
     {
         public static Asset<Effect> Pixelation { get; private set; }
+        public static Asset<Effect> ScreenDistortion { get; private set; }
         public static void LoadScreen()
         {
             Pixelation = LoadScreenShader("Pixelation");
             RegisterMiscShader(Pixelation, "Pass0", "Pixelation");
+            ScreenDistortion = LoadScreenShader("ScreenDistortion");
+            RegisterMiscShader(Pixelation, "Pass0", "ScreenDistortion");
         }
         public static void UnLoadScreen()
         {
             Pixelation = null;
+            ScreenDistortion = null;
         }
         public static Asset<Effect> LoadScreenShader(string path)
         {

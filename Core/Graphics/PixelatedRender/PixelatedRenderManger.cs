@@ -1,5 +1,7 @@
 ﻿using LAP.Assets.Effects;
 using LAP.Core.Enums;
+using LAP.Core.Graphics.RenderTargetsManager;
+using LAP.Core.MiscDate;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,8 +14,8 @@ namespace LAP.Core.Graphics.PixelatedRender
     public class PixelatedRenderManger : ModSystem
     {
         public static bool BeginDrawProj = false;
-        public static RenderTarget2D BeforePlayerTarget;
-        public static RenderTarget2D BeforeDustTarget;
+        public static int BeforePlayerTargetIndex;
+        public static int BeforeDustTargetIndex;
         public static List<IPixelatedRenderer> BeforePlayers = [];
         public static bool BeginDrawBeforePlayers = false;
         public static List<IPixelatedRenderer> BeforeDusts = [];
@@ -23,24 +25,14 @@ namespace LAP.Core.Graphics.PixelatedRender
         {
             if (Main.dedServ)
                 return;
-            Main.QueueMainThreadAction(() =>
-            {
-                BeforePlayerTarget = LAPUtilities.NewRT2D();
-                BeforeDustTarget = LAPUtilities.NewRT2D();
-            });
+            RT2DManager.RequestScreenSizeRT2D(out BeforePlayerTargetIndex);
+            RT2DManager.RequestScreenSizeRT2D(out BeforeDustTargetIndex);
             On_Main.CheckMonoliths += PrepareRenderTarget;
         }
         public override void Unload()
         {
             if (Main.dedServ)
                 return;
-            Main.QueueMainThreadAction(() =>
-            {
-                BeforePlayerTarget?.Dispose();
-                BeforePlayerTarget = null;
-                BeforeDustTarget?.Dispose();
-                BeforeDustTarget = null;
-            });
             On_Main.CheckMonoliths -= PrepareRenderTarget;
         }
         public static void PrepareRenderTarget(On_Main.orig_CheckMonoliths orig)
@@ -54,9 +46,6 @@ namespace LAP.Core.Graphics.PixelatedRender
             // 收集所有接口的信息
             BeforePlayers.Clear();
             BeforeDusts.Clear();
-            // 创建像素化矩阵，暂时用不到
-            // float pixelScale = 2f;
-            // Matrix shrinkMatrix = Matrix.CreateScale(1f / pixelScale, 1f / pixelScale, 1f);
             if (BeginDrawProj)
             {
                 // 检查所有弹幕，如果弹幕继承了接口，那就会把这个添加到对应图层表单中
@@ -73,13 +62,13 @@ namespace LAP.Core.Graphics.PixelatedRender
                 // 收集到绘制到玩家图层前的才绘制
                 if (BeforePlayers.Count != 0)
                 {
-                    DrawToRenderTarget(BeforePlayerTarget, BeforePlayers);
+                    DrawToRenderTarget(RT2DManager.RT2D_ScreenSize[BeforePlayerTargetIndex], BeforePlayers);
                     BeginDrawBeforePlayers = true;// 打一个可以绘制出来玩家层的标记
                 }
                 // 收集到绘制到粒子图层前的才绘制
                 if (BeforeDusts.Count != 0)
                 {
-                    DrawToRenderTarget(BeforeDustTarget, BeforeDusts);
+                    DrawToRenderTarget(RT2DManager.RT2D_ScreenSize[BeforeDustTargetIndex], BeforeDusts);
                     BeginDrawBeforeDusts = true;// 打一个可以绘制出来粒子层的标记
                 }
                 Main.graphics.GraphicsDevice.SetRenderTarget(null);
@@ -104,9 +93,9 @@ namespace LAP.Core.Graphics.PixelatedRender
             {
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
                 Effect effect = LAPShaderRegister.Pixelation.Value;
-                effect.Parameters["uTargetResolution"].SetValue(LAPUtilities.ScreenSize() / 2);
+                effect.Parameters["uTargetResolution"].SetValue(LAPInfo.ScreenSize / 2);
                 effect.CurrentTechnique.Passes[0].Apply();
-                Main.spriteBatch.Draw(BeforePlayerTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                Main.spriteBatch.Draw(RT2DManager.RT2D_ScreenSize[BeforePlayerTargetIndex], Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                 Main.spriteBatch.End();
                 BeginDrawBeforePlayers = false;
             }
@@ -118,9 +107,9 @@ namespace LAP.Core.Graphics.PixelatedRender
             {
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
                 Effect effect = LAPShaderRegister.Pixelation.Value;
-                effect.Parameters["uTargetResolution"].SetValue(LAPUtilities.ScreenSize() / 2);
+                effect.Parameters["uTargetResolution"].SetValue(LAPInfo.ScreenSize / 2);
                 effect.CurrentTechnique.Passes[0].Apply();
-                Main.spriteBatch.Draw(BeforeDustTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                Main.spriteBatch.Draw(RT2DManager.RT2D_ScreenSize[BeforeDustTargetIndex], Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                 Main.spriteBatch.End();
                 BeginDrawBeforeDusts = false;
             }

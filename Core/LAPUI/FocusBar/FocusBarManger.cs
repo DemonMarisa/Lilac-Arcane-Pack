@@ -141,13 +141,13 @@ namespace LAP.Core.LAPUI.FocusBar
                 return;
             LAPUtilities.SwapToTarget(FocusBarTarget);
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
-
+            // 底部的中央
             Main.spriteBatch.Draw(barLeftBG.texture, barLeftBG.Position, null, Color.White, 0, barLeftBG.Orig, 0.15f, barLeftBG.SE, 0f);
             Main.spriteBatch.Draw(barRightBG.texture, barRightBG.Position, null, Color.White, 0, barRightBG.Orig, 0.15f, barRightBG.SE, 0f);
             float Length = barRightBG.Position.X - barLeftBG.Position.X;// 间距像素
             float ScaleMult = Length / barMiddleBG.texture.Width;
             Main.spriteBatch.Draw(barMiddleBG.texture, barMiddleBG.Position, null, Color.White, 0, barMiddleBG.Orig, new Vector2(ScaleMult, 0.15f), 0, 0f);
-
+            // 左右两侧的箭头
             Effect effect = LAPShaderRegister.Fill.Value;
             effect.CurrentTechnique.Passes[0].Apply();
             Main.spriteBatch.Draw(barTopPattern.texture, barTopPattern.Position, null, Color.Silver, 0, barTopPattern.Orig, 0.2f, 0, 0f);

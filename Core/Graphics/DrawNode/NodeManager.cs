@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using LAP.Core.ParticleSystem;
 using LAP.Core.Enums;
 
 namespace LAP.Core.Graphics.DrawNode
@@ -78,7 +77,6 @@ namespace LAP.Core.Graphics.DrawNode
             {
                 orig(self);
             }
-
         }
     }
 }

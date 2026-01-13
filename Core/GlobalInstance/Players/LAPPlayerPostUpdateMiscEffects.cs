@@ -7,11 +7,11 @@ namespace LAP.Core.GlobalInstance.Players
     {
         public override void PostUpdateMiscEffects()
         {
-            Player.GetDamage<GenericDamageClass>() *= DamageMult;
             UpdatePlayerAttackMult();
             UpdateMaxFocusRenge_PostUpdateMisc();
             UpdateMaxFocus_PostUpdateMisc();
             RegenFocus_PostUpdateMisc();
+            UpdatePlayerMainBuff();
         }
         // 更新设置里的伤害增幅
         public void UpdatePlayerAttackMult()

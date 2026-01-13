@@ -1,10 +1,14 @@
-﻿using LAP.Assets.Musics;
+﻿using CalamityMod.Graphics.Metaballs;
+using LAP.Assets.Musics;
 using LAP.Content.Configs;
 using LAP.Content.CustomCDs;
 using LAP.Content.Particles;
+using LAP.Content.Projectiles;
 using LAP.Core.Graphics.PixelatedRender;
+using LAP.Core.Graphics.RenderTargetsManager;
 using LAP.Core.LAPUI.CustomCD;
 using LAP.Core.LAPUI.FocusBar;
+using LAP.Core.MetaBallsSystem;
 using LAP.Core.MusicEvent;
 using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
@@ -52,6 +56,7 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            CustomCDManger.InitializeCDUI();
             return false;
         }
         public override void AddRecipes()

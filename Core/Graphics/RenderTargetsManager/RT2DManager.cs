@@ -1,0 +1,82 @@
+﻿using LAP.Core.MiscDate;
+using LAP.Core.Utilities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ModLoader;
+
+namespace LAP.Core.Graphics.RenderTargetsManager
+{
+    public class RT2DManager : ModSystem
+    {
+        public Vector2 OldScreenSize;
+        public static List<RenderTarget2D> RT2D_ScreenSize = [];
+        public static List<RenderTarget2D> RT2D_Normal = [];
+        public override void Load()
+        {
+        }
+        public override void Unload()
+        {
+            Main.QueueMainThreadAction(() =>
+            {
+                for (int i = 0; i < RT2D_ScreenSize.Count; i++)
+                {
+                    RT2D_ScreenSize[i]?.Dispose();
+                    RT2D_ScreenSize[i] = null;
+                }
+                RT2D_ScreenSize.Clear();
+                for (int i = 0; i < RT2D_Normal.Count; i++)
+                {
+                    RT2D_Normal[i]?.Dispose();
+                    RT2D_Normal[i] = null;
+                }
+                RT2D_Normal.Clear();
+            });
+        }
+        public override void UpdateUI(GameTime gameTime)
+        {
+            if (OldScreenSize != LAPInfo.ScreenSize)
+            {
+                Main.QueueMainThreadAction(() =>
+                {
+                    for (int i = 0; i < RT2D_ScreenSize.Count; i++)
+                    {
+                        if (RT2D_ScreenSize[i] != null && !RT2D_ScreenSize[i].IsDisposed)
+                        {
+                            RT2D_ScreenSize[i].Dispose();
+                        }
+                        RT2D_ScreenSize[i] = LAPUtilities.NewRT2D();
+                    }
+                });
+            }
+            OldScreenSize = LAPInfo.ScreenSize;
+        }
+        public static void RequestScreenSizeRT2D(out int Index)
+        {
+            Index = RT2D_ScreenSize.Count;
+            RT2D_ScreenSize.Add(null);// 占位
+            int capturedIndex = Index; // 捕获索引
+            Main.QueueMainThreadAction(() =>
+            {
+                if (capturedIndex < RT2D_ScreenSize.Count)
+                {
+                    RT2D_ScreenSize[capturedIndex] = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.ScreenSize.X, Main.ScreenSize.Y);
+                }
+            });
+        }
+        public static void RequestRT2D(Vector2 Size, out int Index)
+        {
+            Index = RT2D_Normal.Count;
+            RT2D_Normal.Add(null);// 占位
+            int capturedIndex = Index; // 捕获索引
+            Main.QueueMainThreadAction(() =>
+            {
+                if (capturedIndex < RT2D_Normal.Count)
+                {
+                    RT2D_Normal[capturedIndex] = new RenderTarget2D(Main.graphics.GraphicsDevice, (int)Size.X, (int)Size.Y);
+                }
+            });
+        }
+    }
+}

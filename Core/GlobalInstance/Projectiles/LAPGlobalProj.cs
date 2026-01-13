@@ -10,12 +10,14 @@ namespace LAP.Core.GlobalInstance.Projectiles
         public bool FirstFrame = true;
         public override void AI(Projectile projectile)
         {
+        }
+        public override void PostAI(Projectile projectile)
+        {
             if (FirstFrame)
             {
                 FirstFrame = false;
             }
         }
-
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             OnceHitEffect = false;

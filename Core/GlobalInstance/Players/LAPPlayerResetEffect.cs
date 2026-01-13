@@ -6,6 +6,7 @@ namespace LAP.Core.GlobalInstance.Players
     {
         public override void ResetEffects()
         {
+            ResetMainMiscFlag();
             ResetDRandDamage();
             ResetFocusStats_ResetEffect();
         }

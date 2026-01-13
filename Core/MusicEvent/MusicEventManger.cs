@@ -114,7 +114,7 @@ namespace LAP.Core.MusicEvent
             // 检查计时器状态
             if (IsInPlayback)
             {
-                // 处于歌曲播放阶段
+                // 是否处于歌曲播放阶段
                 if (CurrentTrackTimer <= TimeSpan.Zero)
                 {
                     // 播放阶段结束，进入静音淡出阶段

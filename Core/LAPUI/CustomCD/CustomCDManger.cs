@@ -23,6 +23,7 @@ namespace LAP.Core.LAPUI.CustomCD
         public static List<Asset<Texture2D>> CDTexture = [];
         public static List<BaseCD> CDCollection = [];
         // 只在本地渲染，其它玩家的仅用于同步效果
+        // 不要在这里修改，这里只是复制过来用于本地绘制
         public static List<BaseCD> ActiveCD => Main.LocalPlayer.LAPCD().ActiveCD;
         public static RenderTarget2D CDRT2D;
         public static RenderTarget2D GassBlurRT2D;
@@ -59,9 +60,9 @@ namespace LAP.Core.LAPUI.CustomCD
         {
             MaxFade = 30;
             GlobalOpacity = 1f;
-            leftArrow.Position = new Vector2(60, AllCDY);
+            leftArrow.Position = new Vector2(60.9f, AllCDY);
             leftArrow.Orig = new Vector2(LAPTextureRegister.CDBG_Edge.Width, LAPTextureRegister.CDBG_Edge.Height / 2);
-            rightArrow.Position = new Vector2(51.5f, AllCDY);
+            rightArrow.Position = new Vector2(51.3f, AllCDY);
             rightArrow.Orig = new Vector2(0, LAPTextureRegister.CDBG_Edge.Height / 2);
             middleBG.Position = new Vector2(60, AllCDY);
             middleBG.Orig = new Vector2(0, LAPTextureRegister.CDBG_Middle.Height / 2);
@@ -185,6 +186,7 @@ namespace LAP.Core.LAPUI.CustomCD
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
             // 绘制左侧箭头
             Main.spriteBatch.Draw(leftArrow.texture, leftArrow.Position, null, Color.White * 0.95f, 0, leftArrow.Orig, 0.2f, leftArrow.SE, 0f);
+            Main.spriteBatch.Draw(leftArrow.texture, leftArrow.Position, null, Color.White * 0.95f, 0, leftArrow.Orig, 0.2f, leftArrow.SE, 0f);
             // 绘制中间背景箭头
             Main.spriteBatch.Draw(middleBG.texture, middleBG.Position, middleBG.rectangle, Color.White * 0.95f, 0, middleBG.Orig, new Vector2(1f, 0.202f), SpriteEffects.None, 0f);
             // 绘制最右侧的箭头
@@ -274,8 +276,9 @@ namespace LAP.Core.LAPUI.CustomCD
                 orig = Vector2.UnitX * ToCenterLength;
             }
             FinalDrawPos = Vector2.Lerp(FinalDrawPos, TargetDrawPos, 0.2f);
+
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
             // 将UI的RT2D画出
             Effect shader = LAPShaderRegister.GassBlur.Value;
             shader.Parameters["TargetSize"].SetValue(GassBlurRT2D.Size() * 2f);
@@ -284,10 +287,9 @@ namespace LAP.Core.LAPUI.CustomCD
             Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
             Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
             LAPUtilities.ReSetToEndUI();
         }

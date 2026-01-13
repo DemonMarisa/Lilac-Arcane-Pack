@@ -1,5 +1,4 @@
-﻿using CalamityMod;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
@@ -53,6 +52,65 @@ namespace LAP.Core.Utilities
             if (player.hasMoltenQuiver && type == ProjectileID.FireArrow)
                 return true;
             return type == ProjectileID.WoodenArrowFriendly;
+        }
+        /// <summary>
+        /// 快速设置数据膨胀倍率
+        /// </summary>
+        /// 传入的物品<param name="item"></param>
+        /// 使用的武器等级<param name="AllweaponTier"></param>
+        /// 使用的全局乘数<param name="GlobalMult"></param>
+        /// 是否使用自定义乘数，自定义乘数会受到全局乘数影响<param name="UseCustomMult"></param>
+        public static void SetCalStatInflation(this Item item, int AllweaponTier, float UseCustomMult, float GlobalMult = 1f)
+        {
+            item.LAP().UseCICalStatInflation = true;
+            item.LAP().WeaponTier = AllweaponTier;
+            item.LAP().GlobalMult = GlobalMult;
+            item.LAP().UseCustomStatInflationMult = true;
+            item.LAP().StatInflationMult = UseCustomMult;
+        }
+        public static void SetCalStatInflation(this Item item, int AllweaponTier)
+        {
+            item.LAP().UseCICalStatInflation = true;
+            item.LAP().WeaponTier = AllweaponTier;
+        }
+        public static void SetCalStatInflation(this Item item, int AllweaponTier, float GlobalMult)
+        {
+            item.LAP().UseCICalStatInflation = true;
+            item.LAP().WeaponTier = AllweaponTier;
+            item.LAP().GlobalMult = GlobalMult;
+        }
+        public static int DamageSoftCap(float dmgInput, int cap)
+        {
+            if (dmgInput < cap)
+            {
+                return (int)dmgInput;
+            }
+            float num = MathF.Pow(dmgInput / (float)cap, 0.5f) / 1.25f + 0.2f;
+            return (int)((float)cap * num);
+        }
+        public static void UpdateWeaponAim(Player player, float rotationOffset = 0f, float rotationSpeed = 1f, bool SetArm = true, bool SetBackHand = false)
+        {
+            player.ChangeDir(Math.Sign((player.LocalMouseWorld() - player.Center).X));
+
+            Vector2 aimVect = player.LocalMouseWorld() - player.Center;
+            aimVect.SafeNormalize(Vector2.UnitX);
+
+            float targetRotation = aimVect.ToRotation();
+
+            if (player.LocalMouseWorld().X < player.Center.X)
+                player.itemRotation = player.itemRotation.AngleLerp(targetRotation - MathHelper.ToRadians(rotationOffset) + MathHelper.Pi, rotationSpeed);
+            else
+                player.itemRotation = player.itemRotation.AngleLerp(targetRotation + MathHelper.ToRadians(rotationOffset), rotationSpeed);
+            if (SetArm)
+            {
+                player.ChangeDir(Math.Sign((player.LocalMouseWorld() - player.Center).X));
+                float rotation = (player.Center - player.LocalMouseWorld()).ToRotation() * player.gravDir + MathHelper.PiOver2;
+                player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rotation);
+                if (SetBackHand)
+                {
+                    player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, rotation);
+                }
+            }
         }
     }
 }

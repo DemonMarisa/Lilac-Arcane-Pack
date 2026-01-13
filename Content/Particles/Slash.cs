@@ -18,6 +18,7 @@ namespace LAP.Content.Particles
             Lifetime = life;
             BeginScale = scale;
             Rotation = rot;
+            UseScreenCut = false;
         }
         public override void Update()
         {

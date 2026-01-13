@@ -324,35 +324,36 @@ namespace LAP.Core.Utilities
         {
             return proj.GetGlobalProjectile<LAPGlobalProj>().isHeldProj;
         }
-        public static void SpawnLifeStealProj(this Player player, NPC target, Projectile projSource, int projType, int OverridehealAmt = 0, bool usemoonLeech = false, bool shared = true)
+        public static void SpawnLifeStealProj(this Player player, NPC target, IEntitySource Source, int projType, Vector2 Pos, Vector2 vel, int OverridehealAmt = 0, bool usemoonLeech = false, bool shared = true)
         {
             if (target != null && !target.canGhostHeal)
                 return;
-            int statLife = player.statLife;
             int whoAmI = player.whoAmI;
+            if (shared)
+                whoAmI = FindLowerHPPlayer(player).whoAmI;
+            if (!usemoonLeech || (usemoonLeech && !player.moonLeech))
+                Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, whoAmI, OverridehealAmt);
+        }
+        public static Player FindLowerHPPlayer(this Player player)
+        {
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
-                if (shared)
+                int whoAmI = player.whoAmI;
+                int statLife = player.statLife;
+                foreach (Player Activeplayer in Main.ActivePlayers)
                 {
-                    foreach (Player Activeplayer in Main.ActivePlayers)
+                    if (!Activeplayer.active)
+                        continue;
+                    if (Activeplayer.statLife < statLife)
                     {
-                        if (!Activeplayer.active)
-                            continue;
-                        if (Activeplayer.statLife < statLife)
-                        {
-                            statLife = Activeplayer.statLife;
-                            whoAmI = Activeplayer.whoAmI;
-                        }
+                        statLife = Activeplayer.statLife;
+                        whoAmI = Activeplayer.whoAmI;
                     }
                 }
+                return Main.player[whoAmI];
             }
-            if (!usemoonLeech || (usemoonLeech && !player.moonLeech))
-            {
-                if (projSource.owner == Main.myPlayer)
-                {
-                    Projectile.NewProjectile(projSource.GetSource_FromThis(), projSource.Center, Vector2.Zero, projType, 0, 0f, whoAmI, OverridehealAmt);
-                }
-            }
+            else
+                return Main.LocalPlayer;
         }
         public static void HomeInNPC(this Projectile proj, float distance, float speed, float inertia, float? maxAngleChage = null, bool ignoreTile = true)
         {

@@ -1,5 +1,6 @@
 ﻿using LAP.Assets.Effects;
 using LAP.Assets.TextureRegister;
+using LAP.Core.Graphics.RenderTargetsManager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -11,11 +12,13 @@ namespace LAP.Core.MetaBallsSystem
     public abstract class BaseMetaBall : ModType
     {
         public int Type = 0;
-
+        public virtual float BGTimeMult => 1;
         // 这个元球对应的渲染目标
-        public RenderTarget2D AlphaTexture;
+        public int AlphaTextureIndex;
         // 这个元球对应的背景
         public virtual Texture2D BgTexture => LAPTextureRegister.ShadowNebula.Value;
+
+        public virtual RenderTarget2D AlphaTexture => RT2DManager.RT2D_ScreenSize[AlphaTextureIndex];
 
         /// <summary>
         /// 描边颜色
@@ -45,11 +48,7 @@ namespace LAP.Core.MetaBallsSystem
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            Main.QueueMainThreadAction(() =>
-            {
-                AlphaTexture?.Dispose();
-                AlphaTexture = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-            });
+            RT2DManager.RequestScreenSizeRT2D(out AlphaTextureIndex); 
         }
 
         /// <summary>
@@ -66,15 +65,14 @@ namespace LAP.Core.MetaBallsSystem
         }
         public virtual void PrepareShader()
         {
-
-            Main.graphics.GraphicsDevice.Textures[0] = AlphaTexture;
-            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[0] = RT2DManager.RT2D_ScreenSize[AlphaTextureIndex];
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
 
             Main.graphics.GraphicsDevice.Textures[1] = BgTexture;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
 
             Effect shader = LAPShaderRegister.MetaballShader.Value;
-            shader.Parameters["renderTargetSize"].SetValue(AlphaTexture.Size());
+            shader.Parameters["renderTargetSize"].SetValue(RT2DManager.RT2D_ScreenSize[AlphaTextureIndex].Size());
             shader.Parameters["bakcGroundSize"].SetValue(BgTexture.Size());
             shader.Parameters["edgeColor"].SetValue(EdgeColor.ToVector4());
             shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);

@@ -71,6 +71,8 @@ namespace LAP.Core.SystemsLoader
         }
         /// <summary>
         /// 这是直接移除CD的方法，不会触发完成事件，但是有淡入淡出动画
+        /// 这里的方法是当开始淡出动画时，就已经判定CD完成了，所以这里直接开启淡出动画不会调用完成效果
+        /// 这样可以保证视觉效果一致
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="player"></param>

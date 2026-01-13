@@ -15,6 +15,7 @@ namespace LAP.Core.GlobalInstance.Projectiles
         {
             if (!CrossModSupport.UseCICalStatInflation)
                 return;
+
             // 如果是弹幕出弹幕也应用增伤
             if (source is EntitySource_Parent Parent && Parent.Entity is Projectile proj && proj.TryGetGlobalProjectile(out LAPGlobalProj gp) && gp.UseBoost)
             {
