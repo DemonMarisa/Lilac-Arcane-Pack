@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace LAP.Core.LAPUI.Players
+namespace LAP.Core.GlobalInstance.Players.CDSystem
 {
     // 在玩家中更新Update等数据
     // 在UI全局管理中更新绘制需要的数据

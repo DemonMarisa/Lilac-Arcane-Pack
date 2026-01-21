@@ -1,5 +1,5 @@
-﻿using LAP.Core.LAPUI.CustomCD;
-using LAP.Core.LAPUI.Players;
+﻿using LAP.Core.GlobalInstance.Players.CDSystem;
+using LAP.Core.LAPUI.CustomCD;
 using LAP.Core.NetCode;
 using Microsoft.Xna.Framework;
 using Terraria;

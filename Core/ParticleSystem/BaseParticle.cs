@@ -26,8 +26,10 @@ namespace LAP.Core.ParticleSystem
         /// </summary>
         public int Lifetime = 0;
         public bool UseScreenCut = true;
-
-        public float ScreenCut = 1.1f;
+        /// <summary>
+        /// 这个是屏幕外裁剪的倍率，1对应的是扩展出半个屏幕的距离
+        /// </summary>
+        public float ScreenCut = 0.2f;
         /// <summary>
         /// 位置与向量
         /// </summary>

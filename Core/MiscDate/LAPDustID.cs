@@ -74,6 +74,8 @@
         public static readonly int DustNimbusRod = 154;
         public static readonly int DustHeatRay = 162;
         public static readonly int DustGoldenShower = 170;
+        public static readonly int DustShadowBoltStaff173 = 173;
+        public static readonly int DustDungeonSpirit180 = 180;
         public static readonly int DustVampireHeal = 182;
         public static readonly int DustVampireKnife = 183;
         public static readonly int DustDeadlySphere = 226;

@@ -13,14 +13,20 @@ namespace LAP.Core.Graphics.ScreenDistortion
         public static List<DistortionEntity> Entities = [];
         public override void Load()
         {
+            if (Main.dedServ)
+                return;
             On_FilterManager.EndCapture += On_FilterManager_EndCapture;
         }
         public override void Unload()
         {
+            if (Main.dedServ)
+                return;
             On_FilterManager.EndCapture -= On_FilterManager_EndCapture;
         }
         public override void PostUpdateDusts()
         {
+            if (Main.dedServ)
+                return;
             if (Entities.Count != 0)
             {
                 for (int i = 0; i < Entities.Count; i++)
@@ -33,7 +39,7 @@ namespace LAP.Core.Graphics.ScreenDistortion
         }
         public static void On_FilterManager_EndCapture(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget, RenderTarget2D screenTargetSwap, Color clearColor)
         {
-            if (Entities.Count != 0)
+            if (!Main.dedServ && Entities.Count != 0)
             {
                 for (int i = 0; i < Entities.Count; i++)
                 {

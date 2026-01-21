@@ -11,7 +11,7 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath StarLine3 { get; private set; }
         public static Tex2DWithPath GlowStar { get; private set; }
         public static Tex2DWithPath SmallGlowBall { get; private set; }
-        public static Tex2DWithPath BigWhiteCube { get; private set; }
+        public static Tex2DWithPath StarProj { get; private set; }
         public static void LoadParticleTextures()
         {
             PointLight = new Tex2DWithPath($"{ParticlePath}/PointLight01");
@@ -20,7 +20,7 @@ namespace LAP.Assets.TextureRegister
             StarLine3 = new Tex2DWithPath($"{ParticlePath}/StarLine3");
             GlowStar = new Tex2DWithPath($"{ParticlePath}/GlowStar");
             SmallGlowBall = new Tex2DWithPath($"{ParticlePath}/SmallGlowBall");
-            BigWhiteCube = new Tex2DWithPath($"{ParticlePath}/SmallGlowBall");
+            StarProj = new Tex2DWithPath($"{ParticlePath}/StarProj");
         }
         public static void UnloadParticleTextures()
         {
@@ -30,7 +30,7 @@ namespace LAP.Assets.TextureRegister
             StarLine3 = null;
             GlowStar = null;
             SmallGlowBall = null;
-            BigWhiteCube = null;
+            StarProj = null;
         }
     }
 }

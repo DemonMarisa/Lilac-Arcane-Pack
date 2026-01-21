@@ -1,4 +1,5 @@
 ﻿using LAP.Assets.TextureRegister;
+using LAP.Core.GlobalInstance.Players;
 using LAP.Core.ParticleSystem;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;

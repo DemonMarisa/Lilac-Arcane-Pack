@@ -1,4 +1,4 @@
-﻿using LAP.Core.BaseClass;
+﻿using LAP.Core.BaseClass.Projectiles;
 using LAP.Core.MiscDate;
 using Microsoft.Xna.Framework;
 using Terraria;

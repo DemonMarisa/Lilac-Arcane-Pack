@@ -3,7 +3,7 @@ using LAP.Core.Utilities;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace LAP.Core.BaseClass
+namespace LAP.Core.BaseClass.Projectiles
 {
     public abstract class BaseHealProj : ModProjectile, ILocalizedModType
     {

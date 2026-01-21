@@ -26,110 +26,9 @@ namespace LAP.Core.Utilities
         }
         public static bool CheckType<T>(Projectile projectile) where T : ModProjectile
         {
-            if (projectile.type == ModContent.ProjectileType<T>())
+            if (projectile.type == ProjectileType<T>())
                 return true;
-
             return false;
-        }
-        /// <summary>
-        /// 用于搜索距离射弹最近的npc单位，并返回NPC实例。通常情况下与上方的追踪方法配套
-        /// 这个方法会同时实现穿墙、数组、boss优先度的搜索。不过只能用于射弹。但也足够
-        /// 这里Boss优先度的实现逻辑是如果我们但凡搜索到一个Boss，就把这个Boss临时存储，在返回实例的时候优先使用
-        /// </summary>
-        /// <param name="p">射弹</param>
-        /// <param name="maxDist">最大搜索距离</param>
-        /// <param name="bossFirst">boss优先度，这个还没实现好逻辑，所以填啥都没用（</param>
-        /// <param name="ignoreTiles">穿墙搜索, 默认为</param>
-        /// <param name="arrayFirst">数组优先, 这个将会使射弹优先针对数组内第一个单位,默认为否</param>
-        /// <returns>返回一个NPC实例</returns>
-        public static NPC FindClosestTarget(this Projectile p, float maxDist, bool bossFirst = false, bool ignoreTiles = true, bool arrayFirst = false)
-        {
-            //bro我真的要遍历整个NPC吗？
-            float distStoraged = maxDist;
-            NPC tryGetBoss = null;
-            NPC acceptableTarget = null;
-            bool alreadyGetBoss = false;
-            foreach (NPC npc in Main.ActiveNPCs)
-            {
-                float exDist = npc.width + npc.height;
-
-                //单位不可被追踪 或者 超出索敌距离则continue
-                if (Vector2.Distance(p.Center, npc.Center) > distStoraged + exDist)
-                    continue;
-
-                if (!npc.active || npc.friendly || npc.lifeMax < 5 || !npc.CanBeChasedBy(p.Center, false))
-                    continue;
-
-                //补: 如果优先搜索Boss单位, 且附近至少有一个。我们直接存储这个Boss单位
-                //已经获取到的会被标记，使其不会再跑一遍搜索.
-                if (npc.boss && bossFirst && !alreadyGetBoss)
-                {
-                    tryGetBoss = npc;
-                    alreadyGetBoss = true;
-                }
-
-                //搜索符合条件的敌人, 准备返回这个NPC实例
-                float curNpcDist = Vector2.Distance(npc.Center, p.Center);
-                if (curNpcDist < distStoraged && (ignoreTiles || Collision.CanHit(p.Center, 1, 1, npc.Center, 1, 1)))
-                {
-                    distStoraged = curNpcDist;
-                    acceptableTarget = npc;
-                    if (tryGetBoss != null & bossFirst)
-                        acceptableTarget = tryGetBoss;
-                    //如果是数组优先，直接在这返回实例
-                    if (arrayFirst)
-                        return acceptableTarget;
-                }
-            }
-            //返回这个NPC实例
-            return acceptableTarget;
-        }
-        public static NPC FindClosestTarget(this Projectile p, float maxDist, Vector2 center, bool bossFirst = false, bool ignoreTiles = true, bool arrayFirst = false)
-        {
-            //bro我真的要遍历整个NPC吗？
-            float distStoraged = maxDist;
-            NPC tryGetBoss = null;
-            NPC acceptableTarget = null;
-            bool alreadyGetBoss = false;
-            foreach (NPC npc in Main.ActiveNPCs)
-            {
-                float exDist = npc.width + npc.height;
-
-                //单位不可被追踪 或者 超出索敌距离则continue
-                if (Vector2.Distance(center, npc.Center) > distStoraged + exDist)
-                    continue;
-
-                if (!npc.active || npc.friendly || npc.lifeMax < 5 || !npc.CanBeChasedBy(p.Center, false))
-                    continue;
-
-                //补: 如果优先搜索Boss单位, 且附近至少有一个。我们直接存储这个Boss单位
-                //已经获取到的会被标记，使其不会再跑一遍搜索.
-                if (npc.boss && bossFirst && !alreadyGetBoss)
-                {
-                    tryGetBoss = npc;
-                    alreadyGetBoss = true;
-                }
-
-                //搜索符合条件的敌人, 准备返回这个NPC实例
-                float curNpcDist = Vector2.Distance(npc.Center, center);
-                if (curNpcDist < distStoraged)
-                {
-                    if (!ignoreTiles)
-                    {
-                        if (!Collision.CanHit(center, 1, 1, npc.Center, 1, 1))
-                            continue;
-                    }
-                    distStoraged = curNpcDist;
-                    acceptableTarget = npc;
-                    if (tryGetBoss != null & bossFirst)
-                        acceptableTarget = tryGetBoss;
-                    //如果是数组优先，直接在这返回实例
-                    if (arrayFirst)
-                        return acceptableTarget;
-                }
-            }
-            //返回这个NPC实例
-            return acceptableTarget;
         }
         /// <summary>
         /// 搜索距离指定位置最近的NPC
@@ -202,32 +101,27 @@ namespace LAP.Core.Utilities
 
             return acceptableTarget;
         }
+        /// <summary>
+        /// 用于根据传入的弹幕伤害进行模式加成计算
+        /// </summary>
         public static float PostModeBoostProjDamage(float damage)
         {
             float realDamage = damage * 2;
-
             if (Main.masterMode)
                 realDamage *= 1.5f;
-
             if(Main.expertMode)
                 realDamage *= 2f;
-
             return realDamage;
         }
-
         public static float PreModeBoostProjDamage(float damage)
         {
-            float realDamage = damage * 0.5f;
-            
+            float realDamage = damage * 0.5f; 
             if (Main.expertMode)
                 realDamage *= 0.5f;
-
             if (Main.masterMode)
                 realDamage *= 0.66f;
-
             return realDamage;
         }
-
         /// <summary>
         /// 用于跟踪指定地点的方法
         /// 只会跟踪你传进去的目标
@@ -286,7 +180,7 @@ namespace LAP.Core.Utilities
                 }
             }
             //设定速度
-            target = velo;
+            velocity = velo;
         }
         public static Vector2 HalfProjectile(this Projectile proj)
         {
@@ -307,22 +201,13 @@ namespace LAP.Core.Utilities
         {
             return proj.numUpdates == -1;
         }
-
         public static void SetCantSplit(this Projectile proj)
         {
             proj.GetGlobalProjectile<LAPGlobalProj>().canSplit = false;
         }
-        public static void SetIsHeldProj(this Projectile proj, bool isheldproj)
-        {
-            proj.GetGlobalProjectile<LAPGlobalProj>().isHeldProj = isheldproj;
-        }
         public static bool CantSplit(this Projectile proj)
         {
             return proj.GetGlobalProjectile<LAPGlobalProj>().canSplit;
-        }
-        public static bool IsHeldProj(this Projectile proj)
-        {
-            return proj.GetGlobalProjectile<LAPGlobalProj>().isHeldProj;
         }
         public static void SpawnLifeStealProj(this Player player, NPC target, IEntitySource Source, int projType, Vector2 Pos, Vector2 vel, int OverridehealAmt = 0, bool usemoonLeech = false, bool shared = true)
         {
@@ -339,14 +224,15 @@ namespace LAP.Core.Utilities
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
                 int whoAmI = player.whoAmI;
-                int statLife = player.statLife;
+                float precentLife = (float)player.statLife / player.statLifeMax2;
                 foreach (Player Activeplayer in Main.ActivePlayers)
                 {
                     if (!Activeplayer.active)
                         continue;
-                    if (Activeplayer.statLife < statLife)
+                    float thisPlayerPrecentLife = (float)Activeplayer.statLife / Activeplayer.statLifeMax2;
+                    if (thisPlayerPrecentLife < precentLife)
                     {
-                        statLife = Activeplayer.statLife;
+                        precentLife = thisPlayerPrecentLife;
                         whoAmI = Activeplayer.whoAmI;
                     }
                 }
@@ -357,7 +243,7 @@ namespace LAP.Core.Utilities
         }
         public static void HomeInNPC(this Projectile proj, float distance, float speed, float inertia, float? maxAngleChage = null, bool ignoreTile = true)
         {
-            NPC npc = proj.FindClosestTarget(distance, false, ignoreTile);
+            NPC npc = FindClosestTarget(proj.Center, distance, ignoreTile);
             if (npc is not null)
             {
                 proj.HomingTarget(npc.Center, distance, speed, inertia, maxAngleChage);
@@ -365,9 +251,8 @@ namespace LAP.Core.Utilities
         }
         public static Player Owner(this Projectile proj)
         {
-            return Main.player[proj.whoAmI];
+            return Main.player[proj.owner];
         }
-
         public static void DrawAfterimages(Projectile proj, int mode, Color lightColor, int typeOneIncrement = 1, Texture2D texture = null)
         {
             if (texture is null)

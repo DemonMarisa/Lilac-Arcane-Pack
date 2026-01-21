@@ -10,5 +10,9 @@ Items: {
 	}
 }
 
-Keybinds.WeaponSkill.DisplayName: Weapon Skill
+Keybinds: {
+	WeaponSkill.DisplayName: Weapon Skill
+	DashHotKey.DisplayName: Dash Hot Key
+}
+
 Projectiles.PlasmaPrimarySparkTest.DisplayName: Plasma Primary Spark Test

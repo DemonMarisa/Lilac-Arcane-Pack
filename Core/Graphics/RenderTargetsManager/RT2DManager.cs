@@ -18,6 +18,8 @@ namespace LAP.Core.Graphics.RenderTargetsManager
         }
         public override void Unload()
         {
+            if (Main.dedServ)
+                return;
             Main.QueueMainThreadAction(() =>
             {
                 for (int i = 0; i < RT2D_ScreenSize.Count; i++)
@@ -36,6 +38,8 @@ namespace LAP.Core.Graphics.RenderTargetsManager
         }
         public override void UpdateUI(GameTime gameTime)
         {
+            if (Main.dedServ)
+                return;
             if (OldScreenSize != LAPInfo.ScreenSize)
             {
                 Main.QueueMainThreadAction(() =>
@@ -57,6 +61,8 @@ namespace LAP.Core.Graphics.RenderTargetsManager
             Index = RT2D_ScreenSize.Count;
             RT2D_ScreenSize.Add(null);// 占位
             int capturedIndex = Index; // 捕获索引
+            if (Main.dedServ)
+                return;
             Main.QueueMainThreadAction(() =>
             {
                 if (capturedIndex < RT2D_ScreenSize.Count)
@@ -70,6 +76,8 @@ namespace LAP.Core.Graphics.RenderTargetsManager
             Index = RT2D_Normal.Count;
             RT2D_Normal.Add(null);// 占位
             int capturedIndex = Index; // 捕获索引
+            if (Main.dedServ)
+                return;
             Main.QueueMainThreadAction(() =>
             {
                 if (capturedIndex < RT2D_Normal.Count)

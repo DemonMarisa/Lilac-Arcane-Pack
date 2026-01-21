@@ -162,13 +162,13 @@ namespace LAP.Core.LAPUI.FocusBar
             float Length2 = rightPos.X - leftPos.X;// 间距像素
             float ScaleMult2 = Length2 / bar.texture.Width;
             Rectangle Oldrec = new Rectangle(0, 0, (int)(bar.texture.Width * OldBarRatio), bar.texture.Height);
-            Main.spriteBatch.Draw(bar.texture, bar.Position, Oldrec, Color.White, 0, bar.Orig, new Vector2(ScaleMult2, 0.035f), 0, 0f);
+            Main.spriteBatch.Draw(bar.texture, bar.Position, Oldrec, Color.White, 0, bar.Orig, new Vector2(ScaleMult2, 0.02f), 0, 0f);
 
             effect2.Parameters["BeginColor"].SetValue(Color.RoyalBlue.ToVector4());
             effect2.Parameters["EndColor"].SetValue(Color.SkyBlue.ToVector4());
             effect2.CurrentTechnique.Passes[0].Apply();
             Rectangle rec = new Rectangle(0, 0, (int)(bar.texture.Width * BarRatio), bar.texture.Height);
-            Main.spriteBatch.Draw(bar.texture, bar.Position, rec, Color.White, 0, bar.Orig, new Vector2(ScaleMult2, 0.035f), 0, 0f);
+            Main.spriteBatch.Draw(bar.texture, bar.Position, rec, Color.White, 0, bar.Orig, new Vector2(ScaleMult2, 0.02f), 0, 0f);
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);

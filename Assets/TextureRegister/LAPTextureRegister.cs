@@ -34,11 +34,13 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath InvisibleProj { get; private set; }
         public static Tex2DWithPath WhiteCircle { get; private set; }
         public static Tex2DWithPath WhiteCube { get; private set; }
+        public static Tex2DWithPath BigWhiteCube { get; private set; }
         public override void Load()
         {
             InvisibleProj = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/InvisibleProj");
             WhiteCircle = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteCircle");
             WhiteCube = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteCube");
+            BigWhiteCube = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/BigWhiteCube");
             LoadMAGNOLIATextures();
             LoadExp33Texture();
             LoadExtraTexture();
@@ -51,6 +53,7 @@ namespace LAP.Assets.TextureRegister
             InvisibleProj = null;
             WhiteCircle = null;
             WhiteCube = null;
+            BigWhiteCube = null;
             UnloadMAGNOLIATextures();
             UnloadExp33Textures();
             UnloadExtraTextures();

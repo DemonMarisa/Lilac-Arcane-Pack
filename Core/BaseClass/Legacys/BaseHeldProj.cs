@@ -1,13 +1,16 @@
-﻿using LAP.Core.Utilities;
+﻿using LAP.Core.SystemsLoader;
+using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace LAP.Core.BaseClass
+namespace LAP.Core.BaseClass.Legacys
 {
+    [Obsolete]
     public abstract class BaseHeldProj : ModProjectile, ILocalizedModType
     {
         public new string LocalizationCategory => "HeldProj";
@@ -19,18 +22,22 @@ namespace LAP.Core.BaseClass
 
         public Vector2 LocalMouseWorld => Owner.LAP().SyncedMouseWorld;
         public bool Active => (Owner.channel || Owner.controlUseTile) && !Owner.noItems && !Owner.CCed;
+
+        public int UseDelay = 0;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.NeedsUUID[Projectile.type] = true;
             ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+            Projectile.AddHeldProj();
+            ExSSD();
+        }
+        public virtual void ExSSD()
+        {
+
         }
         public override bool? CanHitNPC(NPC target)
         {
             return false;
         }
-
-        public int UseDelay = 0;
-
         public override void AI()
         {
             if (Projectile.LAP().FirstFrame)
@@ -58,7 +65,6 @@ namespace LAP.Core.BaseClass
             {
                 if (Projectile.owner == Main.myPlayer)
                     HoldoutAI();
-
                 ExtraHoldoutAI();
             }
             else if (CanDel())
@@ -86,7 +92,6 @@ namespace LAP.Core.BaseClass
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             Projectile.Center = playerHandPos + Posffset;
-            Projectile.spriteDirection = Projectile.direction;
 
             player.ChangeDir(Owner.LocalMouseWorld().X - player.Center.X > 0 ? 1 : -1);
             player.heldProj = Projectile.whoAmI;
@@ -148,7 +153,7 @@ namespace LAP.Core.BaseClass
 
             Vector2 rotationPoint = RotPoint;
 
-            SpriteEffects flipSprite = (Owner.direction * Main.player[Projectile.owner].gravDir == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects flipSprite = Owner.direction * Main.player[Projectile.owner].gravDir == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             Main.spriteBatch.Draw(texture, drawPosition, null, Projectile.GetAlpha(lightColor), drawRotation, rotationPoint, Projectile.scale * Main.player[Projectile.owner].gravDir, flipSprite, default);
             MorePreDraw(ref lightColor);

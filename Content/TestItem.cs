@@ -56,7 +56,8 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            CustomCDManger.InitializeCDUI();
+            LAPContent.AddScreenDistortion(45, Main.MouseWorld, 4f, 0.05f);
+            // CustomCDManger.InitializeCDUI();
             return false;
         }
         public override void AddRecipes()

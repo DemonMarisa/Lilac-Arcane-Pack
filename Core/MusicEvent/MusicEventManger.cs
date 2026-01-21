@@ -1,10 +1,12 @@
 ﻿using LAP.Assets.Musics;
 using LAP.Content.Configs;
 using Microsoft.Xna.Framework;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace LAP.Core.MusicEvent
 {

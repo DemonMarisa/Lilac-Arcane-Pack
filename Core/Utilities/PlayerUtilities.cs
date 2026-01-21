@@ -95,5 +95,12 @@ namespace LAP.Core.Utilities
             else
                 return RealAttack;
         }
+        public static void SetArmRot(this Player player, float rot, bool setback = true, bool setfront = true)
+        {
+            if (setback)
+                player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, rot - MathHelper.PiOver2);
+            if (setfront)
+                player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rot - MathHelper.PiOver2);
+        }
     }
 }

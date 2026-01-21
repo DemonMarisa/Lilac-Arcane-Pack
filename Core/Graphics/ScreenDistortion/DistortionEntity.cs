@@ -33,11 +33,12 @@ namespace LAP.Core.Graphics.ScreenDistortion
         {
             Vector2 drawPos = Vector2.Transform(Position - Main.screenPosition, Main.GameViewMatrix.TransformationMatrix);
             float zoom = Main.GameViewMatrix.Zoom.X;
+            float ScrennSizeScale = 1920f / LAPInfo.ScreenSize.X;
             float XScale = (float)Main.screenHeight / Main.screenWidth;
             Effect effect = LAPShaderRegister.ScreenDistortion.Value;
             effect.Parameters["uScreenSize"].SetValue(LAPInfo.ScreenSize);
             effect.Parameters["uTargetCenter"].SetValue(drawPos);
-            effect.Parameters["uDistortionRadius"].SetValue(Radius * zoom);
+            effect.Parameters["uDistortionRadius"].SetValue(Radius * zoom * ScrennSizeScale);
             effect.Parameters["uDistortionStrength"].SetValue(Strength);
             effect.Parameters["uLerpFactor"].SetValue(UVLerp);
             effect.Parameters["uAspectRatioCorrection"].SetValue(new Vector2(1f, XScale));

@@ -1,6 +1,7 @@
 ﻿using LAP.Core.Graphics.ScreenDistortion;
 using LAP.Core.Graphics.ScreenDistortion.Distortions;
 using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace LAP.Core.SystemsLoader
 {

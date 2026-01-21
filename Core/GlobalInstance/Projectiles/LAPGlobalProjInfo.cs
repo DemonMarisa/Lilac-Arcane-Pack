@@ -8,8 +8,6 @@ namespace LAP.Core.GlobalInstance.Projectiles
     {
         // 用于元素箭袋的是否分裂
         public bool canSplit = true;
-        // 检查是否是手持弹幕的标志
-        public bool isHeldProj = false;
         // 此弹幕是否来自于武器战技
         public bool isWeaponSkillProj = false;
         public override void SetDefaults(Projectile projectile)
