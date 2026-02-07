@@ -8,14 +8,27 @@
 		
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Core\UISystem\UIManager.cs~RF585807.TMP" />
+	</ItemGroup>
+	<ItemGroup>
 	  <Reference Include="CalamityMod">
 	    <HintPath>..\..\ModReader\CalamityMod\CalamityMod.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Sounds\Items\Weapons\Melee\" />
+	  <Folder Include="Core\BaseClass\UIs\" />
 	</ItemGroup>
-
+	
+	<ItemGroup>
+	  <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Publicize Include="tModLoader" IncludeVirtualMembers="false" />
+	</ItemGroup>
 	<!-- References -->
 
 </Project>

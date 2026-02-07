@@ -12,7 +12,5 @@ Items: {
 
 Keybinds: {
 	WeaponSkill.DisplayName: 武器战技按键
-	// DashHotKey.DisplayName: Dash Hot Key
+	DashHotKey.DisplayName: 单击冲刺，目前只会影响这个Mod添加的冲刺
 }
-
-// Projectiles.PlasmaPrimarySparkTest.DisplayName: Plasma Primary Spark Test

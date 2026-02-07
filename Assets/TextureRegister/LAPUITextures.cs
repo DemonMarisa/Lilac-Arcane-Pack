@@ -14,6 +14,11 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath FocusUIEdge { get; private set; }
         public static Tex2DWithPath FocusUIMiddle { get; private set; }
         public static Tex2DWithPath TopPattern { get; private set; }
+        public static Tex2DWithPath EL_Bloom { get; private set; }
+        public static Tex2DWithPath EL_Flower { get; private set; }
+        public static Tex2DWithPath EL_HoverEdge { get; private set; }
+        public static Tex2DWithPath EL_Net { get; private set; }
+        public static Tex2DWithPath EL_Arrow { get; private set; }
         public static void LoadUI()
         {
             CDBG_Edge = new Tex2DWithPath($"{UIPath}/CDs/CDBG_Edge");
@@ -25,6 +30,11 @@ namespace LAP.Assets.TextureRegister
             FocusUIEdge = new Tex2DWithPath($"{UIPath}/Focus/FocusUIEdge");
             FocusUIMiddle = new Tex2DWithPath($"{UIPath}/Focus/FocusUIMiddle");
             TopPattern = new Tex2DWithPath($"{UIPath}/Focus/TopPattern");
+            EL_Bloom = new Tex2DWithPath($"{UIPath}/EnderLilies/Bloom");
+            EL_Flower = new Tex2DWithPath($"{UIPath}/EnderLilies/Flower");
+            EL_HoverEdge = new Tex2DWithPath($"{UIPath}/EnderLilies/HoverEdge");
+            EL_Net = new Tex2DWithPath($"{UIPath}/EnderLilies/Net");
+            EL_Arrow = new Tex2DWithPath($"{UIPath}/EnderLilies/Arrow");
         }
         public static void UnloadUI()
         {
@@ -37,6 +47,11 @@ namespace LAP.Assets.TextureRegister
             FocusUIEdge = null;
             FocusUIMiddle = null;
             TopPattern = null;
+            EL_Bloom = null;
+            EL_Flower = null;
+            EL_HoverEdge = null;
+            EL_Net = null;
+            EL_Arrow = null;
         }
     }
 }

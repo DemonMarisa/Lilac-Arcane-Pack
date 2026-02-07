@@ -1,5 +1,5 @@
-﻿using LAP.Assets.Musics;
-using LAP.Content.Configs;
+﻿using LAP.Content.Configs;
+using LAP.Music;
 using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using System;

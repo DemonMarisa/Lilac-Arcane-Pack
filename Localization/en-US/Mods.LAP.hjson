@@ -12,7 +12,5 @@ Items: {
 
 Keybinds: {
 	WeaponSkill.DisplayName: Weapon Skill
-	DashHotKey.DisplayName: Dash Hot Key
+	DashHotKey.DisplayName: Dash Hot Key, it only affect the dash added by this mod.
 }
-
-Projectiles.PlasmaPrimarySparkTest.DisplayName: Plasma Primary Spark Test

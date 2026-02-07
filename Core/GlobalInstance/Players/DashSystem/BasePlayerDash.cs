@@ -16,6 +16,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         /// 这个冲刺的来源
         /// </summary>
         public IEntitySource Source;
+        public virtual bool CanHitNPC(Player player, NPC target) => true;
         public virtual DashDamageInfo DashDamageInfo(Player player) => new(50, 3, DamageClass.Default);
         /// <summary>
         /// 这个冲刺给予的无敌时间
@@ -103,6 +104,11 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             Type = LAPDashPlayer.DashCollection.Count;
             LAPDashPlayer.DashCollection.Add(this);
+            SSD();
+        }
+        public virtual void SSD()
+        {
+
         }
     }
 }

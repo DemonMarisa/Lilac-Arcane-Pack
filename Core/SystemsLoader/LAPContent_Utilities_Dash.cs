@@ -13,12 +13,15 @@ namespace LAP.Core.SystemsLoader
         public static void ImmediatelyDash(this Player player, int BeginDashID)
         {
             LAPDashPlayer LAPPlayer = player.GetModPlayer<LAPDashPlayer>();
-
-            BasePlayerDash ActiveDash = LAPDashPlayer.DashCollection[LAPPlayer.CurDashID];
-            LAPPlayer.DashTime = 0;
-            LAPPlayer.DashDelay = 0;
-            LAPPlayer.BeginDash = false; ;
-            ActiveDash.OnDashEnd(player);
+            int curid = LAPPlayer.CurDashID;
+            if (curid > 0 && curid < LAPDashPlayer.DashCollection.Count)
+            {
+                BasePlayerDash ActiveDash = LAPDashPlayer.DashCollection[curid];
+                LAPPlayer.DashTime = 0;
+                LAPPlayer.DashDelay = 0;
+                LAPPlayer.BeginDash = false;
+                ActiveDash.OnDashEnd(player);
+            }
 
             LAPPlayer.OverideCurDashID = BeginDashID;
             BasePlayerDash newDash = LAPDashPlayer.DashCollection[BeginDashID];

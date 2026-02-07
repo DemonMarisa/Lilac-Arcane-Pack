@@ -1,19 +1,7 @@
-﻿using CalamityMod.Graphics.Metaballs;
-using LAP.Assets.Musics;
-using LAP.Content.Configs;
-using LAP.Content.CustomCDs;
-using LAP.Content.Particles;
-using LAP.Content.Projectiles;
-using LAP.Core.Graphics.PixelatedRender;
-using LAP.Core.Graphics.RenderTargetsManager;
-using LAP.Core.LAPUI.CustomCD;
-using LAP.Core.LAPUI.FocusBar;
-using LAP.Core.MetaBallsSystem;
-using LAP.Core.MusicEvent;
+﻿
 using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;

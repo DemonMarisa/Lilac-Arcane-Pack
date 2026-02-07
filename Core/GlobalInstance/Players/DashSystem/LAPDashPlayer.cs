@@ -85,6 +85,10 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
             {
                 if (LAPKeybind.DashHotKey.JustPressed)
                 {
+                    if (Player.controlLeft)
+                        BeginDirection = -1;
+                    else if (Player.controlRight)
+                        BeginDirection = 1;
                     CanDash = true;
                 }
                 return;
@@ -141,6 +145,8 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                     continue;
                 if (NPCImmuneTime[n.whoAmI] > 0)
                     return;
+                if (!ActiveDash.CanHitNPC(Player, n))
+                    continue;
                 if (!n.dontTakeDamage && !n.friendly)
                 {
                     if (ActiveDash.Colliding(hitArea, n.Hitbox) && (n.noTileCollide || Player.CanHit(n)))
