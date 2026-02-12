@@ -148,8 +148,6 @@ namespace LAP.Core.LAPUI.FocusBar
             float ScaleMult = Length / barMiddleBG.texture.Width;
             Main.spriteBatch.Draw(barMiddleBG.texture, barMiddleBG.Position, null, Color.White, 0, barMiddleBG.Orig, new Vector2(ScaleMult, 0.15f), 0, 0f);
             // 左右两侧的箭头
-            Effect effect = LAPShaderRegister.Fill.Value;
-            effect.CurrentTechnique.Passes[0].Apply();
             Main.spriteBatch.Draw(barTopPattern.texture, barTopPattern.Position, null, Color.Silver, 0, barTopPattern.Orig, 0.2f, 0, 0f);
             Main.spriteBatch.Draw(barBottomPattern.texture, barBottomPattern.Position, null, Color.Silver, 0, barBottomPattern.Orig, 0.2f, 0, 0f);
 
@@ -169,9 +167,6 @@ namespace LAP.Core.LAPUI.FocusBar
             effect2.CurrentTechnique.Passes[0].Apply();
             Rectangle rec = new Rectangle(0, 0, (int)(bar.texture.Width * BarRatio), bar.texture.Height);
             Main.spriteBatch.Draw(bar.texture, bar.Position, rec, Color.White, 0, bar.Orig, new Vector2(ScaleMult2, 0.02f), 0, 0f);
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
 
             Main.spriteBatch.End();
             Main.graphics.GraphicsDevice.SetRenderTargets(null);

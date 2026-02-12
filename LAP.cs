@@ -1,6 +1,9 @@
 global using static Terraria.ModLoader.ModContent;
+using LAP.Core.AssetReaders;
 using LAP.Core.NetCode;
+using ReLogic.Content.Sources;
 using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace LAP
@@ -19,6 +22,14 @@ namespace LAP
         public Mod CalamityMod = null;
         public Mod CalamityModMusic = null;
         public Mod UnofficialCalamityEnhanced = null;
+        public override IContentSource CreateDefaultContentSource()
+        {
+            if (!Main.dedServ)
+            {
+                AddContent(new OgvReader());
+            }
+            return base.CreateDefaultContentSource();
+        }
         public override void Load()
         {
             Instance = this;

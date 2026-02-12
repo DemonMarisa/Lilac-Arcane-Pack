@@ -12,7 +12,7 @@ namespace LAP.Core.UISystem
         public static int MaxDepth = 21;
         public static bool[] ActiveDepth = new bool[MaxDepth];
         public static int[] ActiveDepthCount = new int[MaxDepth];
-        public static int TopUI = 0;
+        public static int BlockAllUI;
         public override void Load()
         {
             On_Main.UpdateUIStates += PostUpdateUI;
@@ -24,7 +24,6 @@ namespace LAP.Core.UISystem
         public static void PostUpdateUI(On_Main.orig_UpdateUIStates orig, GameTime gameTime)
         {
             orig(gameTime);
-
             for (int i = 0; i < ActiveDepth.Length; i++)
             {
                 if (ActiveDepthCount[i] == 0)
@@ -37,8 +36,8 @@ namespace LAP.Core.UISystem
                 if (ActiveDepthCount[i] > 0)
                     ActiveDepthCount[i]--;
             }
-
-            TopUI = 0;
+            if (BlockAllUI > 0)
+                BlockAllUI--;
         }
     }
 }

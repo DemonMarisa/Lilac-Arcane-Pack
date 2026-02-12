@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LAP.Core.ParticleSystem;
+using LAP.Core.Utilities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -12,7 +15,7 @@ namespace LAP.Core.Menus.OverLayer
         public static float OverlayBlackOpacity = 0f;
         public override void Load()
         {
-            On_Main.DrawThickCursor += DrawThickCursor;
+            On_Main.DrawMenu += PostDrawMenu;
             On_Main.DrawVersionNumber += On_DrawVersion;
             On_Main.DrawSocialMediaButtons += On_DrawSocialMediaButtons;
             On_Main.DrawtModLoaderSocialMediaButtons += On_DrawtModLoaderSocialMediaButtons;
@@ -20,18 +23,19 @@ namespace LAP.Core.Menus.OverLayer
         }
         public override void Unload()
         {
-            On_Main.DrawThickCursor -= DrawThickCursor;
+            On_Main.DrawMenu -= PostDrawMenu;
             On_Main.DrawVersionNumber -= On_DrawVersion;
             On_Main.DrawSocialMediaButtons -= On_DrawSocialMediaButtons;
             On_Main.DrawtModLoaderSocialMediaButtons -= On_DrawtModLoaderSocialMediaButtons;
             On_Main.HandleNews -= On_HandleNews;
         }
-        public static Vector2 DrawThickCursor(On_Main.orig_DrawThickCursor orig, bool smart)
+        public static void PostDrawMenu(On_Main.orig_DrawMenu orig, Main self,GameTime gametime)
         {
+            orig(self, gametime);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
             if (Main.menuMode != MenuID.Title && OverlayBlackOpacity > 0.02f)
                 Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), Color.Black * OverlayBlackOpacity);
-            orig(smart);
-            return Vector2.Zero;
+            Main.spriteBatch.End();
         }
         public static void On_DrawVersion(On_Main.orig_DrawVersionNumber orig, Color menuColor, float upBump)
         {

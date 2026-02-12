@@ -5,6 +5,7 @@ using LAP.Core.Menus.Buttoms.Depth_1;
 using LAP.Core.Menus.Buttoms.Depth_2;
 using LAP.Core.Menus.Buttoms.Depth_Top;
 using LAP.Core.Menus.Buttoms.Depth_Top.ToWebUI;
+using LAP.Core.Menus.DrawVideo;
 using LAP.Core.UISystem;
 using LAP.Core.Utilities;
 using MenuMod.Core.Menu.Buttoms.Depth_1;
@@ -44,6 +45,8 @@ namespace LAP.Core.Menus
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+
+            MenuVideoPlay.DrawVideo();
         }
         public static void PostDraw()
         {

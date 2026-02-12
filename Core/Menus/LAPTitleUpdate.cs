@@ -3,6 +3,7 @@ using LAP.Core.Menus.AllTitleBG;
 using LAP.Core.Menus.Buttoms.Depth_1;
 using LAP.Core.Menus.Buttoms.Depth_2;
 using LAP.Core.Menus.Buttoms.Depth_Top.ToWebUI;
+using LAP.Core.Menus.DrawVideo;
 using LAP.Core.Menus.OverLayer;
 using LAP.Core.UISystem;
 using MenuMod.Core.Menu.Buttoms.Depth_1;
@@ -10,6 +11,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 
 namespace LAP.Core.Menus
@@ -37,6 +39,7 @@ namespace LAP.Core.Menus
             HandleTitleAndFadeInOut();
             UpdateButtons();
             UpdateBG();
+            MenuVideoPlay.UpdateVideo();
         }
         #region 更新切入切出主界面的淡出
         public static void HandleTitleAndFadeInOut()

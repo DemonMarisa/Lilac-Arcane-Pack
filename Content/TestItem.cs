@@ -1,6 +1,8 @@
 ﻿
+using LAP.Core.Graphics.VideoManager;
 using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
+using LAP.Music;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -44,8 +46,7 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            LAPContent.AddScreenDistortion(45, Main.MouseWorld, 4f, 0.05f);
-            // CustomCDManger.InitializeCDUI();
+            Main.NewText("MusicLoader.GetMusicSlot(MusicRegister.LilyPath) : " + MusicLoader.GetMusicSlot("LAP/Music/Misc/Lily"));
             return false;
         }
         public override void AddRecipes()

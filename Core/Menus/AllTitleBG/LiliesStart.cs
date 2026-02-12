@@ -1,8 +1,10 @@
 ﻿using LAP.Assets.Menus;
 using LAP.Assets.Sounds;
+using LAP.Core.Menus.DrawVideo;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -35,6 +37,7 @@ namespace LAP.Core.Menus.AllTitleBG
     }
     public class LiliesStart
     {
+        public static SlotId RainSlotID;
         public static List<RainDust> rainDusts = new List<RainDust>();
         public static int Time = 220;
         public static void Update()
@@ -51,9 +54,9 @@ namespace LAP.Core.Menus.AllTitleBG
                 float Offset = Main.rand.NextBool() ? 0 : (MathHelper.Pi);
                 rainDusts.Add(new RainDust(SpawnPos, Speed.ToRotation() + MathHelper.PiOver2 + Offset, Scale, Speed, se));
             }
-            if (Time > 200)
+            if (Time > 200 && !MenuVideoPlay.CanPlay)
             {
-                SoundEngine.PlaySound(LAPSoundsMenu.RainSound);
+                RainSlotID = SoundEngine.PlaySound(LAPSoundsMenu.RainSound);
                 Time = 0;
             }
 

@@ -100,19 +100,23 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
             {
                 if (VanillaDashInput > 0)
                 {
+                    BeginDirection = 1;
                     canDash = true;
                     VanillaDashInput = 0;
                 }
-                else VanillaDashInput = 15;
+                else
+                    VanillaDashInput = 15;
             }
             else if (vanillaLeftDashInput)
             {
                 if (VanillaDashInput < 0)
                 {
+                    BeginDirection = -1;
                     canDash = true;
                     VanillaDashInput = 0;
                 }
-                else VanillaDashInput = -15;
+                else
+                    VanillaDashInput = -15;
             }
             CanDash = canDash;
         }

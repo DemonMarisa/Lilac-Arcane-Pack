@@ -2,10 +2,13 @@
 using LAP.Assets.TextureRegister;
 using LAP.Core.Menus.AllMenuID;
 using LAP.Core.Menus.AllTitleBG;
+using LAP.Core.Menus.DrawVideo;
 using LAP.Core.Menus.OverLayer;
 using LAP.Core.Utilities;
+using LAP.Music;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -21,12 +24,23 @@ namespace LAP.Core.Menus
         public override Asset<Texture2D> Logo => LAPTextureRegister.InvisibleProj.Texture;
         public override Asset<Texture2D> SunTexture => LAPTextureRegister.InvisibleProj.Texture;
         public override Asset<Texture2D> MoonTexture => LAPTextureRegister.InvisibleProj.Texture;
-        public override int Music => MusicLoader.GetMusicSlot("LAP/Music/Misc/MainThemeLilies");
+        public override int Music => GetMusicID();
+        public static int GetMusicID()
+        {
+            if (MenuVideoPlay.CanPlay)
+                return MusicLoader.GetMusicSlot(MusicRegister.SliencePath);
+            if (TitleBgStyle == BGStyle.LiliesEnd)
+                return MusicLoader.GetMusicSlot(MusicRegister.MainThemeLiliesPath);
+            return MusicLoader.GetMusicSlot(MusicRegister.LilyPath);
+        }
+
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => null;
         public override string DisplayName => Language.GetTextValue("Mods.LAP.Menus.EnderLilies");
         public static bool CanOut;
-        public override void Unload()
+        public static VideoPlayer videoPlayer;
+        public override void Load()
         {
+            videoPlayer = new VideoPlayer();
         }
         #region 选中与离开
         public override void OnSelected()
@@ -45,6 +59,10 @@ namespace LAP.Core.Menus
             if (Main.menuMode != MenuID.FancyUI)
                 Main.menuMode = MenuID.Title;
             SoundEngine.PlaySound(MenuSounds.LiliesOut);
+            if (TitleBgStyle == BGStyle.LiliesStart && SoundEngine.TryGetActiveSound(LiliesStart.RainSlotID, out var result))
+            {
+                result.Stop();
+            }
         }
         #endregion
         #region 更新

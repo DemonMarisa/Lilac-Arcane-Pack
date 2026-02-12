@@ -59,7 +59,7 @@ namespace LAP.Core.UISystem
 
             IsHover = Colliding(Rectangle, LAPInfo.MouseRectangle);
 
-            bool CanUpdate = PreUpdateHover() && !UIManager.ActiveDepth[UIDepth + 1];
+            bool CanUpdate = PreUpdateHover() && !UIManager.ActiveDepth[UIDepth + 1] && UIManager.BlockAllUI == 0;
             if (!CanUpdate)
             {
                 IsHover = false;
@@ -114,8 +114,6 @@ namespace LAP.Core.UISystem
             }
 
             PostUpdate();
-
-            UIManager.TopUI = Type;
         }
         /// <summary>
         /// 是否更新悬停效果，true为更新，false为完全不更新，null为常驻按照不悬停的模式更新
