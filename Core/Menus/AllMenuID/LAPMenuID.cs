@@ -3,6 +3,7 @@
     public class LAPMenuID
     {
         public static int LAPTitle = 26130;
+        public static int LAPCredit = 26130;
     }
     public static class BGStyle
     {

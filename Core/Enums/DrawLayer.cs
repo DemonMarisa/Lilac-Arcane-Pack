@@ -7,9 +7,10 @@ namespace LAP.Core.Enums
     {
         BeforeTiles,
         BeforeNPCs,
+        AfterProjectiles,
         BeforeProjectiles,
         BeforePlayer,
-        BeforeDusts,
         AfterDusts,
+        BeforeDusts,
     }
 }

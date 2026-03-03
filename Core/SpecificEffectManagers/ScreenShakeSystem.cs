@@ -49,7 +49,7 @@ namespace LAP.Core.SpecificEffectManagers
                 Player player = Main.LocalPlayer;
 
                 float toPlayerLength = (ShakePosition - player.Center).Length();
-                Shake *= 1 - (toPlayerLength / ShakeEffectDistance);
+                Shake *= MathHelper.Clamp(1 - (toPlayerLength / ShakeEffectDistance), 0, 1);
             }
 
             Main.screenPosition += Vector2.UnitX.RotatedBy(ShakeDirection).RotatedByRandom(ShakeAngleOffset) * Shake * LAPConfig.Instance.ScreenShakeStrength;

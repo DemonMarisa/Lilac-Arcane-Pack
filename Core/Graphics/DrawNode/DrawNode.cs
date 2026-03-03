@@ -1,7 +1,10 @@
 ﻿using LAP.Content.Configs;
 using LAP.Core.Enums;
+using LAP.Core.ParticleSystem;
+using LAP.Core.SystemsLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,12 +36,14 @@ namespace LAP.Core.Graphics.DrawNode
         public float Rotation;
         public float Scale = 1f;
         public float Opacity = 1f;
+        public virtual bool UseShader => false;
         /// <summary>
         /// 生命周期的进度，介于0到1之间。
         /// 0表示节点刚生成，1表示节点消失。
         /// </summary>
         public float LifetimeRatio => Time / (float)Lifetime;
-        public DrawLayer Layer = DrawLayer.BeforeDusts;
+        public virtual DrawLayer Layer => DrawLayer.AfterDusts;
+        public virtual int BlendState => BlendStateID.Additive;
         /// <summary>
         /// 在世界内生成粒子
         /// </summary>
@@ -49,10 +54,40 @@ namespace LAP.Core.Graphics.DrawNode
                 return this;
             // 初始化时间
             Time = 0;
-            if (NodeManager.ActiveNode.Count > 1000)
-                NodeManager.ActiveNode.RemoveAt(0);
-            NodeManager.ActiveNode.Add(this);
             OnSpawn();
+            int total = LAPContent.GetTotalNode();
+            if (total > 1000)
+                return this;
+            if (!UseShader)
+            {
+                if (Layer == DrawLayer.AfterDusts)
+                {
+                    if (BlendState == BlendStateID.Additive) NodeManager.PostDustAdd.Add(this);
+                    if (BlendState == BlendStateID.Alpha) NodeManager.PostDustAlpha.Add(this);
+                    if (BlendState == BlendStateID.NonPremult) NodeManager.PostDustNonPreMult.Add(this);
+                }
+                else if (Layer == DrawLayer.BeforeProjectiles)
+                {
+                    if (BlendState == BlendStateID.Additive) NodeManager.PreProjectileAdd.Add(this);
+                    if (BlendState == BlendStateID.Alpha) NodeManager.PreProjectileAlpha.Add(this);
+                    if (BlendState == BlendStateID.NonPremult) NodeManager.PreProjectileNonPreMult.Add(this);
+                }
+            }
+            else
+            {
+                if (Layer == DrawLayer.AfterDusts)
+                {
+                    if (BlendState == BlendStateID.Additive) NodeManager.PostDustAddNoShader.Add(this);
+                    if (BlendState == BlendStateID.Alpha) NodeManager.PostDustAlphaNoShader.Add(this);
+                    if (BlendState == BlendStateID.NonPremult) NodeManager.PostDustNonPreMultNoShader.Add(this);
+                }
+                else if (Layer == DrawLayer.BeforeProjectiles)
+                {
+                    if (BlendState == BlendStateID.Additive) NodeManager.PreProjAddNoShader.Add(this);
+                    if (BlendState == BlendStateID.Alpha) NodeManager.PreProjAlphaNoShader.Add(this);
+                    if (BlendState == BlendStateID.NonPremult) NodeManager.PreProjNonPreMultNoShader.Add(this);
+                }
+            }
             return this;
         }        
         public virtual void OnSpawn() { } 
@@ -62,10 +97,9 @@ namespace LAP.Core.Graphics.DrawNode
         public virtual bool UpDatePos() { return true; }
         protected sealed override void Register()
         {
+            Type = NodeManager.NodeCollection.Count;
             if (!NodeManager.NodeCollection.Contains(this))
                 NodeManager.NodeCollection.Add(this);
-
-            Type = NodeManager.NodeCollection.Count;
         }
         public void Kill()
         {

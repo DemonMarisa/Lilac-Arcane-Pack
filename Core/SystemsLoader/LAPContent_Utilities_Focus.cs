@@ -24,6 +24,10 @@ namespace LAP.Core.SystemsLoader
             }
             return false;
         }
+        public static void SetUseFocus(this Player player, int Time)
+        {
+            player.LAP().UseFocus = Time;
+        }
         /// <summary>
         /// 获取真正的专注值消耗
         /// </summary>
@@ -34,6 +38,30 @@ namespace LAP.Core.SystemsLoader
         {
             int cost = (int)(amount * player.FocusCost());
             return cost;
+        }
+        public static float FocusRatio(this Player player)
+        {
+            return (float)player.LAP().statFocus / (float)player.LAP().statFocusMax2;
+        }
+        public static int StatFocus(this Player player)
+        {
+            return player.LAP().statFocus;
+        }
+        public static int StatFocusMax2(this Player player)
+        {
+            return player.LAP().statFocusMax2;
+        }
+        public static int StatFocusMax(this Player player)
+        {
+            return player.LAP().statFocusMax;
+        }
+        public static int FocusRegen(this Player player)
+        {
+            return player.LAP().FocusRegen;
+        }
+        public static float FocusCost(this Player player)
+        {
+            return player.LAP().FocusCost;
         }
     }
 }

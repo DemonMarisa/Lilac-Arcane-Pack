@@ -2,6 +2,7 @@
 using LAP.Core.LAPUI.CustomCD;
 using LAP.Core.NetCode;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -14,19 +15,11 @@ namespace LAP.Core.SystemsLoader
         public static bool HasCD<T>(this Player player) where T : BaseCD
         {
             int Type = CDType<T>();
-            for (int i = 0; i < player.LAPCD().ActiveCD.Count; i++)
-            {
-                if (Type == player.LAPCD().ActiveCD[i].Type)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return player.LAPCD().ActiveCDType.Contains(Type);
         }
         public static BaseCD AddCD(this Player player, int Type, int Timeleft, bool Syned = true)
         {
-            BaseCD orig = CustomCDManger.CDCollection[Type];
-            BaseCD cd = orig.Clone();
+            BaseCD cd = CustomCDManger.CDCollection[Type];
             cd.OnSpawn(player);
             if (cd.BeginSound is not null)
                 SoundEngine.PlaySound(cd.BeginSound);
@@ -95,14 +88,14 @@ namespace LAP.Core.SystemsLoader
             if (Main.netMode == NetmodeID.SinglePlayer)
                 return;
             // 只在多人模式的客户端执行
-            if (Main.netMode == NetmodeID.MultiplayerClient && Main.myPlayer == player.whoAmI)
+            if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 // 创建一个新的网络数据包
                 ModPacket packet = LAP.Instance.GetPacket();
                 // 写入一个自定义的消息类型，以便HandlePacket能识别
-                packet.Write((byte)LAPNetCode.MessageType.SyncCustomCD);
+                packet.Write((int)LAPNetCode.MessageType.SyncCustomCD);
                 // 写入是哪个玩家发送的
-                packet.Write((byte)player.whoAmI);
+                packet.Write(player.whoAmI);
                 // 写入CD类型
                 packet.Write(Type);
                 // 写入CD持续时间

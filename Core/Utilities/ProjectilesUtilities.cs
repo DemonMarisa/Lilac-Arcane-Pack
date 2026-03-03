@@ -209,14 +209,21 @@ namespace LAP.Core.Utilities
         {
             return proj.GetGlobalProjectile<LAPGlobalProj>().canSplit;
         }
-        public static void SpawnLifeStealProj(this Player player, NPC target, IEntitySource Source, int projType, Vector2 Pos, Vector2 vel, int OverridehealAmt = 0, bool usemoonLeech = false, bool shared = true)
+        public static void SpawnLifeStealProj(this Player player, NPC target, IEntitySource Source, int projType, Vector2 Pos, Vector2 vel, int OverridehealAmt = 0, bool Useconditional = false, bool shared = true)
         {
-            if (target != null && !target.canGhostHeal)
+            if (target == null)
+                return;
+            if (Useconditional && !target.canGhostHeal)
                 return;
             int whoAmI = player.whoAmI;
             if (shared)
                 whoAmI = FindLowerHPPlayer(player).whoAmI;
-            if (!usemoonLeech || (usemoonLeech && !player.moonLeech))
+            if (Useconditional)
+            {
+                if (player.moonLeech)
+                    Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, whoAmI, OverridehealAmt);
+            }
+            else
                 Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, whoAmI, OverridehealAmt);
         }
         public static Player FindLowerHPPlayer(this Player player)

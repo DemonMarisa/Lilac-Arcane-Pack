@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
 using Terraria;
+using Terraria.Localization;
 using Terraria.UI.Chat;
 
 namespace LAP.Core.Menus.MenuUtilities
@@ -40,7 +41,7 @@ namespace LAP.Core.Menus.MenuUtilities
         }
         public static void DrawMouseRightTip(float Opacity)
         {
-            string Version = "鼠标右键退出";
+            string Version = Language.GetTextValue("Mods.LAP.Menus.RightClickOut");
             DynamicSpriteFont font = LAPFontsRegister.Death_Text_Lilies.Value;
             Vector2 scale = Vector2.One;
             Vector2 Size = ChatManager.GetStringSize(font, Version, scale);

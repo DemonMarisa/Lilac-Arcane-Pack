@@ -256,7 +256,7 @@ namespace LAP.Core.LAPUI.CustomCD
             Main.graphics.GraphicsDevice.SetRenderTargets(null);
         }
         #endregion
-        public void DrawAllCD()
+        public static void DrawAllCD()
         {
             if (Main.playerInventory)
                 return;

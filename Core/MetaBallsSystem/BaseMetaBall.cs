@@ -40,10 +40,10 @@ namespace LAP.Core.MetaBallsSystem
 
         protected sealed override void Register()
         {
+            Type = MetaBallManager.MetaBallCollection.Count;
+
             if (!MetaBallManager.MetaBallCollection.Contains(this))
                 MetaBallManager.MetaBallCollection.Add(this);
-
-            Type = MetaBallManager.MetaBallCollection.Count;
 
             if (Main.netMode == NetmodeID.Server)
                 return;

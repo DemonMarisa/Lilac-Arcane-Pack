@@ -7,20 +7,19 @@ using Terraria.ModLoader;
 
 namespace LAP.Core.ParticleSystem
 {
-    public abstract class BaseParticle
+    public abstract class BaseParticle : ModType
     {
+        public int Type;
         #region 基础属性
         public bool Important = false;
         /// <summary>
         /// 使用材质
         /// </summary>
         public virtual string Texture => (GetType().Namespace + "." + GetType().Name).Replace('.', '/');
-
         /// <summary>
         /// 该粒子存在了多少帧，一般不需要手动修改这个值
         /// </summary>
         public int Time = 0;
-
         /// <summary>
         /// 粒子的存在时间上限
         /// </summary>
@@ -35,12 +34,10 @@ namespace LAP.Core.ParticleSystem
         /// </summary>
         public Vector2 Position;
         public Vector2 Velocity;
-
         public Vector2 Origin;
         public Color DrawColor;
         public float Rotation;
         public float Scale = 1f;
-
         /// <summary>
         /// 粒子的透明度
         /// </summary>
@@ -69,19 +66,19 @@ namespace LAP.Core.ParticleSystem
             if (UseBlendStateID == BlendStateID.Alpha)
             {
                 if (!Important && BaseParticleManager.ActiveParticlesAlpha.Count > LAPConfig.Instance.ParticleLimit)
-                    BaseParticleManager.ActiveParticlesAlpha.RemoveAt(0);
+                    return this;
                 BaseParticleManager.ActiveParticlesAlpha.Add(this);
             }
             else if(UseBlendStateID == BlendStateID.Additive)
             {
                 if (!Important && BaseParticleManager.ActiveParticlesAdditive.Count > LAPConfig.Instance.ParticleLimit)
-                    BaseParticleManager.ActiveParticlesAdditive.RemoveAt(0);
+                    return this;
                 BaseParticleManager.ActiveParticlesAdditive.Add(this);
             }
             else
             {
                 if (!Important && BaseParticleManager.ActiveParticlesNonPremultiplied.Count > LAPConfig.Instance.ParticleLimit)
-                    BaseParticleManager.ActiveParticlesNonPremultiplied.RemoveAt(0);
+                    return this;
                 BaseParticleManager.ActiveParticlesNonPremultiplied.Add(this);
             }
             OnSpawn();
@@ -98,19 +95,19 @@ namespace LAP.Core.ParticleSystem
             if (UseBlendStateID == BlendStateID.Alpha)
             {
                 if (!Important && BaseParticleManager.PriorityActiveParticlesAlpha.Count > LAPConfig.Instance.ParticleLimit)
-                    BaseParticleManager.PriorityActiveParticlesAlpha.RemoveAt(0);
+                    return this;
                 BaseParticleManager.PriorityActiveParticlesAlpha.Add(this);
             }
             else if (UseBlendStateID == BlendStateID.Additive)
             {
                 if (!Important && BaseParticleManager.PriorityActiveParticlesAdditive.Count > LAPConfig.Instance.ParticleLimit)
-                    BaseParticleManager.PriorityActiveParticlesAdditive.RemoveAt(0);
+                    return this;
                 BaseParticleManager.PriorityActiveParticlesAdditive.Add(this);
             }
             else
             {
                 if (!Important && BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Count > LAPConfig.Instance.ParticleLimit)
-                    BaseParticleManager.PriorityActiveParticlesNonPremultiplied.RemoveAt(0);
+                    return this;
                 BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Add(this);
             }
             OnSpawn();
@@ -121,9 +118,9 @@ namespace LAP.Core.ParticleSystem
             if (Main.netMode == NetmodeID.Server)
                 return this;
             // 初始化时间
-            Time = 0;
             if (!Important && BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Count > LAPConfig.Instance.ParticleLimit)
-                BaseParticleManager.PriorityActiveParticlesNonPremultiplied.RemoveAt(0);
+                return this;
+            Time = 0;
             BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Add(this);
             OnSpawn();
             return this;
@@ -133,12 +130,18 @@ namespace LAP.Core.ParticleSystem
             if (Main.netMode == NetmodeID.Server)
                 return this;
             // 初始化时间
-            Time = 0;
             if (!Important && BaseParticleManager.ActiveParticlesNonPremultiplied.Count > LAPConfig.Instance.ParticleLimit)
-                BaseParticleManager.ActiveParticlesNonPremultiplied.RemoveAt(0);
+                return this;
+            Time = 0;
             BaseParticleManager.ActiveParticlesNonPremultiplied.Add(this);
             OnSpawn();
             return this;
+        }
+        protected override void Register()
+        {
+            Type = BaseParticleManager.ParticlesCollection.Count;
+            if (BaseParticleManager.ParticlesCollection.Contains(this))
+                BaseParticleManager.ParticlesCollection.Add(this);
         }
         public virtual void OnSpawn() { }
 
@@ -149,17 +152,7 @@ namespace LAP.Core.ParticleSystem
         {
 
         }
-
-        /// <summary>
-        /// 立刻清除粒子
-        /// </summary>
-        public void Kill()
-        {
-            Time = Lifetime;
-        }
-
         public virtual void OnKill() { }
-
         /// <summary>
         /// 覆写这个就可以自定义绘制
         /// </summary>

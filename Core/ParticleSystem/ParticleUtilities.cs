@@ -1,17 +1,19 @@
 ﻿using LAP.Content.Configs;
-using System;
 
 namespace LAP.Core.ParticleSystem
 {
     public static class ParticleUtilities
     {
+        public static void Kill(this BaseParticle p)
+        {
+            p.Time = p.Lifetime;
+        }
         public static void AddToAlpha(this BaseParticle p)
         {
             if (!p.Important && BaseParticleManager.ActiveParticlesAlpha.Count > LAPConfig.Instance.ParticleLimit)
                 BaseParticleManager.ActiveParticlesAlpha.RemoveAt(0);
             BaseParticleManager.ActiveParticlesAlpha.Add(p);
         }
-
         public static void AddToADD(this BaseParticle p)
         {
             if (!p.Important && BaseParticleManager.ActiveParticlesAdditive.Count > LAPConfig.Instance.ParticleLimit)

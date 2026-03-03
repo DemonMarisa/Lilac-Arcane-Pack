@@ -9,6 +9,10 @@ namespace LAP.Core.GlobalInstance.Players
     public partial class LAPPlayer : ModPlayer
     {
         /// <summary>
+        /// 是否使用消耗专注值的物品，必须和FocusRegenRate一同为0才可以恢复
+        /// </summary>
+        public int UseFocus = 0;
+        /// <summary>
         /// 当前的专注值
         /// </summary>
         public int statFocus = 100;
@@ -26,6 +30,10 @@ namespace LAP.Core.GlobalInstance.Players
         /// 专注值的恢复量，以秒为单位
         /// </summary>
         public int FocusRegen = 2;
+        /// <summary>
+        /// 用于设置恢复专注值的延迟
+        /// </summary>
+        public int FocusRegenRate = 0;
         public int BaseFocusRegen = 2;
         public float OutBattleFocusRegenMult = 5f;
         // 用于储存专注值的恢复，以FocusRegen / 60获取的每帧应该恢复多少，当超过1时，增加1点专注值，并减少相应的池子
@@ -51,6 +59,10 @@ namespace LAP.Core.GlobalInstance.Players
             statFocusMax2 = statFocusMax;
             FocusRegen = BaseFocusRegen;
             FocusCost = 1f;
+            if (FocusRegenRate > 0)
+                FocusRegenRate--;
+            if (UseFocus > 0)
+                UseFocus--;
         }
         public void UpdateMaxFocus_PostUpdateMisc()
         {
@@ -84,6 +96,8 @@ namespace LAP.Core.GlobalInstance.Players
         }
         public void RegenFocus_PostUpdateMisc()
         {
+            if (FocusRegenRate != 0 || UseFocus != 0)
+                return;
             float ThisFrameRegen = FocusRegen / 60f;
             if (!LAPInfo.AnyBossHere)
                 ThisFrameRegen = ThisFrameRegen * OutBattleFocusRegenMult;

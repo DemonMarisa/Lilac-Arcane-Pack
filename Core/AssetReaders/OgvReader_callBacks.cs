@@ -16,13 +16,14 @@ namespace LAP.Core.AssetReaders
             close_func = CloseCallback,
         };
         // 这里的 datasource 就是传入的 GCHandle 指针
-        private static unsafe nint ReadCallback(nint ptr, nint size, nint nmemb, nint dataSource)
+        public static unsafe nint ReadCallback(nint ptr, nint size, nint nmemb, nint dataSource)
         {
             try
             {
+                // 还原流对象
                 GCHandle handle = GCHandle.FromIntPtr(dataSource);
-                if (handle.Target is not MemoryStream stream) 
-                    return 0;
+                if (handle.Target is not MemoryStream stream)  return 0;
+                // 计算需要读取的总字节数
                 int bytesToRead = (int)(nmemb * size);
                 // 直接写入指针位置，无需中间 buffer
                 Span<byte> span = new ((void*)ptr, bytesToRead);
@@ -54,15 +55,15 @@ namespace LAP.Core.AssetReaders
                 return -1;
             }
         }
-        private static int CloseCallback(nint dataSource)
+        public static int CloseCallback(nint dataSource)
         {
             try
             {
                 GCHandle handle = GCHandle.FromIntPtr(dataSource);
-                // 1. 获取 Stream 并 Dispose
+                // 获取 Stream 并 Dispose
                 if (handle.Target is IDisposable stream)
                     stream.Dispose();
-                // 2. 释放 Handle，允许 GC 回收 Stream 对象
+                // 释放 Handle，允许 GC 回收 Stream 对象
                 if (handle.IsAllocated)
                     handle.Free();
                 return 0;

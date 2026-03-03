@@ -14,6 +14,14 @@ namespace LAP.Core.Utilities
 {
     public static partial class LAPUtilities
     {
+        public static void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float worthless = 0f)
+        {
+            Main.spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, worthless);
+        }
+        public static void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float worthless = 0f)
+        {
+            Main.spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, worthless);
+        }
         /// <summary>
         /// 将当前渲染目标设置为提供的渲染目标。
         /// </summary>

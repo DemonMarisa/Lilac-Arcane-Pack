@@ -7,7 +7,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
@@ -16,7 +15,7 @@ using static Theorafile;
 namespace LAP.Core.AssetReaders
 {
     // 这里禁用是为了在调用Modsystem的load前加载，避免还没加载到tml的资产读取中就调用了
-    [Autoload(false)] // 我们在 ILoadable 中手动注册
+    [Autoload(false)] // 在 ILoadable 中手动注册
     public sealed partial class OgvReader : IAssetReader, ILoadable
     {
         public const BindingFlags ReflectionFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
@@ -31,6 +30,7 @@ namespace LAP.Core.AssetReaders
             // 而 Theora 需要在视频播放期间一直访问数据。
             MemoryStream memStream = new ();
             await stream.CopyToAsync(memStream);
+            // 把游标重置回0
             memStream.Position = 0;
             // 使用GCHandle锁定这个Stream对象，不让GC回收它
             // 将GCHandle的IntPtr传给Theora作为datasource
@@ -50,14 +50,14 @@ namespace LAP.Core.AssetReaders
                 throw new Exception("加载视频时出错");
             }
         }
-        public static unsafe Video CreateVideo(GCHandle streamHandle)
+        public static Video CreateVideo(GCHandle streamHandle)
         {
             nint handlePtr = GCHandle.ToIntPtr(streamHandle);
             // 打开 Theora 流
             if (tf_open_callbacks(handlePtr, out nint theoraPtr, callbacks) != 0)
                 throw new InvalidOperationException("无法通过 Theorafile 打开 OGV 流。");
             tf_videoinfo(theoraPtr, out int yWidth, out int yHeight, out double fps, out var fmt);
-            // 使用空对象初始化，绕过构造函数
+            // 绕过构造函数
             Video result = (Video)RuntimeHelpers.GetUninitializedObject(videoType);
             // 注入数据
             int uvWidth = fmt == th_pixel_fmt.TH_PF_444 ? yWidth : yWidth / 2;
@@ -80,7 +80,6 @@ namespace LAP.Core.AssetReaders
         }
         void ILoadable.Unload()
         {
-            // 这个卸载Tml一般会自动处理，少用点反射了
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace LAP.Core.StateMachine.Projectiles
+﻿using Terraria;
+
+namespace LAP.Core.StateMachine.Projectiles
 {
-    public static class LAPProjAI
+    public class LAPProjAI : Entity
     {
     }
 }

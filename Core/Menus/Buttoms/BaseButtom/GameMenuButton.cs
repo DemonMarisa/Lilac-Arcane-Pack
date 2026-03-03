@@ -68,7 +68,7 @@ namespace LAP.Core.Menus.Buttoms.BaseButtom
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            UIDrawUtilities.DrawEdge(spriteBatch, Center, EdgeOpacity, XEdgeScale);
+            UIDrawUtilities.DrawEdge(spriteBatch, Center, EdgeOpacity * Opacity, XEdgeScale);
             DynamicSpriteFont font = LAPFontsRegister.Combat_Crit_Lilies.Value;
             Vector2 Size = ChatManager.GetStringSize(LAPFontsRegister.Combat_Crit_Lilies.Value, Text, Vector2.One);
             ChatManager.DrawColorCodedString(spriteBatch, font, Text, Center, Color.White * Opacity, 0, Size / 2, Vector2.One);

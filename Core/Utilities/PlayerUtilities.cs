@@ -1,6 +1,7 @@
 ﻿using LAP.Content.Particles;
 using LAP.Core.GlobalInstance.Players;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Map;
 using Terraria.ModLoader;
@@ -56,30 +57,6 @@ namespace LAP.Core.Utilities
         {
             return (int)(cost * player.manaCost);
         }
-        public static float FocusRatio(this Player player)
-        {
-            return (float)player.LAP().statFocus / (float)player.LAP().statFocusMax2;
-        }
-        public static int StatFocus(this Player player)
-        {
-            return player.LAP().statFocus;
-        }
-        public static int StatFocusMax2(this Player player)
-        {
-            return player.LAP().statFocusMax2;
-        }
-        public static int StatFocusMax(this Player player)
-        {
-            return player.LAP().statFocusMax;
-        }
-        public static int FocusRegen(this Player player)
-        {
-            return player.LAP().FocusRegen;
-        }
-        public static float FocusCost(this Player player)
-        {
-            return player.LAP().FocusCost;
-        }
         public static Item ActiveItem(this Player player) => Main.mouseItem.IsAir ? player.HeldItem : Main.mouseItem;
         public static float RemainingMinion(this Player player)
         {
@@ -101,6 +78,13 @@ namespace LAP.Core.Utilities
                 player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, rot - MathHelper.PiOver2);
             if (setfront)
                 player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rot - MathHelper.PiOver2);
+        }
+        public static Vector2 ClampedMouseWorld(this Player player, float mult = 1)
+        {
+            Vector2 mouseWorld = player.LocalMouseWorld();
+            mouseWorld.X = ((mouseWorld.X >= player.MountedCenter.X) ? MathF.Min(mouseWorld.X, player.MountedCenter.X + 960f * mult) : MathF.Max(mouseWorld.X, player.MountedCenter.X - 960f * mult));
+            mouseWorld.Y = ((mouseWorld.Y >= player.MountedCenter.Y) ? MathF.Min(mouseWorld.Y, player.MountedCenter.Y + 540f * mult) : MathF.Max(mouseWorld.Y, player.MountedCenter.Y - 540f * mult));
+            return mouseWorld;
         }
     }
 }

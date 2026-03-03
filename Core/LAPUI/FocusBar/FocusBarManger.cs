@@ -1,6 +1,6 @@
 ﻿using LAP.Assets.Effects;
-using LAP.Assets.Fonts;
 using LAP.Content.Configs;
+using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -55,10 +55,8 @@ namespace LAP.Core.LAPUI.FocusBar
             barLeftBG.Position = TargetSize / 2 - new Vector2(156, 0);
             barLeftBG.Orig = barLeftBG.texture.Size() / 2f;
             barLeftBG.SE = SpriteEffects.None;
-
             bar.Position = TargetSize / 2 - new Vector2(158, 0.1f);
             bar.Orig = new Vector2(0, bar.texture.Height / 2);
-
             barRightBG.Position = TargetSize / 2 + new Vector2(156, 0);
             barRightBG.Orig = barRightBG.texture.Size() / 2f;
             barRightBG.SE = SpriteEffects.FlipHorizontally;
@@ -89,6 +87,8 @@ namespace LAP.Core.LAPUI.FocusBar
         {
             if (Main.dedServ)
                 return;
+            if (!UseFocus)
+                return;
             if (!LAPUIConfig.Instance.DrawFocusBar)
                 return;
             if (ReduceTimer > 0)
@@ -114,7 +114,6 @@ namespace LAP.Core.LAPUI.FocusBar
                 LocalizedText TestInfo = Language.GetText("Mods.LAP.MouseMessage.TestInfo");
                 string show = $"{DisplayName}" + Main.LocalPlayer.LAP().statFocus + "/" + Main.LocalPlayer.LAP().statFocusMax2;
                 string Regen = $"{FocusRegen}{Main.LocalPlayer.FocusRegen()} FP/s";
-                string Test = $"{TestInfo}";
                 if (Main.keyState.IsKeyDown(Keys.LeftShift))
                 {
                     if (UseFocus)
@@ -139,7 +138,10 @@ namespace LAP.Core.LAPUI.FocusBar
             orig();
             if (!LAPUIConfig.Instance.DrawFocusBar)
                 return;
+            if (!UseFocus)
+                return;
             LAPUtilities.SwapToTarget(FocusBarTarget);
+
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
             // 底部的中央
             Main.spriteBatch.Draw(barLeftBG.texture, barLeftBG.Position, null, Color.White, 0, barLeftBG.Orig, 0.15f, barLeftBG.SE, 0f);
@@ -169,20 +171,21 @@ namespace LAP.Core.LAPUI.FocusBar
             Main.spriteBatch.Draw(bar.texture, bar.Position, rec, Color.White, 0, bar.Orig, new Vector2(ScaleMult2, 0.02f), 0, 0f);
 
             Main.spriteBatch.End();
+
             Main.graphics.GraphicsDevice.SetRenderTargets(null);
         }
         public static void DrawBar()
         {
-            if (Main.dedServ)
-                return;
-            if (!LAPUIConfig.Instance.DrawFocusBar)
-                return;
             Vector2 DrawPos = FinalDrawPos + new Vector2(LAPUIConfig.Instance.FocusBarOffsetX, LAPUIConfig.Instance.FocusBarOffsetY);
             Main.spriteBatch.Draw(FocusBarTarget, DrawPos, null, Color.White, 0, FocusBarTarget.Size() / 2, 1f, 0, 0f);
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
+            if (Main.dedServ)
+                return;
             if (!LAPUIConfig.Instance.DrawFocusBar)
+                return;
+            if (!UseFocus)
                 return;
             int mouseIndex = layers.FindIndex(layer => layer.Name == "Vanilla: Mouse Text");
             if (mouseIndex != -1)

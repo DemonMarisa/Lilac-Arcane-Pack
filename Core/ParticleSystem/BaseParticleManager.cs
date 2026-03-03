@@ -1,11 +1,11 @@
-﻿using LAP.Assets.Fonts;
-using LAP.Content.Configs;
-using LAP.Core.ParticleSystem;
+﻿using LAP.Content.Configs;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using ReLogic.Threading;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -20,21 +20,24 @@ namespace LAP.Core.ParticleSystem
         public static int NonPremult = 1;
         public static int Additive = 2;
     }
-
+    /// <summary>
+    /// 这个粒子系统比较低效
+    /// 生成与销毁一个粒子就会在内存中创建或删除一个对象，大量的GC与List的增删会导致性能问题
+    /// 但是更简单易用一点
+    /// </summary>
     public partial class BaseParticleManager : ModSystem
     {
-        // 别在外部可以修改了，至少别人都加了readonly（
-        public static readonly List<BaseParticle> ActiveParticlesAlpha = [];
-        public static readonly List<BaseParticle> ActiveParticlesNonPremultiplied = [];
-        public static readonly List<BaseParticle> ActiveParticlesAdditive = [];
-        // 先绘制先更新的粒子
-        public static readonly List<BaseParticle> PriorityActiveParticlesAlpha = [];
-        public static readonly List<BaseParticle> PriorityActiveParticlesNonPremultiplied = [];
-        public static readonly List<BaseParticle> PriorityActiveParticlesAdditive = [];
+        public static List<BaseParticle> ParticlesCollection = [];
 
+        public static List<BaseParticle> ActiveParticlesAlpha = [];
+        public static List<BaseParticle> ActiveParticlesNonPremultiplied = [];
+        public static List<BaseParticle> ActiveParticlesAdditive = [];
+        // 先绘制先更新的粒子
+        public static List<BaseParticle> PriorityActiveParticlesAlpha = [];
+        public static List<BaseParticle> PriorityActiveParticlesNonPremultiplied = [];
+        public static List<BaseParticle> PriorityActiveParticlesAdditive = [];
         public int TotalDust;
         #region 加载卸载
-        // 扔给统一的管理了
         //public override void Load()
         //{
         //    On_Main.DrawDust += DrawParticles;
@@ -60,9 +63,45 @@ namespace LAP.Core.ParticleSystem
         // 粒子更新
         public override void PostUpdateDusts()
         {
-            UpdatePriorityParticles();
-            UpdateParticles();
+            UpdateParticleList(ActiveParticlesAlpha);
+            UpdateParticleList(ActiveParticlesNonPremultiplied);
+            UpdateParticleList(ActiveParticlesAdditive);
+            UpdateParticleList(PriorityActiveParticlesAlpha);
+            UpdateParticleList(PriorityActiveParticlesNonPremultiplied);
+            UpdateParticleList(PriorityActiveParticlesAdditive);
             TotalDust = ActiveParticlesAlpha.Count + ActiveParticlesNonPremultiplied.Count + ActiveParticlesAdditive.Count + PriorityActiveParticlesAlpha.Count + PriorityActiveParticlesNonPremultiplied.Count + PriorityActiveParticlesAdditive.Count;
+        }
+        public static void UpdateParticleList(List<BaseParticle> list)
+        {
+            int count = list.Count;
+            if (count == 0)
+                return;
+            //Parallel.For(0, list.Count, i =>
+            //{
+            //    var particle = list[i];
+            //    particle.Update();
+            //    particle.Position += particle.Velocity;
+            //    particle.Time++;
+            //});
+            FastParallel.For(0, count, (j, k, callback) =>
+            {
+                for (int i = j; i < k; i++)
+                {
+                    BaseParticle particle = list[i];
+                    particle.Update();
+                    particle.Position += particle.Velocity;
+                    particle.Time++;
+                }
+            });
+            list.RemoveAll(particle =>
+            {
+                if (particle.Time >= particle.Lifetime)
+                {
+                    particle.OnKill();
+                    return true;
+                }
+                return false;
+            });
         }
         // 绘制粒子
         public static void DrawParticles(On_Main.orig_DrawDust orig, Main self)
@@ -71,76 +110,30 @@ namespace LAP.Core.ParticleSystem
             orig(self);
             #region 渲染粒子
             #region 渲染优先粒子
-            if (PriorityActiveParticlesAlpha.Count != 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < PriorityActiveParticlesAlpha.Count; i++)
-                {
-                    if (PriorityActiveParticlesAlpha[i].UseScreenCut && LAPUtilities.OutOffScreen(PriorityActiveParticlesAlpha[i].Position, PriorityActiveParticlesAlpha[i].ScreenCut))
-                        continue;
-                    PriorityActiveParticlesAlpha[i].Draw(Main.spriteBatch);
-                }
-                Main.spriteBatch.End();
-            }
-            if (PriorityActiveParticlesAdditive.Count != 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < PriorityActiveParticlesAdditive.Count; i++)
-                {
-                    if (PriorityActiveParticlesAdditive[i].UseScreenCut && LAPUtilities.OutOffScreen(PriorityActiveParticlesAdditive[i].Position, PriorityActiveParticlesAdditive[i].ScreenCut))
-                        continue;
-                    PriorityActiveParticlesAdditive[i].Draw(Main.spriteBatch);
-                }
-                Main.spriteBatch.End();
-            }
-            if (PriorityActiveParticlesNonPremultiplied.Count != 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < PriorityActiveParticlesNonPremultiplied.Count; i++)
-                {
-                    if (PriorityActiveParticlesNonPremultiplied[i].UseScreenCut && LAPUtilities.OutOffScreen(PriorityActiveParticlesNonPremultiplied[i].Position, PriorityActiveParticlesNonPremultiplied[i].ScreenCut))
-                        continue;
-                    PriorityActiveParticlesNonPremultiplied[i].Draw(Main.spriteBatch);
-                }
-                Main.spriteBatch.End();
-            }
+            DrawParticles(PriorityActiveParticlesAlpha, BlendState.AlphaBlend);
+            DrawParticles(PriorityActiveParticlesAdditive, BlendState.Additive);
+            DrawParticles(PriorityActiveParticlesNonPremultiplied, BlendState.NonPremultiplied);
             #endregion
             #region 渲染常规粒子
-            if (ActiveParticlesAlpha.Count != 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < ActiveParticlesAlpha.Count; i++)
-                {
-                    if (ActiveParticlesAlpha[i].UseScreenCut && LAPUtilities.OutOffScreen(ActiveParticlesAlpha[i].Position, ActiveParticlesAlpha[i].ScreenCut))
-                        continue;
-                    ActiveParticlesAlpha[i].Draw(Main.spriteBatch);
-                }
-                Main.spriteBatch.End();
-            }
-            if (ActiveParticlesAdditive.Count != 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < ActiveParticlesAdditive.Count; i++)
-                {
-                    if (ActiveParticlesAdditive[i].UseScreenCut && LAPUtilities.OutOffScreen(ActiveParticlesAdditive[i].Position, ActiveParticlesAdditive[i].ScreenCut))
-                        continue;
-                    ActiveParticlesAdditive[i].Draw(Main.spriteBatch);
-                }
-                Main.spriteBatch.End();
-            }
-            if (ActiveParticlesNonPremultiplied.Count != 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < ActiveParticlesNonPremultiplied.Count; i++)
-                {
-                    if (ActiveParticlesNonPremultiplied[i].UseScreenCut && LAPUtilities.OutOffScreen(ActiveParticlesNonPremultiplied[i].Position, ActiveParticlesNonPremultiplied[i].ScreenCut))
-                        continue;
-                    ActiveParticlesNonPremultiplied[i].Draw(Main.spriteBatch);
-                }
-                Main.spriteBatch.End();
-            }
+            DrawParticles(ActiveParticlesAlpha, BlendState.AlphaBlend);
+            DrawParticles(ActiveParticlesAdditive, BlendState.Additive);
+            DrawParticles(ActiveParticlesNonPremultiplied, BlendState.NonPremultiplied);
             #endregion
             #endregion
+        }
+        public static void DrawParticles(List<BaseParticle> list, BlendState bl)
+        {
+            if (list.Count != 0)
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, bl, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].UseScreenCut && LAPUtilities.OutOffScreen(list[i].Position, list[i].ScreenCut))
+                        continue;
+                    list[i].Draw(Main.spriteBatch);
+                }
+                Main.spriteBatch.End();
+            }
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {

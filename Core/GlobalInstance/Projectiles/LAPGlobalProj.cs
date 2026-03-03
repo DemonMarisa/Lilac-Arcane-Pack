@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace LAP.Core.GlobalInstance.Projectiles
@@ -8,6 +9,7 @@ namespace LAP.Core.GlobalInstance.Projectiles
         public override bool InstancePerEntity => true;
         public bool OnceHitEffect = true;
         public bool FirstFrame = true;
+        public Vector2[] ai_vector2 = new Vector2[4];
         public override void AI(Projectile projectile)
         {
         }

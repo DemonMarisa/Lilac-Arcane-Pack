@@ -9,9 +9,11 @@ namespace LAP.Core.GlobalInstance.Players.CDSystem
     // 在UI全局管理中更新绘制需要的数据
     public class LAPCDPlayer : ModPlayer
     {
+        public List<int> ActiveCDType = [];
         public List<BaseCD> ActiveCD = [];
         public override void UpdateAutopause()
         {
+            ActiveCDType.Clear();
             if (ActiveCD.Count == 0)
                 return;
             for (int i = 0; i < ActiveCD.Count; i++)
@@ -30,6 +32,7 @@ namespace LAP.Core.GlobalInstance.Players.CDSystem
         }
         public override void PostUpdateMiscEffects()
         {
+            ActiveCDType.Clear();
             if (ActiveCD.Count == 0)
                 return;
             for (int i = 0; i < ActiveCD.Count; i++)
@@ -48,6 +51,7 @@ namespace LAP.Core.GlobalInstance.Players.CDSystem
                 }
                 if (ActiveCD[i].Time > 0 && ActiveCD[i].CanTickDown())
                     ActiveCD[i].Time--;
+                ActiveCDType.Add(ActiveCD[i].Type);
             }
             ActiveCD?.RemoveAll((i) =>
             {

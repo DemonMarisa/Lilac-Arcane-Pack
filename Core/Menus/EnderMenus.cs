@@ -27,7 +27,7 @@ namespace LAP.Core.Menus
         public override int Music => GetMusicID();
         public static int GetMusicID()
         {
-            if (MenuVideoPlay.CanPlay)
+            if (MenuVideoPlay.CanPlay || MenuVideoPlay.CanLiliesCreditsC)
                 return MusicLoader.GetMusicSlot(MusicRegister.SliencePath);
             if (TitleBgStyle == BGStyle.LiliesEnd)
                 return MusicLoader.GetMusicSlot(MusicRegister.MainThemeLiliesPath);

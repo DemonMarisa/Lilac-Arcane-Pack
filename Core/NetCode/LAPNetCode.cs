@@ -21,8 +21,7 @@ namespace LAP.Core.NetCode
         public static void HandleMouseWorldPacket(BinaryReader reader, int whoAmI)
         {
             // 第一个读取消息类型
-            MessageType msgType = (MessageType)reader.ReadByte();
-
+            MessageType msgType = (MessageType)reader.ReadInt32();
             switch (msgType)
             {
                 case MessageType.SyncMousePosition:
@@ -45,7 +44,7 @@ namespace LAP.Core.NetCode
         public static void ReadWriteMouseWorld(BinaryReader reader, int whoAmI)
         {
             // 从数据包中按写入顺序读取数据
-            byte playerIndex = reader.ReadByte();
+            int playerIndex = reader.ReadInt32();
             Vector2 mouseWorld = reader.ReadVector2();
             // 如果是在服务器端收到了这个包
             if (Main.netMode == NetmodeID.Server)
@@ -53,7 +52,7 @@ namespace LAP.Core.NetCode
                 // 将这个信息转发给所有其他客户端，让他们也知道
                 // 创建一个新的包用于广播
                 ModPacket broadcastPacket = LAP.Instance.GetPacket();
-                broadcastPacket.Write((byte)MessageType.SyncMousePosition);
+                broadcastPacket.Write((int)MessageType.SyncMousePosition);
                 broadcastPacket.Write(playerIndex);
                 broadcastPacket.WriteVector2(mouseWorld);
                 // 发送给所有人 (-1)，除了原始发送者 (whoAmI)
@@ -70,12 +69,12 @@ namespace LAP.Core.NetCode
         public static void ReadWriteMouseLeft(BinaryReader reader, int whoAmI)
         {
             // 从数据包中按写入顺序读取数据
-            byte playerIndex = reader.ReadByte();
+            int playerIndex = reader.ReadInt32();
             bool mouseLeft = reader.ReadBoolean();
             if (Main.netMode == NetmodeID.Server)
             {
                 ModPacket broadcastPacket = LAP.Instance.GetPacket();
-                broadcastPacket.Write((byte)MessageType.SyncMouseLeft);
+                broadcastPacket.Write((int)MessageType.SyncMouseLeft);
                 broadcastPacket.Write(playerIndex);
                 broadcastPacket.Write(mouseLeft);
                 broadcastPacket.Send(-1, whoAmI);
@@ -89,12 +88,12 @@ namespace LAP.Core.NetCode
         public static void ReadWriteMouseRight(BinaryReader reader, int whoAmI)
         {
             // 从数据包中按写入顺序读取数据
-            byte playerIndex = reader.ReadByte();
+            int playerIndex = reader.ReadInt32();
             bool mouseRight = reader.ReadBoolean();
             if (Main.netMode == NetmodeID.Server)
             {
                 ModPacket broadcastPacket = LAP.Instance.GetPacket();
-                broadcastPacket.Write((byte)MessageType.SyncMouseRight);
+                broadcastPacket.Write((int)MessageType.SyncMouseRight);
                 broadcastPacket.Write(playerIndex);
                 broadcastPacket.Write(mouseRight);
                 broadcastPacket.Send(-1, whoAmI);
@@ -108,12 +107,12 @@ namespace LAP.Core.NetCode
         public static void ReadWriteWeaponSkill(BinaryReader reader, int whoAmI)
         {
             // 从数据包中按写入顺序读取数据
-            byte playerIndex = reader.ReadByte();
+            int playerIndex = reader.ReadInt32();
             bool weaponSkill = reader.ReadBoolean();
             if (Main.netMode == NetmodeID.Server)
             {
                 ModPacket broadcastPacket = LAP.Instance.GetPacket();
-                broadcastPacket.Write((byte)MessageType.SyncWeaponSkillKey);
+                broadcastPacket.Write((int)MessageType.SyncWeaponSkillKey);
                 broadcastPacket.Write(playerIndex);
                 broadcastPacket.Write(weaponSkill);
                 broadcastPacket.Send(-1, whoAmI);
@@ -127,13 +126,13 @@ namespace LAP.Core.NetCode
         public static void ReadCustomCD(BinaryReader reader, int whoAmI)
         {
             // 从数据包中按写入顺序读取数据
-            byte playerIndex = reader.ReadByte();
-            int buffType = reader.Read();
-            int buffTime = reader.Read();
+            int playerIndex = reader.ReadInt32();
+            int buffType = reader.ReadInt32();
+            int buffTime = reader.ReadInt32();
             if (Main.netMode == NetmodeID.Server)
             {
                 ModPacket broadcastPacket = LAP.Instance.GetPacket();
-                broadcastPacket.Write((byte)MessageType.SyncCustomCD);
+                broadcastPacket.Write((int)MessageType.SyncCustomCD);
                 broadcastPacket.Write(playerIndex);
                 broadcastPacket.Write(buffType);
                 broadcastPacket.Write(buffTime);
