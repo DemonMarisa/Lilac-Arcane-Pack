@@ -18,7 +18,7 @@ namespace LAP.Core.NetCode
             SyncWeaponSkillKey,
             SyncCustomCD
         }
-        public static void HandleMouseWorldPacket(BinaryReader reader, int whoAmI)
+        public static void HandleLAPPacket(BinaryReader reader, int whoAmI)
         {
             // 第一个读取消息类型
             MessageType msgType = (MessageType)reader.ReadInt32();

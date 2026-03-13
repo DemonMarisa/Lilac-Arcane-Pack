@@ -45,7 +45,6 @@ float4 MetaBallFunction(float2 coords : TEXCOORD0) : COLOR0
     float dx = 1 / renderTargetSize.x;
     float dy = 1 / renderTargetSize.y;
     
-    bool flag = false;
     // 对周围8格进行判定
     for (int i = -1; i <= 1; i++)
     {
@@ -55,15 +54,10 @@ float4 MetaBallFunction(float2 coords : TEXCOORD0) : COLOR0
             // 如果任何一个像素没有颜色
             if (!any(c))
             {
-                // 不知道为啥，这里直接return会被编译器安排，所以只能打标记了
-                flag = true;
+                return edgeColor;
             }
         }
     }
-    
-    if (flag)
-        return edgeColor;
-    
     return outPutColor;
 }
 
@@ -72,6 +66,6 @@ technique Technique1
 {
     pass LAPMetalBallPass
     {
-        PixelShader = compile ps_2_0 MetaBallFunction();
+        PixelShader = compile ps_3_0 MetaBallFunction();
     }
 }

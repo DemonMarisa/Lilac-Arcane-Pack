@@ -21,6 +21,7 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath StandardFlow1 { get; private set; }
         public static Tex2DWithPath StandardFlow2 { get; private set; }
         public static Tex2DWithPath StandardFlow3 { get; private set; }
+        public static Tex2DWithPath StandardGradient { get; private set; }
         public static void LoadExtraTexture()
         {
             ShadowNebula = new Tex2DWithPath($"{ExtraPath}/MetaBallBG/ShadowNebula");
@@ -39,6 +40,7 @@ namespace LAP.Assets.TextureRegister
             StandardFlow1 = new Tex2DWithPath($"{ExtraPath}/StandardFlow1");
             StandardFlow2 = new Tex2DWithPath($"{ExtraPath}/StandardFlow2");
             StandardFlow3 = new Tex2DWithPath($"{ExtraPath}/StandardFlow3");
+            StandardGradient = new Tex2DWithPath($"{ExtraPath}/StandardGradient");
         }
         public static void UnloadExtraTextures()
         {
@@ -57,6 +59,7 @@ namespace LAP.Assets.TextureRegister
             StandardFlow1 = null;
             StandardFlow2 = null;
             StandardFlow3 = null;
+            StandardGradient = null;
         }
     }
 }

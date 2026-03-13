@@ -14,7 +14,7 @@ namespace LAP.Core.SystemsLoader
         {
             LAPDashPlayer LAPPlayer = player.GetModPlayer<LAPDashPlayer>();
             int curid = LAPPlayer.CurDashID;
-            if (curid > 0 && curid < LAPDashPlayer.DashCollection.Count)
+            if (LAPDashPlayer.DashCollection.IndexInRange(curid))
             {
                 BasePlayerDash ActiveDash = LAPDashPlayer.DashCollection[curid];
                 LAPPlayer.DashTime = 0;
@@ -22,7 +22,6 @@ namespace LAP.Core.SystemsLoader
                 LAPPlayer.BeginDash = false;
                 ActiveDash.OnDashEnd(player);
             }
-
             LAPPlayer.OverideCurDashID = BeginDashID;
             BasePlayerDash newDash = LAPDashPlayer.DashCollection[BeginDashID];
             newDash.OnDashStart(player);

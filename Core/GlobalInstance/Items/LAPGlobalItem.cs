@@ -25,5 +25,9 @@ namespace LAP.Core.GlobalInstance.Items
         public int WeaponSkillFocusCost = -1;
         // 记录当前战技真正消耗的魔力值
         public int WeaponSkillRealFocusCost = -1;
+        // 当前武器与战技绑定的射弹ID
+        public int SkillShoot = -1;
+        // 当前武器与战技绑定的射弹ID
+        public float SkillShootSpeed = 1f;
     }
 }

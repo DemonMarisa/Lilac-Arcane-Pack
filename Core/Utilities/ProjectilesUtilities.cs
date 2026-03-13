@@ -1,5 +1,6 @@
 ﻿using LAP.Content.Configs;
 using LAP.Core.GlobalInstance.Projectiles;
+using LAP.Core.IDSets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,7 +19,7 @@ namespace LAP.Core.Utilities
         /// 新建射弹，但是指定伤害类型
         /// </summary>
         /// <returns></returns>
-        public static Projectile NewProjWithClass(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner , DamageClass damageclass, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
+        public static Projectile NewProjWithClass(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner, DamageClass damageclass, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
         {
             int p = Projectile.NewProjectile(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
             Main.projectile[p].DamageType = damageclass;
@@ -109,13 +110,13 @@ namespace LAP.Core.Utilities
             float realDamage = damage * 2;
             if (Main.masterMode)
                 realDamage *= 1.5f;
-            if(Main.expertMode)
+            if (Main.expertMode)
                 realDamage *= 2f;
             return realDamage;
         }
         public static float PreModeBoostProjDamage(float damage)
         {
-            float realDamage = damage * 0.5f; 
+            float realDamage = damage * 0.5f;
             if (Main.expertMode)
                 realDamage *= 0.5f;
             if (Main.masterMode)
@@ -326,6 +327,11 @@ namespace LAP.Core.Utilities
                 Vector2 startPos = proj.Center;
                 Main.spriteBatch.Draw(texture, startPos - Main.screenPosition + new Vector2(0f, proj.gfxOffY), rectangle, proj.GetAlpha(lightColor), rotation, origin, scale, spriteEffects, 0f);
             }
+        }
+        public static void AddToSkillProj(this Projectile proj)
+        {
+            if (!LAPIDSet.WeaponSkillProj.Contains(proj.type))
+                LAPIDSet.WeaponSkillProj.Add(proj.type);
         }
     }
 }

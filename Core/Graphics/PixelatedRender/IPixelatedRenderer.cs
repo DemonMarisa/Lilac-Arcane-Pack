@@ -8,6 +8,7 @@ namespace LAP.Core.Graphics.PixelatedRender
     /// </summary>
     public interface IPixelatedRenderer
     {
+        BlendState BlendState => BlendState.AlphaBlend;
         DrawLayer LayerToRenderTo => DrawLayer.BeforeDusts;
         void RenderPixelated(SpriteBatch spriteBatch);
     }

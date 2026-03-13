@@ -15,7 +15,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         /// <summary>
         /// 这个覆盖后必须执行完此次冲刺才会重置
         /// </summary>
-        public int OverideCurDashID;
+        public int OverideCurDashID = -1;
         // 冲刺计时
         public int DashTime = 0;
         // 冲刺冷却
@@ -34,7 +34,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             if (DashCollection.Count == 0)
                 return;
-            if (CurDashID == -1)
+            if (CurDashID == -1 && OverideCurDashID == -1)
                 return;
             // 这两个原版源码判了
             if (Player.grappling[0] == -1 && !Player.tongued)
@@ -60,7 +60,8 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                         if (MathF.Abs(Player.velocity.X) < MathF.Abs(PlayerXVel))
                             Player.velocity.X = MathHelper.Lerp(PlayerXVel * ActiveDash.DashEndSpeedMult(Player), PlayerXVel, ActiveDash.DashAmount(Player, DashTime, ActiveDash.DashTime(Player)));
                     }
-                    else ActiveDash.ModifyDashSpeed(Player);
+                    else 
+                        ActiveDash.ModifyDashSpeed(Player);
                     ActiveDash.DuringDash(Player);
                     BeginDash = true;
                     CheckNPCHit(ActiveDash);

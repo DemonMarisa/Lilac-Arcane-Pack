@@ -65,6 +65,8 @@ namespace LAP.Assets.Effects
             RegisterMiscShader(FocusBar, "Pass0", "FocusBar");
 
             LoadScreen();
+
+            Load2();
         }
         public override void Unload()
         {
@@ -82,6 +84,8 @@ namespace LAP.Assets.Effects
             FocusBar = null;
 
             UnLoadScreen();
+
+            UnLoad2();
         }
 
         public static Asset<Effect> LoadShader(string path)

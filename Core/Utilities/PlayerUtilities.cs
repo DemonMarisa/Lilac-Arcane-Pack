@@ -86,5 +86,9 @@ namespace LAP.Core.Utilities
             mouseWorld.Y = ((mouseWorld.Y >= player.MountedCenter.Y) ? MathF.Min(mouseWorld.Y, player.MountedCenter.Y + 540f * mult) : MathF.Max(mouseWorld.Y, player.MountedCenter.Y - 540f * mult));
             return mouseWorld;
         }
+        public static Vector2 GetArmRoot(this Player player)
+        {
+            return player.MountedCenter + new Vector2(-5 * player.direction, -1);
+        }
     }
 }

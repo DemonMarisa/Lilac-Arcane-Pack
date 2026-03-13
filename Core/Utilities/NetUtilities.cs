@@ -19,5 +19,9 @@ namespace LAP.Core.Utilities
         {
             return PlayerIndex == Main.myPlayer;
         }
+        public static bool IsLocalPlayer(this Projectile proj)
+        {
+            return proj.owner == Main.myPlayer;
+        }
     }
 }

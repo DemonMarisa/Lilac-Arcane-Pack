@@ -358,19 +358,24 @@ namespace LAP.Core.Utilities
             }
         }
         #endregion
-
         public static Color SetAlphaToZero(this Color set)
         {
             set.A = 0;
             return set;
         }
-
         public static Color HUEtoRGB(float H)
         {
             float R = Math.Abs(H * 6 - 3) - 1;
             float G = 2 - Math.Abs(H * 6 - 2);
             float B = 2 - Math.Abs(H * 6 - 4);
             return new Color(R, G, B);
+        }
+        public static void GetProjDrawInfo_Melee(this Projectile proj, Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
+        {
+            drawPosition = proj.Center - Main.screenPosition;
+            drawRotation = proj.rotation + (proj.spriteDirection == -1 ? MathHelper.PiOver2 + MathHelper.PiOver4 : MathHelper.PiOver4);
+            rotationPoint = proj.spriteDirection == -1 ? new Vector2(texture.Width, texture.Height) : new Vector2(0, texture.Height);
+            flipSprite = proj.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         }
     }
 }

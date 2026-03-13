@@ -16,6 +16,8 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath Spirit { get; private set; }
         public static Tex2DWithPath Thrust01 { get; private set; }
         public static Tex2DWithPath Thrust02 { get; private set; }
+        public static Tex2DWithPath CampFire { get; private set; }
+        public static Tex2DWithPath CampSmoke { get; private set; }
         public static void LoadLILIESTextures()
         {
             Butterfly = new Tex2DWithPath($"{LiliesPath}/Butterfly");
@@ -29,6 +31,8 @@ namespace LAP.Assets.TextureRegister
             Spirit = new Tex2DWithPath($"{LiliesPath}/Spirit");
             Thrust01 = new Tex2DWithPath($"{LiliesPath}/Thrust01");
             Thrust02 = new Tex2DWithPath($"{LiliesPath}/Thrust02");
+            CampFire = new Tex2DWithPath($"{LiliesPath}/CampFire");
+            CampSmoke = new Tex2DWithPath($"{LiliesPath}/CampSmoke");
         }
         public static void UnLoadLILIESTextures()
         {
@@ -43,6 +47,8 @@ namespace LAP.Assets.TextureRegister
             Spirit = null;
             Thrust01 = null;
             Thrust02 = null;
+            CampFire = null;
+            CampSmoke = null;
         }
     }
 }

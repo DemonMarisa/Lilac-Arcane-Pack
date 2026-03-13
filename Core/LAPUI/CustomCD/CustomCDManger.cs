@@ -26,8 +26,7 @@ namespace LAP.Core.LAPUI.CustomCD
         // 不要在这里修改，这里只是复制过来用于本地绘制
         public static List<BaseCD> ActiveCD => Main.LocalPlayer.LAPCD().ActiveCD;
         public static RenderTarget2D CDRT2D;
-        public static RenderTarget2D GassBlurRT2D;
-        public static float GlobalOpacity = 1f;// 全局透明度
+        public static float GlobalOpacity = 0f;// 全局透明度
         public static int FadeInOut;// 背景的淡入淡出
         public static int MaxFade = 30;// 最大淡入淡出时间
         public static LeftArrow leftArrow = new LeftArrow();
@@ -45,8 +44,7 @@ namespace LAP.Core.LAPUI.CustomCD
             InitializeCDUI();
             Main.QueueMainThreadAction(() =>
             {
-                CDRT2D = new RenderTarget2D(Main.graphics.GraphicsDevice, 1920, 540);
-                GassBlurRT2D = new RenderTarget2D(Main.graphics.GraphicsDevice, 1920, 540);
+                CDRT2D = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, 540);
             });
             On_Main.CheckMonoliths += PrepareRenderTarget;
         }
@@ -59,7 +57,7 @@ namespace LAP.Core.LAPUI.CustomCD
         public static void InitializeCDUI()
         {
             MaxFade = 30;
-            GlobalOpacity = 1f;
+            GlobalOpacity = 0f;
             leftArrow.Position = new Vector2(60.9f, AllCDY);
             leftArrow.Orig = new Vector2(LAPTextureRegister.CDBG_Edge.Width, LAPTextureRegister.CDBG_Edge.Height / 2);
             rightArrow.Position = new Vector2(51.3f, AllCDY);
@@ -77,8 +75,6 @@ namespace LAP.Core.LAPUI.CustomCD
             {
                 CDRT2D?.Dispose();
                 CDRT2D = null;
-                GassBlurRT2D?.Dispose();
-                GassBlurRT2D = null;
             });
             leftArrow = null;
             rightArrow = null;
@@ -180,6 +176,8 @@ namespace LAP.Core.LAPUI.CustomCD
                 return;
             }
             orig();
+            if (GlobalOpacity == 0)
+                return;
             #region 预渲染常规RT2D
             LAPUtilities.SwapToTarget(CDRT2D);
             #region 绘制底部
@@ -241,17 +239,6 @@ namespace LAP.Core.LAPUI.CustomCD
             #endregion
             #endregion
             #region 准备高斯模糊的RT2D
-            // 准备进行高斯模糊
-            LAPUtilities.SwapToTarget(GassBlurRT2D);
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
-            Effect shader2 = LAPShaderRegister.CDUIMeltShader.Value;
-            shader2.Parameters["NoiseTextureSize"].SetValue(new Vector2(3f, 1f));
-            shader2.Parameters["progress"].SetValue(GlobalOpacity);
-            shader2.CurrentTechnique.Passes[0].Apply();
-            Main.graphics.GraphicsDevice.Textures[1] = LAPTextureRegister.FireNoise.Value;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
-            Main.spriteBatch.Draw(CDRT2D, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.End();
             #endregion
             Main.graphics.GraphicsDevice.SetRenderTargets(null);
         }
@@ -276,21 +263,15 @@ namespace LAP.Core.LAPUI.CustomCD
                 orig = Vector2.UnitX * ToCenterLength;
             }
             FinalDrawPos = Vector2.Lerp(FinalDrawPos, TargetDrawPos, 0.2f);
-
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
-            // 将UI的RT2D画出
-            Effect shader = LAPShaderRegister.GassBlur.Value;
-            shader.Parameters["TargetSize"].SetValue(GassBlurRT2D.Size() * 2f);
-            shader.CurrentTechnique.Passes[0].Apply();
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
-            Main.spriteBatch.End();
-
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
-            Main.spriteBatch.Draw(GassBlurRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
+            Effect shader2 = LAPShaderRegister.CDUIMeltShader.Value;
+            shader2.Parameters["NoiseTextureSize"].SetValue(new Vector2(3f, 1f));
+            shader2.Parameters["progress"].SetValue(GlobalOpacity);
+            shader2.CurrentTechnique.Passes[0].Apply();
+            Main.graphics.GraphicsDevice.Textures[1] = LAPTextureRegister.FireNoise.Value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            Main.spriteBatch.Draw(CDRT2D, FinalDrawPos, null, Color.White, 0, orig, 1f, SpriteEffects.None, 0f);
             LAPUtilities.ReSetToEndUI();
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)

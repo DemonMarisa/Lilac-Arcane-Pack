@@ -70,7 +70,7 @@ namespace LAP
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
-            LAPNetCode.HandleMouseWorldPacket(reader, whoAmI);
+            LAPNetCode.HandleLAPPacket(reader, whoAmI);
         }
 
     }

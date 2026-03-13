@@ -31,6 +31,10 @@ namespace LAP.Core.IDSets
         /// 蘑菇武器的集合
         /// </summary>
         public static HashSet<int> MushroomWeaponIDs = [ItemID.Hammush,ItemID.MushroomSpear,ItemID.Shroomerang];
+        /// <summary>
+        /// 判定为来自武器战技的射弹合集
+        /// </summary>
+        public static HashSet<int> WeaponSkillProj = [];
         public override void Load()
         {
             foreach (int a in LAPList.rangedProjectileExceptionList)
@@ -71,6 +75,7 @@ namespace LAP.Core.IDSets
             CantSplitProj = null;
             ProtectedProj = null;
             MushroomWeaponIDs = null;
+            WeaponSkillProj = null;
             UnloadProjFrame();
         }
     }
