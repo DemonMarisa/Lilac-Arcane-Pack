@@ -1,9 +1,4 @@
-﻿using CalamityMod.Buffs;
-using CalamityMod.Buffs.Cooldowns;
-using CalamityMod.Buffs.DamageOverTime;
-using CalamityMod.Buffs.StatBuffs;
-using CalamityMod.Buffs.StatDebuffs;
-using LAP.Common.CalamityModCross;
+﻿using LAP.Common.CalamityModCross;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;

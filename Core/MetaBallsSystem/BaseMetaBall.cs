@@ -75,7 +75,7 @@ namespace LAP.Core.MetaBallsSystem
             shader.Parameters["renderTargetSize"].SetValue(RT2DManager.RT2D_ScreenSize[AlphaTextureIndex].Size());
             shader.Parameters["bakcGroundSize"].SetValue(BgTexture.Size());
             shader.Parameters["edgeColor"].SetValue(EdgeColor.ToVector4());
-            shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
+            shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * BGTimeMult);
             shader.CurrentTechnique.Passes[0].Apply();
         }
     }

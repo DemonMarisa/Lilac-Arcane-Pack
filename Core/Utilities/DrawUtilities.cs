@@ -1,4 +1,5 @@
 ﻿using LAP.Assets.TextureRegister;
+using LAP.Content.Particles;
 using LAP.Core.MiscDate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -370,12 +371,29 @@ namespace LAP.Core.Utilities
             float B = 2 - Math.Abs(H * 6 - 4);
             return new Color(R, G, B);
         }
-        public static void GetProjDrawInfo_Melee(this Projectile proj, Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
+        public static void GetProjDrawInfo_Melee(this Projectile proj, out Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
         {
+            texture = TextureAssets.Projectile[proj.type].Value;
             drawPosition = proj.Center - Main.screenPosition;
             drawRotation = proj.rotation + (proj.spriteDirection == -1 ? MathHelper.PiOver2 + MathHelper.PiOver4 : MathHelper.PiOver4);
             rotationPoint = proj.spriteDirection == -1 ? new Vector2(texture.Width, texture.Height) : new Vector2(0, texture.Height);
             flipSprite = proj.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        }
+        public static void GetProjDrawInfo_Staff(this Projectile proj, out Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
+        {
+            texture = TextureAssets.Projectile[proj.type].Value;
+            drawPosition = proj.Center - Main.screenPosition;
+            drawRotation = proj.rotation + (proj.spriteDirection == -1 ? MathHelper.PiOver2 + MathHelper.PiOver4 : MathHelper.PiOver4);
+            rotationPoint = texture.Size() / 2;
+            flipSprite = proj.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        }
+        public static void GenStarLine(Vector2 BeginPos, Vector2 EndPos, float GenStep, int LifeTime = 60, float scale = 0.1f)
+        {
+            for (int i = 0; i < GenStep; i++)
+            {
+                Vector2 SpawnVector = Vector2.Lerp(BeginPos, EndPos, i / GenStep);
+                new SmallGlowBall(SpawnVector, Vector2.Zero, Color.SkyBlue, LifeTime, scale, 0).Spawn();
+            }
         }
     }
 }

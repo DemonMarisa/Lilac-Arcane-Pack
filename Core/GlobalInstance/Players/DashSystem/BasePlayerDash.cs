@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace LAP.Core.GlobalInstance.Players.DashSystem
@@ -12,12 +11,12 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         /// 他为True时会使用模版计算速度，否则会调用ModifyDashSpeed来完全接管速度计算
         /// </summary>
         public bool UseCustomDashSpeed;
-        /// <summary>
-        /// 这个冲刺的来源
-        /// </summary>
-        public IEntitySource Source;
         public virtual bool CanHitNPC(Player player, NPC target) => true;
         public virtual DashDamageInfo DashDamageInfo(Player player) => new(50, 3, DamageClass.Default);
+        /// <summary>
+        /// 决定玩家当前状态是否允许使用该冲刺（如法力值不足、没有特定Buff则返回false）
+        /// </summary>
+        public virtual bool CanUseDash(Player player) => true;
         /// <summary>
         /// 这个冲刺给予的无敌时间
         /// </summary>
@@ -25,7 +24,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         /// <summary>
         /// 这个冲刺撞击敌人后给予的无敌时间
         /// </summary>
-        public virtual int DashrHitImmuneTime(Player player) => 12;
+        public virtual int DashHitImmuneTime(Player player) => 12;
         /// <summary>
         /// 冲刺的持续时间
         /// </summary>
@@ -81,7 +80,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         /// <summary>
         /// 允许你修改碰撞逻辑
         /// </summary>
-        public virtual bool Colliding(Rectangle dashHitbox, Rectangle targetHitbox)
+        public virtual bool Colliding(Player player, Rectangle dashHitbox, Rectangle targetHitbox)
         {
             if (dashHitbox.Intersects(targetHitbox))
                 return true;
@@ -95,6 +94,12 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
         }
         /// <summary>
+        /// 允许你修改击中NPC时的结构体
+        /// </summary>
+        public virtual void ModifyOnHitNPC(Player player, ref NPC.HitInfo npcInfo)
+        {
+        }
+        /// <summary>
         /// 击中敌对NPC时调用
         /// </summary>
         public virtual void OnHitNPC(Player player, NPC target, int DamageDone)
@@ -104,11 +109,6 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             Type = LAPDashPlayer.DashCollection.Count;
             LAPDashPlayer.DashCollection.Add(this);
-            SSD();
-        }
-        public virtual void SSD()
-        {
-
         }
     }
 }

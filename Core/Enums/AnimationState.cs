@@ -1,6 +1,6 @@
 ﻿namespace LAP.Core.Enums
 {
-    public static class AnimationState
+    public static class AniState
     {
         public static int Begin = 0;
         public static int Middle = 1;

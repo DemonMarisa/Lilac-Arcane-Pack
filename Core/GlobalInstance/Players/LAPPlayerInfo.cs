@@ -1,5 +1,7 @@
 ﻿using LAP.Core.Keybind;
 using LAP.Core.NetCode;
+using LAP.Core.NetCode.Content;
+using LAP.Core.SystemsLoader;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -38,7 +40,7 @@ namespace LAP.Core.GlobalInstance.Players
                     // 创建一个新的网络数据包
                     ModPacket packet = Mod.GetPacket();
                     // 写入一个自定义的消息类型，以便HandlePacket能识别
-                    packet.Write((int)LAPNetCode.MessageType.SyncMousePosition);
+                    packet.Write(LAPContent.PackHandleType<ReadWriteMouseWorld>());
                     // 写入是哪个玩家发送的
                     packet.Write(Player.whoAmI);
                     // 写入鼠标坐标
@@ -52,7 +54,7 @@ namespace LAP.Core.GlobalInstance.Players
                 if (Main.netMode == NetmodeID.MultiplayerClient && Main.myPlayer == Player.whoAmI)
                 {
                     ModPacket packet = Mod.GetPacket();
-                    packet.Write((int)LAPNetCode.MessageType.SyncMouseLeft);
+                    packet.Write(LAPContent.PackHandleType<ReadWriteMouseLeft>());
                     packet.Write(Player.whoAmI);
                     packet.Write(Main.mouseLeft);
                     packet.Send();
@@ -63,7 +65,7 @@ namespace LAP.Core.GlobalInstance.Players
                 if (Main.netMode == NetmodeID.MultiplayerClient && Main.myPlayer == Player.whoAmI)
                 {
                     ModPacket packet = Mod.GetPacket();
-                    packet.Write((int)LAPNetCode.MessageType.SyncMouseRight);
+                    packet.Write(LAPContent.PackHandleType<ReadWriteMouseRight>());
                     packet.Write(Player.whoAmI);
                     packet.Write(Main.mouseRight);
                     packet.Send();
@@ -74,7 +76,7 @@ namespace LAP.Core.GlobalInstance.Players
                 if (Main.netMode == NetmodeID.MultiplayerClient && Main.myPlayer == Player.whoAmI)
                 {
                     ModPacket packet = Mod.GetPacket();
-                    packet.Write((int)LAPNetCode.MessageType.SyncWeaponSkillKey);
+                    packet.Write(LAPContent.PackHandleType<ReadWriteWeaponSkill>());
                     packet.Write(Player.whoAmI);
                     packet.Write(LAPKeybind.WeaponSkillHotKey.JustPressed);
                     packet.Send();

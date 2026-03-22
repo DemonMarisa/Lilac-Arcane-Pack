@@ -1,4 +1,4 @@
-﻿using LAP.Core.CrossModSupports;
+﻿using LAP.Common.CIModCross;
 using LAP.Core.GlobalInstance.Items;
 using LAP.Core.Utilities;
 using Terraria;
@@ -13,7 +13,7 @@ namespace LAP.Core.GlobalInstance.Projectiles
         public float FatherMult;
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            if (!CrossModSupport.UseCICalStatInflation)
+            if (!CIMainDate.UseCICalStatInflation)
                 return;
 
             // 如果是弹幕出弹幕也应用增伤

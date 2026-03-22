@@ -3,7 +3,6 @@ using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -14,12 +13,13 @@ namespace LAP.Core.BaseClass.Projectiles
     {
         public Player Owner => Main.player[Projectile.owner];
         public bool Active => (Owner.channel || Owner.controlUseTile) && !Owner.noItems && !Owner.CCed && !Owner.dead;
+        public bool LockExtraUpdates = true;
         public float DrawRotOffset = 0f;
         public Vector2 DrawPosOffset = Vector2.Zero;
         public int UseDelay = 0;
         public Vector2 RealOwnerCenter => Owner.RotatedRelativePoint(Owner.MountedCenter, true);
         public float RotAmount = 1f;
-        public Vector2 PositionOffset = Vector2.Zero;
+        public virtual Vector2 PositionOffset => Vector2.Zero;
         public int frameX;
         public int frameY;
         public override void SetStaticDefaults()
@@ -38,6 +38,7 @@ namespace LAP.Core.BaseClass.Projectiles
             Projectile.ignoreWater = true;
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
+            Projectile.extraUpdates = 0;
             ExSD();
         }
         public virtual void ExSD()
@@ -55,6 +56,11 @@ namespace LAP.Core.BaseClass.Projectiles
         {
             if (Projectile.LAP().FirstFrame)
             {
+                Projectile.Center = RealOwnerCenter + PositionOffset;
+                Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
+                Vector2 target = LAPUtilities.GetVector2(Projectile.Center, Owner.LocalMouseWorld());
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, target, RotAmount);
+                Projectile.rotation = Projectile.velocity.ToRotation();
                 Initialize();
             }
             return ExPreAI();
@@ -68,8 +74,6 @@ namespace LAP.Core.BaseClass.Projectiles
         }
         public override void AI()
         {
-            if (!Active)
-                Projectile.Kill();
             if (UseDelay > 0)
                 UseDelay--;
             SetPlayerVisuals();
@@ -83,22 +87,31 @@ namespace LAP.Core.BaseClass.Projectiles
         public virtual void SetPlayerVisuals()
         {
             Projectile.SetHeldProj(Owner);
-            Projectile.rotation = Projectile.velocity.ToRotation();
         }
         public virtual void AimToMouse()
         {
             Projectile.spriteDirection = Projectile.direction;
+            Projectile.Center = RealOwnerCenter + PositionOffset;
             Projectile.timeLeft = 2;
             Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
             Vector2 target = LAPUtilities.GetVector2(Projectile.Center , Owner.LocalMouseWorld());
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, target, RotAmount);
             Projectile.rotation = Projectile.velocity.ToRotation();
-            Projectile.Center = RealOwnerCenter + PositionOffset;
         }
         public override void PostAI()
         {
-            Projectile.extraUpdates = 0;
             ExPostAI();
+            if (LockExtraUpdates)
+                Projectile.extraUpdates = 0;
+            if (!Active && UseDelay == 0)
+            {
+                if (PreKill())
+                    Projectile.Kill();
+            }
+        }
+        public virtual bool PreKill()
+        {
+            return true;
         }
         public virtual void ExPostAI()
         {

@@ -16,7 +16,7 @@ namespace LAP.Core.BaseClass.Projectiles
         public virtual int HealAmt => Main.rand.Next(5, 10);
         public virtual bool UsePredictMult => true;
         public virtual float HealAmtOverride => Projectile.ai[0];
-        public Player Healer => Main.player[Projectile.owner];
+        public Player Healer => Main.player[(int)Projectile.ai[1]];
         #endregion
 
         public override void SetDefaults()

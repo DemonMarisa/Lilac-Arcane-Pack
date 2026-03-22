@@ -14,7 +14,7 @@ namespace LAP.Core.UISystem
     /// </summary>
     public abstract class BaseUI : ModType
     {
-        public AnimationHelper AniProgress = new AnimationHelper(5);
+        public AniHelper AniProgress = new AniHelper(5);
         public int Type;
         public Vector2 Position;
         public Vector2 Scale;

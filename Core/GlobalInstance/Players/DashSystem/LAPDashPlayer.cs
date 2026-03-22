@@ -1,4 +1,5 @@
-﻿using LAP.Core.Keybind;
+﻿using CalamityMod;
+using LAP.Core.Keybind;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         public int VanillaDashInput;
         public int BeginDirection;
         public bool BeginDash;
+        public Vector2 BeginVelocity;
         // 记录每个NPC的whoami和对应的冷却
         public int[] NPCImmuneTime = new int[Main.maxNPCs];
         public override void ResetEffects()
@@ -45,11 +47,15 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                 BasePlayerDash ActiveDash = DashCollection[Index];
                 // 监测是否开始冲刺
                 HandleDashBegin(out bool ThisCanDash);
-                if (ThisCanDash)
+                if (ThisCanDash && !BeginDash)
                 {
+                    if (!ActiveDash.CanUseDash(Player))
+                        return;
+                    BeginVelocity = Player.velocity;
                     // 如果开始冲刺，赋值并应用起始效果
                     ActiveDash.OnDashStart(Player);
                     DashTime = ActiveDash.DashTime(Player);
+                    BeginDash = true;
                     Player.SetImmuneTimeForAllTypes(ActiveDash.ImmuneTime(Player));
                 }
                 if (DashTime > 0)
@@ -57,10 +63,21 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                     if (!ActiveDash.UseCustomDashSpeed)
                     {
                         float PlayerXVel = BeginDirection * Vector2.UnitX.X * ActiveDash.DashSpeed(Player);
-                        if (MathF.Abs(Player.velocity.X) < MathF.Abs(PlayerXVel))
-                            Player.velocity.X = MathHelper.Lerp(PlayerXVel * ActiveDash.DashEndSpeedMult(Player), PlayerXVel, ActiveDash.DashAmount(Player, DashTime, ActiveDash.DashTime(Player)));
+                        // 这样写是因为DashTime是从最高值逐渐递减的
+                        float FianlXVel = MathHelper.Lerp(PlayerXVel * ActiveDash.DashEndSpeedMult(Player), PlayerXVel, ActiveDash.DashAmount(Player, DashTime, ActiveDash.DashTime(Player)));
+                        // 开始的时候会记录当前的玩家速度，如果要应用的冲刺速度低于玩家速度，则不会继续降低速度
+                        // 并且如果太快，会强制应用新速度
+                        if (MathF.Abs(BeginVelocity.X) < 1e3)
+                        {
+                            if (MathF.Abs(BeginVelocity.X) < MathF.Abs(FianlXVel))
+                                Player.velocity.X = FianlXVel;
+                            else
+                                Player.velocity.X = BeginVelocity.X;
+                        }
+                        else
+                            Player.velocity.X = FianlXVel;
                     }
-                    else 
+                    else
                         ActiveDash.ModifyDashSpeed(Player);
                     ActiveDash.DuringDash(Player);
                     BeginDash = true;
@@ -69,6 +86,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                 if (BeginDash && DashTime == 0)
                 {
                     ActiveDash.OnDashEnd(Player);
+                    BeginVelocity = Vector2.Zero;
                     DashDelay = ActiveDash.DashDelay(Player);
                     BeginDash = false;
                     OverideCurDashID = -1;
@@ -143,6 +161,8 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         }
         public void CheckNPCHit(BasePlayerDash ActiveDash)
         {
+            if (Player.whoAmI != Main.myPlayer)
+                return;
             Rectangle hitArea = new Rectangle((int)(Player.position.X + Player.velocity.X * 0.5 - 4f), (int)(Player.position.Y + Player.velocity.Y * 0.5 - 4), Player.width + 8, Player.height + 8);
             foreach (NPC n in Main.ActiveNPCs)
             {
@@ -150,11 +170,20 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                     continue;
                 if (NPCImmuneTime[n.whoAmI] > 0)
                     return;
+                // 这个ImmunityCooldown是从内往外穿的
+                int cd = ImmunityCooldownID.General;
+                bool? hasModNPC = n.ModNPC?.CanHitPlayer(Player, ref cd);
+                if (hasModNPC is not null)
+                {
+                    if (!hasModNPC.Value)
+                        continue;
+                }
                 if (!ActiveDash.CanHitNPC(Player, n))
                     continue;
                 if (!n.dontTakeDamage && !n.friendly)
                 {
-                    if (ActiveDash.Colliding(hitArea, n.Hitbox) && (n.noTileCollide || Player.CanHit(n)))
+                    bool hitRec = ActiveDash.Colliding(Player ,hitArea, n.Hitbox) || ActiveDash.Colliding(Player, Player.Hitbox, n.Hitbox);
+                    if (hitRec && Player.CanHit(n))
                     {
                         int npcPreDamageHP = n.life;
                         DashDamageInfo dashDamageInfo = ActiveDash.DashDamageInfo(Player);
@@ -162,8 +191,17 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                         int dashDamage = (int)Player.GetTotalDamage(dashDamageInfo.damageClass).ApplyTo(dashDamageInfo.Damage);
                         float dashKB = Player.GetTotalKnockback(dashDamageInfo.damageClass).ApplyTo(dashDamageInfo.KnockBack);
                         bool crit = Main.rand.Next(100) < Player.GetTotalCritChance(dashDamageInfo.damageClass);
-                        Player.ApplyDamageToNPC(n, dashDamage, dashKB, Player.direction, crit, dashDamageInfo.damageClass, true);
-                        Player.SetImmuneTimeForAllTypes(ActiveDash.DashrHitImmuneTime(Player));
+                        NPC.HitInfo hit = new()
+                        {
+                            Damage = dashDamage,
+                            Knockback = dashKB,
+                            HitDirection = Player.direction,
+                            Crit = crit,
+                            DamageType = dashDamageInfo.damageClass
+                        };
+                        ActiveDash.ModifyOnHitNPC(Player, ref hit);
+                        Player.StrikeNPCDirect(n, hit);
+                        Player.SetImmuneTimeForAllTypes(ActiveDash.DashHitImmuneTime(Player));
                         NPCImmuneTime[n.whoAmI] = ActiveDash.DashHitCoolDown(Player);
                         int npcPostDamageHP = n.life;
                         ActiveDash.OnHitNPC(Player, n, npcPreDamageHP - npcPostDamageHP);

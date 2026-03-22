@@ -44,6 +44,9 @@ namespace LAP.Core.LAPUI.CustomCD
         }
         public virtual void OnSpawn(Player player) { }
         public virtual void Update(Player player) { }
+        // 只会在调用RemoveCD方法时调用，无论Complete参数是true还是false都会调用这个方法，Complete参数只会影响是否调用OnComplete方法
+        public virtual void OnRemove(Player player) { }
+        public virtual void OnComplete(Player player) { }
         public virtual bool PreDraw()
         {
             return true;
@@ -58,7 +61,6 @@ namespace LAP.Core.LAPUI.CustomCD
             Texture2D texture = CustomCDManger.CDTexture[Type].Value;
             Main.spriteBatch.Draw(texture, DrawPosition, null, Color.White, 0f, texture.Size() / 2, 1f, SpriteEffects.None, 0f);
         }
-        public virtual void OnComplete(Player player) { }
         protected sealed override void Register()
         {
             Type = CustomCDManger.CDCollection.Count;

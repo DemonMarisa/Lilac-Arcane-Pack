@@ -1,5 +1,5 @@
 ﻿using Humanizer;
-using LAP.Core.CrossModSupports;
+using LAP.Common.CIModCross;
 using LAP.Core.Enums;
 using System.Collections.Generic;
 using Terraria;
@@ -60,14 +60,14 @@ namespace LAP.Core.GlobalInstance.Items
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
-            if (!CrossModSupport.UseCICalStatInflation || !UseCICalStatInflation)
+            if (!CIMainDate.UseCICalStatInflation || !UseCICalStatInflation)
                 return;
             DmageMult = GetCalculatedDamageMult();
             damage *= DmageMult;
         }
         public void ModifyInflationTooltips(List<TooltipLine> tooltips)
         {
-            if (!CrossModSupport.UseCICalStatInflation || !UseCICalStatInflation)
+            if (!CIMainDate.UseCICalStatInflation || !UseCICalStatInflation)
                 return;
             string t = Language.GetTextValue("Mods.LAP.WeaponBoost.DamageMult");
             t = t.FormatWith(DmageMult.ToString());

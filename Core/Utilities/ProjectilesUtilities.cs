@@ -216,16 +216,16 @@ namespace LAP.Core.Utilities
                 return;
             if (Useconditional && !target.canGhostHeal)
                 return;
-            int whoAmI = player.whoAmI;
+            int targetplayer = player.whoAmI;
             if (shared)
-                whoAmI = FindLowerHPPlayer(player).whoAmI;
+                targetplayer = FindLowerHPPlayer(player).whoAmI;
             if (Useconditional)
             {
                 if (player.moonLeech)
-                    Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, whoAmI, OverridehealAmt);
+                    Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, player.whoAmI, OverridehealAmt, targetplayer);
             }
             else
-                Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, whoAmI, OverridehealAmt);
+                Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, player.whoAmI, OverridehealAmt, targetplayer);
         }
         public static Player FindLowerHPPlayer(this Player player)
         {
