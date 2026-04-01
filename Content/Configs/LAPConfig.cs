@@ -16,7 +16,7 @@ namespace LAP.Content.Configs
         public bool DeBugInfo { get; set; }
 
         [BackgroundColor(211, 211, 211, 192)]
-        [Range(5000, 50000)]
+        [Range(0, 50000)]
         [Increment(1)]
         [DefaultValue(15000)]
         public int ParticleLimit { get; set; }

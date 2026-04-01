@@ -12,14 +12,13 @@ namespace LAP.Core.MiscDate
         public override void UpdateUI(GameTime gameTime)
         {
             ScreenSize = new Vector2(Main.screenWidth, Main.screenHeight);
-            MouseRectangle = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 4, 4);
         }
         public override void PreUpdateWorld()
         {
             AnyBossHere = false;
-            foreach (NPC npc in Main.npc)
+            foreach (NPC npc in Main.ActiveNPCs)
             {
-                if (npc.active && npc.boss)
+                if (npc.boss)
                 {
                     AnyBossHere = true;
                     return;

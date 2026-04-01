@@ -23,7 +23,7 @@ namespace LAP.Core.Menus.Buttoms.BaseButtom
         }
         public float EdgeOpacity;
         public float XEdgeScale;
-        public override void SetDefaults()
+        public override void PostSetUpContent()
         {
             Position = Center;
             Rectangle = Utils.CenteredRectangle(Position, new Vector2(180, 70));

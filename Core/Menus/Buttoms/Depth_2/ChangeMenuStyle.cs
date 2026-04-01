@@ -19,12 +19,16 @@ namespace LAP.Core.Menus.Buttoms.Depth_2
         #endregion
         public bool Out = true;
         public static bool Active = false;
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => Active;
+        public override bool Colliding(Rectangle rectangle, Rectangle mouseRectangle)
+        {
+            return true;
+        }
         public override void PostUpdate()
         {
             Rectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            if (LAPKeystate.JustPressTab && !UIManager.ActiveDepth[2])
+            if (LAPKeystate.JustPressTab && !UIManager.ActiveDepth[1])
             {
                 SoundEngine.PlaySound(MenuSounds.Click);
                 if (!Active)

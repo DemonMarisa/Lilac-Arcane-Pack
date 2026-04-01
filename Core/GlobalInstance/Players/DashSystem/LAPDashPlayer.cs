@@ -62,20 +62,22 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                 {
                     if (!ActiveDash.UseCustomDashSpeed)
                     {
-                        float PlayerXVel = BeginDirection * Vector2.UnitX.X * ActiveDash.DashSpeed(Player);
+                        float PlayerXVel = ActiveDash.DashSpeed(Player);
                         // 这样写是因为DashTime是从最高值逐渐递减的
-                        float FianlXVel = MathHelper.Lerp(PlayerXVel * ActiveDash.DashEndSpeedMult(Player), PlayerXVel, ActiveDash.DashAmount(Player, DashTime, ActiveDash.DashTime(Player)));
+                        float progress = ActiveDash.DashAmount(Player, DashTime, ActiveDash.DashTime(Player));
+                        progress = MathHelper.Clamp(progress, 0f, 1f);
+                        float FianlXVel = MathHelper.Lerp(PlayerXVel * ActiveDash.DashEndSpeedMult(Player), PlayerXVel, progress);
                         // 开始的时候会记录当前的玩家速度，如果要应用的冲刺速度低于玩家速度，则不会继续降低速度
                         // 并且如果太快，会强制应用新速度
                         if (MathF.Abs(BeginVelocity.X) < 1e3)
                         {
                             if (MathF.Abs(BeginVelocity.X) < MathF.Abs(FianlXVel))
-                                Player.velocity.X = FianlXVel;
+                                Player.velocity.X = MathF.Abs(FianlXVel) * BeginDirection;
                             else
-                                Player.velocity.X = BeginVelocity.X;
+                                Player.velocity.X = MathF.Abs(BeginVelocity.X) * BeginDirection;
                         }
                         else
-                            Player.velocity.X = FianlXVel;
+                            Player.velocity.X = MathF.Abs(FianlXVel) * BeginDirection;
                     }
                     else
                         ActiveDash.ModifyDashSpeed(Player);
@@ -200,7 +202,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                             DamageType = dashDamageInfo.damageClass
                         };
                         ActiveDash.ModifyOnHitNPC(Player, ref hit);
-                        Player.StrikeNPCDirect(n, hit);
+                        Player.ApplyDamageToNPC(n, hit.Damage, hit.Knockback, hit.HitDirection, hit.Crit, hit.DamageType);
                         Player.SetImmuneTimeForAllTypes(ActiveDash.DashHitImmuneTime(Player));
                         NPCImmuneTime[n.whoAmI] = ActiveDash.DashHitCoolDown(Player);
                         int npcPostDamageHP = n.life;

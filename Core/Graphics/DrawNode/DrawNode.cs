@@ -1,10 +1,7 @@
-﻿using LAP.Content.Configs;
-using LAP.Core.Enums;
-using LAP.Core.ParticleSystem;
+﻿using LAP.Core.Enums;
 using LAP.Core.SystemsLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

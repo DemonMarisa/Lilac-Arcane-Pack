@@ -1,4 +1,5 @@
 ﻿using LAP.Content.Configs;
+using LAP.Core.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -9,7 +10,9 @@ namespace LAP.Core.ParticleSystem
 {
     public abstract class BaseParticle : ModType
     {
-        public int Type;
+        protected override void Register()
+        {
+        }
         #region 基础属性
         public bool Important = false;
         /// <summary>
@@ -136,12 +139,6 @@ namespace LAP.Core.ParticleSystem
             BaseParticleManager.ActiveParticlesNonPremultiplied.Add(this);
             OnSpawn();
             return this;
-        }
-        protected override void Register()
-        {
-            Type = BaseParticleManager.ParticlesCollection.Count;
-            if (BaseParticleManager.ParticlesCollection.Contains(this))
-                BaseParticleManager.ParticlesCollection.Add(this);
         }
         public virtual void OnSpawn() { }
 

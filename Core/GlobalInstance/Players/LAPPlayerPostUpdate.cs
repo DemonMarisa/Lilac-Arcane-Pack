@@ -7,6 +7,7 @@ namespace LAP.Core.GlobalInstance.Players
         public override void PostUpdate()
         {
             UpdateNet();
+            RegenFocus_PostUpdate();
             ClampMaxFocus_PostUpdate();
         }
     }

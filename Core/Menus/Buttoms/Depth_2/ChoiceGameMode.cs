@@ -19,8 +19,12 @@ namespace LAP.Core.Menus.Buttoms.Depth_2
         public static BaseUI WorkShop => UIManager.UICollection[GetInstance<WorkShop>().Type];
         public static BaseUI Achievements => UIManager.UICollection[GetInstance<Achievements>().Type];
         public static BaseUI Credits => UIManager.UICollection[GetInstance<Credits>().Type];
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => Active;
+        public override bool Colliding(Rectangle rectangle, Rectangle mouseRectangle)
+        {
+            return true;
+        }
         public override void PostUpdate()
         {
             Rectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);

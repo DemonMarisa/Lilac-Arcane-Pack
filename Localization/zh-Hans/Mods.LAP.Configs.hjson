@@ -84,4 +84,14 @@ LAPUIConfig: {
 		Label: 是否绘制专注值UI
 		Tooltip: ""
 	}
+
+	FocusBarScale: {
+		Label: 专注值UI缩放
+		Tooltip: ""
+	}
+
+	LockFocusBar: {
+		Label: 锁定专注值UI位置
+		Tooltip: 是否能用鼠标移动专注值UI
+	}
 }

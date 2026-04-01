@@ -17,7 +17,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Sounds\Items\Weapons\Melee\" />
-	  <Folder Include="Content\Projectiles\Misc\" />
 	  <Folder Include="Core\StateMachine\EntityStateMachine\" />
 	</ItemGroup>
 	

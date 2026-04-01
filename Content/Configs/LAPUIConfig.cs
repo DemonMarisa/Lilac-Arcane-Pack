@@ -31,5 +31,13 @@ namespace LAP.Content.Configs
         [BackgroundColor(211, 211, 211, 192)]
         [Range(-10000, 10000)]
         public int FocusBarOffsetY { get; set; }
+        [BackgroundColor(211, 211, 211, 192)]
+        [DefaultValue(1f)]
+        [Range(0, 2f)]
+        public float FocusBarScale { get; set; }
+        [BackgroundColor(211, 211, 211, 192)]
+        [DefaultValue(true)]
+        public bool LockFocusBar { get; set; }
+
     }
 }

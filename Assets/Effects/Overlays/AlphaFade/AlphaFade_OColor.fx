@@ -1,4 +1,6 @@
-﻿// 用于Alpha裁切的材质
+﻿// 标准的流动与淡入淡出shader
+// 最终输出为 边缘透明度 * 原图的透明度 * 你要覆盖的颜色
+// 用于Alpha裁切的材质
 sampler uTexture1 : register(s0);
 // 左侧淡出的长度比例, 例如 0.2 代表最后 20% 的长度会淡出
 float uFadeoutLeftLength;

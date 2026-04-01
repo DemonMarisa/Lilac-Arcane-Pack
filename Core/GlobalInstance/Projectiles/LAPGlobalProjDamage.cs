@@ -15,15 +15,12 @@ namespace LAP.Core.GlobalInstance.Projectiles
         {
             if (!CIMainDate.UseCICalStatInflation)
                 return;
-
             // 如果是弹幕出弹幕也应用增伤
             if (source is EntitySource_Parent Parent && Parent.Entity is Projectile proj && proj.TryGetGlobalProjectile(out LAPGlobalProj gp) && gp.UseBoost)
             {
-
                 UseBoost = true;
                 FatherMult = gp.FatherMult;
             }
-
             // 检查生成弹幕的源物品有没有应用增伤
             if (source is EntitySource_ItemUse iu && iu.Item.TryGetGlobalItem(out LAPGlobalItem gi) && gi.UseCICalStatInflation)
             {

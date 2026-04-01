@@ -4,6 +4,8 @@ using LAP.Core.LAPUI.CustomCD;
 using LAP.Core.MetaBallsSystem;
 using LAP.Core.NetCode;
 using LAP.Core.ParticleSystem;
+using LAP.Core.ParticleSystem_ECS;
+using LAP.Core.UISystem;
 
 namespace LAP.Core.SystemsLoader
 {
@@ -13,6 +15,8 @@ namespace LAP.Core.SystemsLoader
         public static int CDType<T>() where T : BaseCD => GetInstance<T>()?.Type ?? 0;
         public static int DashType<T>() where T : BasePlayerDash => GetInstance<T>()?.Type ?? 0;
         public static int PackHandleType<T>() where T : BaseLAPHandlePack => GetInstance<T>()?.Type ?? 0;
+        public static int UIType<T>() where T : BaseUI => GetInstance<T>()?.Type ?? 0;
+        public static int ParticleType<T>() where T : ParticleBehaviors => GetInstance<T>()?.Type ?? 0;
         public static int GetTotalNode()
         {
             return NodeManager.PostDustAlpha.Count + NodeManager.PostDustNonPreMult.Count + NodeManager.PostDustAdd.Count + NodeManager.PreProjectileAlpha.Count + NodeManager.PreProjectileNonPreMult.Count + NodeManager.PreProjectileAdd.Count;

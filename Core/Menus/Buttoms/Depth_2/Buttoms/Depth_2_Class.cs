@@ -15,7 +15,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.Buttoms
         public override string Text => Language.GetTextValue("Mods.LAP.Menus.SinglePlayer");
         public override Vector2 Center => new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 - 170);
         public override int TargetMenuID => MenuID.CharacterSelect;
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
         public static BaseUI StartUI => UIManager.UICollection[GetInstance<StartUI>().Type];
         public override void PPUpdate()
@@ -28,7 +28,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.Buttoms
         public override string Text => Language.GetTextValue("Mods.LAP.Menus.MultiPlayer");
         public override Vector2 Center => new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 - 87);
         public override int TargetMenuID => MenuID.Multiplayer;
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
         public static BaseUI StartUI => UIManager.UICollection[GetInstance<StartUI>().Type];
         public override void PPUpdate()
@@ -45,7 +45,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.Buttoms
         {
             UIUtilities.OpenAchievements();
         }
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
         public static BaseUI StartUI => UIManager.UICollection[GetInstance<StartUI>().Type];
         public override void PPUpdate()
@@ -62,7 +62,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.Buttoms
         {
             UIUtilities.OpenWorkshop();
         }
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
         public static BaseUI StartUI => UIManager.UICollection[GetInstance<StartUI>().Type];
         public override void PPUpdate()
@@ -75,7 +75,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.Buttoms
         public override string Text => Language.GetTextValue("Mods.LAP.Menus.Credits");
         public override Vector2 Center => new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 + 170);
         public override int TargetMenuID => MenuID.None;
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
         public override void OnMouseLeftRelease()
         {

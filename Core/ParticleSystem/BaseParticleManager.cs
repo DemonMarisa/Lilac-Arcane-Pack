@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using ReLogic.Threading;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -14,12 +13,6 @@ using Terraria.UI.Chat;
 
 namespace LAP.Core.ParticleSystem
 {
-    public static class BlendStateID
-    {
-        public static int Alpha = 0;
-        public static int NonPremult = 1;
-        public static int Additive = 2;
-    }
     /// <summary>
     /// 这个粒子系统比较低效
     /// 生成与销毁一个粒子就会在内存中创建或删除一个对象，大量的GC与List的增删会导致性能问题
@@ -27,8 +20,6 @@ namespace LAP.Core.ParticleSystem
     /// </summary>
     public partial class BaseParticleManager : ModSystem
     {
-        public static List<BaseParticle> ParticlesCollection = [];
-
         public static List<BaseParticle> ActiveParticlesAlpha = [];
         public static List<BaseParticle> ActiveParticlesNonPremultiplied = [];
         public static List<BaseParticle> ActiveParticlesAdditive = [];
@@ -76,13 +67,6 @@ namespace LAP.Core.ParticleSystem
             int count = list.Count;
             if (count == 0)
                 return;
-            //Parallel.For(0, list.Count, i =>
-            //{
-            //    var particle = list[i];
-            //    particle.Update();
-            //    particle.Position += particle.Velocity;
-            //    particle.Time++;
-            //});
             FastParallel.For(0, count, (j, k, callback) =>
             {
                 for (int i = j; i < k; i++)

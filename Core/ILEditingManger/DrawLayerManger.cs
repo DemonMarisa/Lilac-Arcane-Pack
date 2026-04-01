@@ -2,6 +2,7 @@
 using LAP.Core.Graphics.PixelatedRender;
 using LAP.Core.MetaBallsSystem;
 using LAP.Core.ParticleSystem;
+using LAP.Core.ParticleSystem_ECS;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -16,6 +17,7 @@ namespace UCA.Core.ILEditingManger
             On_Main.DrawProjectiles += NodeManager.DrawNode_PreProjectiles;
             On_Main.DrawDust += NodeManager.DrawNode;
             On_Main.DrawDust += PixelatedRenderManger.DrawTarget_BeforeDust;
+            On_Main.DrawDust += ParticleDataManager.DrawParticle_ECS;
             On_Main.DrawPlayers_AfterProjectiles += PixelatedRenderManger.DrawTarget_BeforePlayers;
         }
         public override void Unload()
@@ -25,6 +27,7 @@ namespace UCA.Core.ILEditingManger
             On_Main.DrawProjectiles -= NodeManager.DrawNode_PreProjectiles;
             On_Main.DrawDust -= NodeManager.DrawNode;
             On_Main.DrawDust -= PixelatedRenderManger.DrawTarget_BeforeDust;
+            On_Main.DrawDust -= ParticleDataManager.DrawParticle_ECS;
             On_Main.DrawPlayers_AfterProjectiles -= PixelatedRenderManger.DrawTarget_BeforePlayers;
         }
     }

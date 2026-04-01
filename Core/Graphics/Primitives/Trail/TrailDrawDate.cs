@@ -23,8 +23,19 @@ namespace LAP.Core.Graphics.Primitives.Trail
         public float PrimitivesHeightRot = primitivesHeightRot;
     }
 
-    public struct DrawSetting(Texture2D texture)
+    public struct DrawSetting
     {
-        public Texture2D texture = texture;
+        public DrawSetting(Texture2D texture)
+        {
+            texture2d = texture;
+            sampler = SamplerState.PointWrap;
+        }
+        public DrawSetting(Texture2D texture, SamplerState samplerState)
+        {
+            texture2d = texture;
+            sampler = samplerState;
+        }
+        public Texture2D texture2d;
+        public SamplerState sampler;
     }
 }

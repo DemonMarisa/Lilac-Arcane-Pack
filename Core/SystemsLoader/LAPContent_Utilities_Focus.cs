@@ -1,5 +1,9 @@
-﻿using LAP.Core.Utilities;
+﻿using LAP.Content.Particles;
+using LAP.Core.NetCode.NetUtilities;
+using LAP.Core.Utilities;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 
 namespace LAP.Core.SystemsLoader
 {
@@ -23,6 +27,26 @@ namespace LAP.Core.SystemsLoader
                 return true;
             }
             return false;
+        }
+        /// <summary>
+        /// 增加专注值的方法，later为true时为统一集中到指定恢复
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="amount"></param>
+        /// <param name="later"></param>
+        /// <returns></returns>
+        public static void RestoreFocus(this Player player, int amount)
+        {
+            int regen = (int)(amount * player.LAP().FocusRegenMult);
+            player.LAP().statFocus += regen;
+            if (Main.myPlayer == player.whoAmI)
+                player.FocusEffect(regen);
+        }
+        public static void FocusEffect(this Player player, int amount)
+        {
+            CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), Color.SkyBlue, amount);
+            if (Main.netMode == NetmodeID.MultiplayerClient && player.whoAmI == Main.myPlayer)
+                player.SyncedRFocus(amount);
         }
         public static void SetUseFocus(this Player player, int Time)
         {

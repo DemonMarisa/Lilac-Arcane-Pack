@@ -23,6 +23,7 @@ namespace LAP.Assets.Effects
         public static Asset<Effect> GassBlur { get; private set; }
         public static Asset<Effect> Fill { get; private set; }
         public static Asset<Effect> FocusBar { get; private set; }
+        public static Asset<Effect> ThresholdShader { get; private set; }
         public override void Load()
         {
             if (Main.dedServ)
@@ -41,7 +42,7 @@ namespace LAP.Assets.Effects
             RegisterMiscShader(StandardFlowShader, "LAPStandardFlowPass", "StandardFlowShader");
 
             FlowWithAShader = LoadShader("FlowWithAShader");
-            RegisterMiscShader(StandardFlowShader, "LAPFlowWithAPass", "FlowWithAShader");
+            RegisterMiscShader(FlowWithAShader, "LAPFlowWithAPass", "FlowWithAShader");
 
             PolarDistortShader = LoadShader("PolarDistortShader");
             RegisterMiscShader(PolarDistortShader, "LAPPolarDistortPass", "PolarDistortShader");
@@ -60,9 +61,12 @@ namespace LAP.Assets.Effects
 
             Fill = LoadShader("Fill");
             RegisterMiscShader(Fill, "Pass0", "Fill");
-
+            
             FocusBar = LoadShader("FocusBar");
             RegisterMiscShader(FocusBar, "Pass0", "FocusBar");
+
+            ThresholdShader = LoadShader("ThresholdShader");
+            RegisterMiscShader(ThresholdShader, "Pass0", "ThresholdShader");
 
             LoadScreen();
 
@@ -82,6 +86,7 @@ namespace LAP.Assets.Effects
             GassBlur = null;
             Fill = null;
             FocusBar = null;
+            ThresholdShader = null;
 
             UnLoadScreen();
 

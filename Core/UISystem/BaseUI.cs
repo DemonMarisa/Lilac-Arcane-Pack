@@ -2,6 +2,7 @@
 using LAP.Core.MiscDate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -14,7 +15,10 @@ namespace LAP.Core.UISystem
     /// </summary>
     public abstract class BaseUI : ModType
     {
-        public AniHelper AniProgress = new AniHelper(5);
+        public AniHelper AniProgress;
+        public bool Active;
+        public int FadeProgress;
+        public int MaxFadeProgress;
         public int Type;
         public Vector2 Position;
         public Vector2 Scale;
@@ -29,19 +33,24 @@ namespace LAP.Core.UISystem
         public bool PressMouseLeft;
         public bool PressMouseRight;
         public bool CanClose = false;
+        public int Parent;
+        public List<int> Subset = [];
+        // 这两个属性会在你绑定好后自动设置，用于扇形UI的判定
+        // 扇区中心
+        public float SectorCenterRot;
+        // 一个扇形的角度
+        public float SectorRot;
         /// <summary>
         /// 必须分配一个深度
         /// </summary>
-        public virtual int UIDepth => 1;
+        public virtual int UIDepth => 0;
         protected sealed override void Register()
         {
             Type = UIManager.UICollection.Count;
             if (!UIManager.UICollection.Contains(this))
                 UIManager.UICollection.Add(this);
-
-            SetDefaults();
         }
-        public virtual void SetDefaults()
+        public virtual void PostSetUpContent()
         {
             Position = Vector2.Zero;
             Scale = Vector2.One;
@@ -60,6 +69,7 @@ namespace LAP.Core.UISystem
             IsHover = Colliding(Rectangle, LAPInfo.MouseRectangle);
 
             bool CanUpdate = PreUpdateHover() && !UIManager.ActiveDepth[UIDepth + 1] && UIManager.BlockAllUI == 0;
+
             if (!CanUpdate)
             {
                 IsHover = false;
@@ -116,7 +126,7 @@ namespace LAP.Core.UISystem
             PostUpdate();
         }
         /// <summary>
-        /// 是否更新悬停效果，true为更新，false为完全不更新，null为常驻按照不悬停的模式更新
+        /// 是否更新悬停效果，true为更新，false为完全不更新
         /// </summary>
         /// <returns></returns>
         public virtual bool PreUpdateHover()
@@ -162,6 +172,14 @@ namespace LAP.Core.UISystem
         }
         public virtual void OnMouseRightRelease()
         {
+        }
+        public virtual void OnActive()
+        {
+
+        }
+        public virtual bool PreDeActive()
+        {
+            return true;
         }
         /// <summary>
         /// 绘制

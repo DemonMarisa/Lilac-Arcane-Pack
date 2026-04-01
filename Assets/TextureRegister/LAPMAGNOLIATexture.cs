@@ -5,6 +5,8 @@ namespace LAP.Assets.TextureRegister
     public partial class LAPTextureRegister : ModSystem
     {
         public static string MAGNOLIAPath => "LAP/Assets/TextureRegister/MAGNOLIA";
+        public static Tex2DWithPath Aura_01 { get; private set; }
+        public static Tex2DWithPath Aura_02 { get; private set; }
         public static Tex2DWithPath BladeM { get; private set; }
         public static Tex2DWithPath Fire { get; private set; }
         public static Tex2DWithPath Cloud512_G { get; private set; }
@@ -12,6 +14,8 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath Shockwave_01 { get; private set; }
         public static void LoadMAGNOLIATextures()
         {
+            Aura_01 = new Tex2DWithPath($"{MAGNOLIAPath}/Aura_01");
+            Aura_02 = new Tex2DWithPath($"{MAGNOLIAPath}/Aura_02");
             BladeM = new Tex2DWithPath($"{MAGNOLIAPath}/BladeM");
             Fire = new Tex2DWithPath($"{MAGNOLIAPath}/Fire");
             Cloud512_G = new Tex2DWithPath($"{MAGNOLIAPath}/Cloud512_G");
@@ -20,6 +24,8 @@ namespace LAP.Assets.TextureRegister
         }
         public static void UnloadMAGNOLIATextures()
         {
+            Aura_01 = null;
+            Aura_02 = null;
             BladeM = null;
             Fire = null;
             Cloud512_G = null;

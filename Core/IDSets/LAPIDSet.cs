@@ -26,20 +26,18 @@ namespace LAP.Core.IDSets
         /// </summary>
         public static HashSet<int> MushroomWeaponIDs = [ItemID.Hammush,ItemID.MushroomSpear,ItemID.Shroomerang];
         /// <summary>
-        /// 判定为来自武器战技的射弹合集
+        /// 判定为来自武器战技的射弹合集，这个表只打进去始终都是战技弹幕的
         /// </summary>
         public static HashSet<int> WeaponSkillProj = [];
         public override void Load()
         {
             foreach (int a in LAPList.rangedProjectileExceptionList)
             {
-                if (!CantSplitProj.Contains(a))
-                    CantSplitProj.Add(a);
+                CantSplitProj.Add(a);
             }
             foreach (int a in LAPList.projectileDestroyExceptionList)
             {
-                if (!ProtectedProj.Contains(a))
-                    ProtectedProj.Add(a);
+                ProtectedProj.Add(a);
             }
             // 关键字（手持，长矛，钻头，短剑）
             string[] banKeywords = { "Hold", "Held", "Spear", "Drill", "Shortsword" };

@@ -21,7 +21,7 @@ namespace LAP.Core.StateMachine.SynedHitEffect
             Projectile.width = 8;
             Projectile.height = 8;
             Projectile.friendly = true;
-            Projectile.timeLeft = 10;
+            Projectile.timeLeft = 20;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
         }

@@ -1,5 +1,4 @@
 ﻿using LAP.Core.Utilities;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -42,7 +41,7 @@ namespace LAP.Content.RecipeGroupAdd
             int[] anyAdamantiteBar = [ItemID.AdamantiteBar, ItemID.TitaniumBar];
             AnyAdamantiteBar = LAPUtilities.CreatRecipeGroup(PreFix + "AnyAdamantiteBar", anyAdamantiteBar);
 
-            int[] anyStoneBlock = [ItemID.StoneBlock, ItemID.EbonstoneBlock, ItemID.CrimstoneBlock, ItemID.PearlstoneBlock,];
+            int[] anyStoneBlock = [ItemID.StoneBlock, ItemID.EbonstoneBlock, ItemID.CrimstoneBlock, ItemID.PearlstoneBlock];
             AnyStoneBlock = LAPUtilities.CreatRecipeGroup(PreFix + "AnyStoneBlock", anyStoneBlock);
             
             int[] anyArkhalis = [ItemID.Arkhalis, ItemID.Terragrim];

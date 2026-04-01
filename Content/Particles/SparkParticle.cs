@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using LAP.Core.Enums;
 
 namespace LAP.Content.Particles
 {

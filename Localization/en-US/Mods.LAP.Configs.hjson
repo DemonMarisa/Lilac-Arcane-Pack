@@ -84,4 +84,14 @@ LAPUIConfig: {
 		Label: Can Draw Focus Bar
 		Tooltip: ""
 	}
+
+	FocusBarScale: {
+		Label: Focus Bar Scale
+		Tooltip: ""
+	}
+
+	LockFocusBar: {
+		Label: Lock Focus Bar
+		Tooltip: Decide whether the focus bar can be moved with the mouse.
+	}
 }

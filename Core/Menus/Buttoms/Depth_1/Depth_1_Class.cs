@@ -16,7 +16,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_1
         public override void OnMouseLeftRelease()
         {
             // 必须没有二级UI打开才可以打开
-            if (!UIManager.ActiveDepth[2])
+            if (!UIManager.ActiveDepth[1])
                 StartUI.Active = true;
         }
     }

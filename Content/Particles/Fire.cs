@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using LAP.Core.ParticleSystem;
 using LAP.Assets.TextureRegister;
+using LAP.Core.Enums;
 
 namespace LAP.Content.Particles
 {

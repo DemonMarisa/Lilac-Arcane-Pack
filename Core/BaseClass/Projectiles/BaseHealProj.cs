@@ -21,7 +21,7 @@ namespace LAP.Core.BaseClass.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 24;
+            Projectile.width = Projectile.height = 12;
             Projectile.friendly = true;
             //默认300
             Projectile.timeLeft = 30000;

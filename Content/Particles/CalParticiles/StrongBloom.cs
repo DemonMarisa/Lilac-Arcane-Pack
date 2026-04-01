@@ -1,4 +1,5 @@
 ﻿using LAP.Assets.TextureRegister;
+using LAP.Core.Enums;
 using LAP.Core.ParticleSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

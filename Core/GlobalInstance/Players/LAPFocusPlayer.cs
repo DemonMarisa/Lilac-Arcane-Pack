@@ -1,4 +1,5 @@
-﻿using LAP.Core.LAPConditions;
+﻿using LAP.Content.Particles;
+using LAP.Core.LAPConditions;
 using LAP.Core.MiscDate;
 using Terraria;
 using Terraria.ModLoader;
@@ -31,7 +32,7 @@ namespace LAP.Core.GlobalInstance.Players
         /// </summary>
         public int FocusRegen = 2;
         /// <summary>
-        /// 用于设置恢复专注值的延迟
+        /// 用于设置恢复专注值的延迟，用于没使用物品，但是也不给恢复的情况
         /// </summary>
         public int FocusRegenRate = 0;
         public int BaseFocusRegen = 2;
@@ -39,9 +40,13 @@ namespace LAP.Core.GlobalInstance.Players
         // 用于储存专注值的恢复，以FocusRegen / 60获取的每帧应该恢复多少，当超过1时，增加1点专注值，并减少相应的池子
         public float FocusRegenPool = 0;
         /// <summary>
-        /// 战技消耗的百分比
+        /// 战技效率
         /// </summary>
         public float FocusCost = 1f;
+        /// <summary>
+        /// 战技恢复效率
+        /// </summary>
+        public float FocusRegenMult = 1f;
         public void SaveFP(TagCompound tag)
         {
             tag.Add("LAPStatFocus", statFocus);
@@ -64,7 +69,7 @@ namespace LAP.Core.GlobalInstance.Players
             if (UseFocus > 0)
                 UseFocus--;
         }
-        public void UpdateMaxFocus_PostUpdateMisc()
+        public void UpdateMaxFocus_ResetEffect()
         {
             if (NPC.downedBoss3)
                 statFocusMax2 += 50;
@@ -79,7 +84,7 @@ namespace LAP.Core.GlobalInstance.Players
             if (NPC.downedMoonlord)
                 statFocusMax2 += 100;
         }
-        public void UpdateMaxFocusRenge_PostUpdateMisc()
+        public void UpdateMaxFocusRenge_ResetEffect()
         {
             if (NPC.downedBoss3)
                 FocusRegen += 1;
@@ -94,19 +99,22 @@ namespace LAP.Core.GlobalInstance.Players
             if (NPC.downedMoonlord)
                 FocusRegen += 2;
         }
-        public void RegenFocus_PostUpdateMisc()
+        public void RegenFocus_PostUpdate()
         {
             if (FocusRegenRate != 0 || UseFocus != 0)
                 return;
             float ThisFrameRegen = FocusRegen / 60f;
             if (!LAPInfo.AnyBossHere)
                 ThisFrameRegen = ThisFrameRegen * OutBattleFocusRegenMult;
+
             FocusRegenPool += ThisFrameRegen;
-            if (FocusRegenPool >= 1f)
+
+            int RegenHowMany = (int)FocusRegenPool;
+
+            if (RegenHowMany >= 1)
             {
-                int Regen = (int)FocusRegenPool - 1;
-                statFocus += Regen;
-                FocusRegenPool -= Regen;
+                statFocus += RegenHowMany;
+                FocusRegenPool -= RegenHowMany;
             }
         }
         public void ClampMaxFocus_PostUpdate()

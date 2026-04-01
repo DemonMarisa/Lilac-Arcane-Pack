@@ -97,6 +97,8 @@ namespace LAP.Core.Graphics.DrawNode
                     {
                         for (int a = 0; a < node.ExtraUpdate; a++)
                         {
+                            if (node.ExtraUpdate == 0)
+                                break;
                             node.Update();
                             node.Position += node.Velocity;
                             node.Time++;
@@ -118,7 +120,7 @@ namespace LAP.Core.Graphics.DrawNode
         {
             if (updatelist.Count != 0)
             {
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, state, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, state, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < updatelist.Count; i++)
                 {
                     updatelist[i].Draw(Main.spriteBatch);

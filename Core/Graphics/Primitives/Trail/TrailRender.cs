@@ -31,7 +31,8 @@ namespace LAP.Core.Graphics.Primitives.Trail
                 Vertexlist.Add(new VertexPositionColorTexture2D(DrawPos - PrimitivesHeight.RotatedBy(PrimitivesHeightRot), DrawColor, new Vector3(progress, 0, 0)));
                 Vertexlist.Add(new VertexPositionColorTexture2D(DrawPos + PrimitivesHeight.RotatedBy(PrimitivesHeightRot), DrawColor, new Vector3(progress, 1, 0)));
             }
-            Main.graphics.GraphicsDevice.Textures[0] = drawSetting.texture;
+            Main.graphics.GraphicsDevice.Textures[0] = drawSetting.texture2d;
+            Main.graphics.GraphicsDevice.SamplerStates[0] = drawSetting.sampler;
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, Vertexlist.ToArray(), 0, Vertexlist.Count - 2);
         }
     }

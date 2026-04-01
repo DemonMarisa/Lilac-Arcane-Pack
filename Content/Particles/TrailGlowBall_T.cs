@@ -1,5 +1,4 @@
 ﻿using LAP.Assets.TextureRegister;
-using LAP.Core.GlobalInstance.Players;
 using LAP.Core.ParticleSystem;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
@@ -7,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using LAP.Core.Enums;
 
 namespace LAP.Content.Particles
 {

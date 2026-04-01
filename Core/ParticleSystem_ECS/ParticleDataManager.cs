@@ -1,0 +1,109 @@
+﻿using LAP.Content.Configs;
+using LAP.Core.Utilities;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ModLoader;
+
+namespace LAP.Core.ParticleSystem_ECS
+{
+    /// <summary>
+    /// ECS架构的粒子系统的数据管理器，负责管理<see cref="ParticleData"/>数据的生命周期和更新。
+    /// 比另一个面向对象的粒子系统更高效，适合大量粒子的场景。
+    /// </summary>
+    public class ParticleDataManager : ModSystem
+    {
+        public const int MaxParticle = 20000;
+        public static List<ParticleBehaviors> PAICollection = [];
+        public static ParticleData TempleParticle = new ParticleData();
+        public static ParticleData[] particleData_alpha = new ParticleData[MaxParticle];
+        public static int activePoint_alpha;
+        public static ParticleData[] particleData_add = new ParticleData[MaxParticle];
+        public static int activePoint_add;
+        public static ParticleData[] particleData_nopremult = new ParticleData[MaxParticle];
+        public static int activePoint_Nonmult;
+        public override void Load()
+        {
+            // On_Main.DrawDust += DrawParticle;
+            activePoint_alpha = 0;
+            activePoint_add = 0;
+            activePoint_Nonmult = 0;
+            particleData_alpha = new ParticleData[MaxParticle];
+            particleData_add = new ParticleData[MaxParticle];
+            particleData_nopremult = new ParticleData[MaxParticle];
+        }
+        public override void Unload()
+        {
+            // On_Main.DrawDust -= DrawParticle;
+            activePoint_alpha = 0;
+            activePoint_add = 0;
+            activePoint_Nonmult = 0;
+            particleData_alpha = null;
+            particleData_add = null;
+            particleData_nopremult = null;
+            PAICollection.Clear();
+        }
+        public override void PostUpdateDusts()
+        {
+            UpdateParticle(ref activePoint_alpha, particleData_alpha);
+            UpdateParticle(ref activePoint_add, particleData_add);
+            UpdateParticle(ref activePoint_Nonmult, particleData_nopremult);
+        }
+        public static void UpdateParticle(ref int point, ParticleData[] particleDates)
+        {
+            if (point == 0)
+                return;
+            FastParallel.For(0, point, (j, k, callback) =>
+            {
+                for (int i = j; i < k; i++)
+                {
+                    ref ParticleData particle = ref particleDates[i];
+                    if (particle.Active)
+                    {
+                        PAICollection[particle.Type].Update(ref particle);
+                        particle.Position += particle.Velocity;
+                        particle.Time++;
+                        // 交换删除
+                        if (particle.Time >= particle.Lifetime)
+                            particle.Active = false;
+                    }
+                }
+            });
+            for (int i = 0; i < point; i++)
+            {
+                if (!particleDates[i].Active)
+                {
+                    PAICollection[particleDates[i].Type].OnKill(ref particleDates[i]);
+                    particleDates[i] = particleDates[point - 1];
+                    point--;
+                }
+            }
+        }
+        public static void DrawParticle_ECS(On_Main.orig_DrawDust orig, Main self)
+        {
+            orig(self);
+            DrawParticles(activePoint_alpha, particleData_alpha, BlendState.AlphaBlend);
+            DrawParticles(activePoint_add, particleData_add, BlendState.Additive);
+            DrawParticles(activePoint_Nonmult, particleData_nopremult, BlendState.NonPremultiplied);
+        }
+        public static void DrawParticles(int point, ParticleData[] particleDates, BlendState bl)
+        {
+            if (point == 0)
+                return;
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, bl, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            for (int i = 0; i < point; i++)
+            {
+                ParticleData particle = particleDates[i];
+                if (LAPUtilities.OutOffScreen(particle.Position, particle.ScreenCut))
+                    continue;
+                PAICollection[particle.Type].Draw(ref particle);
+            }
+            Main.spriteBatch.End();
+        }
+    }
+}

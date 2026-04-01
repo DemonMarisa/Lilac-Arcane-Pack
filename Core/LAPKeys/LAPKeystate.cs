@@ -23,6 +23,7 @@ namespace LAP.Core.LAPKeys
             {
                 JustPressTab = true;
                 PressTab = true;
+                ReleaseTab = false;
             }
             else if (!Main.keyState.IsKeyDown(Keys.Tab))
             {

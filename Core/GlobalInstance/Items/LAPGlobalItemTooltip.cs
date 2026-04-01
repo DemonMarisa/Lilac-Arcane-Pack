@@ -16,7 +16,6 @@ namespace LAP.Core.GlobalInstance.Items
             {
                 tooltips.IntegrateHotkey(LAPKeybind.WeaponSkillHotKey);
             }
-
             if (WeaponSkillManaCost >= 0)
             {
                 int RealMana = Main.LocalPlayer.GetRealManaCost(WeaponSkillManaCost);

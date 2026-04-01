@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Threading;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -31,7 +32,7 @@ namespace LAP.Core.LAPUI.FocusBar
         public static float OldFocus;// 记录上一帧的专注值
         public static int ReduceTimer;// 记录消耗后延迟多少帧，用于提示消耗了多少
         public static int ReduceTimerMax = 30;
-        public static Vector2 FinalDrawPos = new Vector2(1345, 48);
+        public static Vector2 FinalDrawPos = new Vector2(1245, 48);
         public override void Load()
         {
             if (Main.dedServ)
@@ -101,11 +102,23 @@ namespace LAP.Core.LAPUI.FocusBar
             BarRatio = MathHelper.Lerp(BarRatio, TargetRatio, 0.2f);
             if (ReduceTimer <= 0)
                 OldBarRatio = MathHelper.Lerp(OldBarRatio, TargetRatio, 0.2f);
+
             Vector2 DrawPos = FinalDrawPos + new Vector2(LAPUIConfig.Instance.FocusBarOffsetX, LAPUIConfig.Instance.FocusBarOffsetY);
-            Rectangle mouserec = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 4, 4);
             Rectangle barRec = Utils.CenteredRectangle(DrawPos, new Vector2(320, 30));
-            if (mouserec.Intersects(barRec))
+
+            if (barRec.Contains(Main.MouseScreen.ToPoint()))
             {
+                if (!LAPUIConfig.Instance.LockFocusBar)
+                {
+                    if (Main.mouseLeft)
+                    {
+                        Vector2 standardPos = FinalDrawPos;
+                        Vector2 mousepos = Main.MouseScreen;
+                        Point FinalOffset = mousepos.ToPoint() - standardPos.ToPoint();
+                        LAPUIConfig.Instance.FocusBarOffsetX = FinalOffset.X;
+                        LAPUIConfig.Instance.FocusBarOffsetY = FinalOffset.Y;
+                    }
+                }
                 LocalizedText DisplayName = Language.GetText("Mods.LAP.MouseMessage.Focus");
                 LocalizedText Shift = Language.GetText("Mods.LAP.MouseMessage.ShiftTag");
                 LocalizedText FocusRegen = Language.GetText("Mods.LAP.MouseMessage.FocusRegen");
@@ -143,6 +156,7 @@ namespace LAP.Core.LAPUI.FocusBar
             LAPUtilities.SwapToTarget(FocusBarTarget);
 
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
+
             // 底部的中央
             Main.spriteBatch.Draw(barLeftBG.texture, barLeftBG.Position, null, Color.White, 0, barLeftBG.Orig, 0.15f, barLeftBG.SE, 0f);
             Main.spriteBatch.Draw(barRightBG.texture, barRightBG.Position, null, Color.White, 0, barRightBG.Orig, 0.15f, barRightBG.SE, 0f);
@@ -177,7 +191,7 @@ namespace LAP.Core.LAPUI.FocusBar
         public static void DrawBar()
         {
             Vector2 DrawPos = FinalDrawPos + new Vector2(LAPUIConfig.Instance.FocusBarOffsetX, LAPUIConfig.Instance.FocusBarOffsetY);
-            Main.spriteBatch.Draw(FocusBarTarget, DrawPos, null, Color.White, 0, FocusBarTarget.Size() / 2, 1f, 0, 0f);
+            Main.spriteBatch.Draw(FocusBarTarget, DrawPos, null, Color.White, 0, FocusBarTarget.Size() / 2, 0.9f * LAPUIConfig.Instance.FocusBarScale, 0, 0f);
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {

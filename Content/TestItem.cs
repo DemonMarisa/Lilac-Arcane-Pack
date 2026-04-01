@@ -1,8 +1,5 @@
-﻿
-using LAP.Core.Graphics.VideoManager;
-using LAP.Core.SystemsLoader;
+﻿using LAP.Core.Presets.Content;
 using LAP.Core.Utilities;
-using LAP.Music;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -46,12 +43,13 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Main.NewText("MusicLoader.GetMusicSlot(MusicRegister.LilyPath) : " + MusicLoader.GetMusicSlot("LAP/Music/Misc/Lily"));
+            float angle = MathHelper.TwoPi / 50f;
+            for (int i = 0; i < 50; i++)
+            {
+                Vector2 vel = Vector2.UnitX.RotatedBy(angle * i + Main.GlobalTimeWrappedHourly) * 9f;
+                ParticlePreset.NewTGlowBall(Main.MouseWorld, vel, Color.White, 120, 0f, 3f);
+            }
             return false;
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe().AddIngredient(ItemID.Sunflower);
         }
     }
 }

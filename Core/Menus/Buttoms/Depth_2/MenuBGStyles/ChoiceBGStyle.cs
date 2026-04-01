@@ -22,7 +22,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.MenuBGStyles
         {
             Opacity = changeMenuStyle.Opacity;
         }
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
     }
     public class LiliesTrueEndUI : GameMenuButton
@@ -39,7 +39,7 @@ namespace LAP.Core.Menus.Buttoms.Depth_2.MenuBGStyles
         {
             Opacity = changeMenuStyle.Opacity;
         }
-        public override int UIDepth => 2;
+        public override int UIDepth => 1;
         public override bool PreSetDepth() => false;
     }
 }

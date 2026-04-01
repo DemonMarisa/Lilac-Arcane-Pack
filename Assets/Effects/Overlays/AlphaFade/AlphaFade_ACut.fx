@@ -1,4 +1,6 @@
-﻿// 用于Alpha裁切的材质
+﻿// 标准的流动与淡入淡出shader，但是用于噪波的shader
+// 最终输出为 边缘透明度 * 输入颜色 * 噪波的R通道 乘第二次透明度
+// 用于Alpha裁切的材质
 sampler uTexture1 : register(s0);
 // 左侧淡出的长度比例, 例如 0.2 代表最后 20% 的长度会淡出
 float uFadeoutLeftLength;

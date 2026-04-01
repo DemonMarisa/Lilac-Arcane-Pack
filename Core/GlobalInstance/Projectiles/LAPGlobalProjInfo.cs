@@ -18,8 +18,7 @@ namespace LAP.Core.GlobalInstance.Projectiles
         {
             if (FirstFrame)
             {
-                if (LAPIDSet.CantSplitProj.Contains(projectile.type) || LAPIDSet.HeldProj.Contains(projectile.type) || projectile.minion || 
-                    !projectile.friendly || projectile.hostile || projectile.damage < 5)
+                if (LAPIDSet.CantSplitProj.Contains(projectile.type) || LAPIDSet.HeldProj.Contains(projectile.type) || projectile.minion || !projectile.friendly || projectile.hostile || projectile.damage < 5)
                     canSplit = false;
             }
             return true;

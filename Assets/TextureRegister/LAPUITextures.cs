@@ -19,6 +19,9 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath EL_HoverEdge { get; private set; }
         public static Tex2DWithPath EL_Net { get; private set; }
         public static Tex2DWithPath EL_Arrow { get; private set; }
+        public static Tex2DWithPath BloomBlackCircle { get; private set; }
+        public static Tex2DWithPath BloomLine3 { get; private set; }
+        public static Tex2DWithPath Ring { get; private set; }
         public static void LoadUI()
         {
             CDBG_Edge = new Tex2DWithPath($"{UIPath}/CDs/CDBG_Edge");
@@ -35,6 +38,9 @@ namespace LAP.Assets.TextureRegister
             EL_HoverEdge = new Tex2DWithPath($"{UIPath}/EnderLilies/HoverEdge");
             EL_Net = new Tex2DWithPath($"{UIPath}/EnderLilies/Net");
             EL_Arrow = new Tex2DWithPath($"{UIPath}/EnderLilies/Arrow");
+            BloomBlackCircle = new Tex2DWithPath($"{UIPath}/Misc/BloomBlackCircle");
+            BloomLine3 = new Tex2DWithPath($"{UIPath}/Misc/BloomLine3");
+            Ring = new Tex2DWithPath($"{UIPath}/Misc/Ring");
         }
         public static void UnloadUI()
         {
@@ -52,6 +58,9 @@ namespace LAP.Assets.TextureRegister
             EL_HoverEdge = null;
             EL_Net = null;
             EL_Arrow = null;
+            BloomBlackCircle = null;
+            BloomLine3 = null;
+            Ring = null;
         }
     }
 }
