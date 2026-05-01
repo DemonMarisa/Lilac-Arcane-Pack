@@ -1,4 +1,5 @@
 ﻿using LAP.Core.Presets.Content;
+using LAP.Core.UISystem;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -29,8 +30,6 @@ namespace LAP.Content
             Item.rare = ItemRarityID.Orange;
             Item.shootSpeed = 10;
             Item.shoot = ProjectileID.BloodArrow;
-
-            Item.LAP().DrawUCASmallIcon = true;
         }
         public override bool AltFunctionUse(Player player) => true;
         public override bool CanUseItem(Player player)
@@ -43,12 +42,6 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            float angle = MathHelper.TwoPi / 50f;
-            for (int i = 0; i < 50; i++)
-            {
-                Vector2 vel = Vector2.UnitX.RotatedBy(angle * i + Main.GlobalTimeWrappedHourly) * 9f;
-                ParticlePreset.NewTGlowBall(Main.MouseWorld, vel, Color.White, 120, 0f, 3f);
-            }
             return false;
         }
     }

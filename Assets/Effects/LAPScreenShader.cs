@@ -11,9 +11,7 @@ namespace LAP.Assets.Effects
         public static void LoadScreen()
         {
             Pixelation = LoadScreenShader("Pixelation");
-            RegisterMiscShader(Pixelation, "Pass0", "Pixelation");
             ScreenDistortion = LoadScreenShader("ScreenDistortion");
-            RegisterMiscShader(Pixelation, "Pass0", "ScreenDistortion");
         }
         public static void UnLoadScreen()
         {

@@ -86,5 +86,12 @@ namespace LAP.Core.Graphics.RenderTargetsManager
                 }
             });
         }
+        public static RenderTarget2D GetScreenRT2D(int index)
+        {
+            if (RT2D_ScreenSize.IndexInRange(index))
+                return RT2D_ScreenSize[index];
+            else
+                return null;
+        }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using LAP.Assets.TextureRegister;
 using LAP.Content;
-using LAP.Content.Particles;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.Localization;
 using Terraria.ModLoader;
 

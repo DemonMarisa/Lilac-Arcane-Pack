@@ -48,5 +48,13 @@ namespace LAP.Core.SystemsLoader
             if (!LAPIDSet.ProjFrame.ContainsKey(proj.type))
                 LAPIDSet.ProjFrame.Add(proj.type, frame);
         }
+        /// <summary>
+        /// 添加不可反弹弹幕的模版
+        /// </summary>
+        public static void AddCantReflect(this Projectile proj)
+        {
+            if (!LAPIDSet.CantReflectProj.Contains(proj.type))
+                LAPIDSet.CantReflectProj.Add(proj.type);
+        }
     }
 }

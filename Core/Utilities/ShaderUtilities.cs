@@ -41,7 +41,7 @@ namespace LAP.Core.Utilities
         }
         public static void ApplyAlphaCut(Vector4 UVOffset, Vector2 UV, Vector2 UVMult, Color color)
         {
-            Effect effect2 = LAPShaderRegister.AlphaFade_ACut_OColor.Value;
+            Effect effect2 = LAPShaderRegister.AlphaFade_Noise_OColor.Value;
             effect2.Parameters["uFadeoutLeftLength"].SetValue(UVOffset.X);
             effect2.Parameters["uFadeinRigtLength"].SetValue(UVOffset.Y);
             effect2.Parameters["uFadeinTopLength"].SetValue(UVOffset.Z);
@@ -49,6 +49,17 @@ namespace LAP.Core.Utilities
             effect2.Parameters["UVOffset"].SetValue(UV);
             effect2.Parameters["UVMult"].SetValue(UVMult);
             effect2.Parameters["OverlayColor"].SetValue(color.ToVector4());
+            effect2.CurrentTechnique.Passes[0].Apply();
+        }
+        public static void ApplyAlphaCut(Vector4 UVOffset, Vector2 UV, Vector2 UVMult)
+        {
+            Effect effect2 = LAPShaderRegister.AlphaFade.Value;
+            effect2.Parameters["uFadeoutLeftLength"].SetValue(UVOffset.X);
+            effect2.Parameters["uFadeinRigtLength"].SetValue(UVOffset.Y);
+            effect2.Parameters["uFadeinTopLength"].SetValue(UVOffset.Z);
+            effect2.Parameters["uFadeinBottomLength"].SetValue(UVOffset.W);
+            effect2.Parameters["UVOffset"].SetValue(UV);
+            effect2.Parameters["UVMult"].SetValue(UVMult);
             effect2.CurrentTechnique.Passes[0].Apply();
         }
         public static void SetTexture(Texture2D texture2D, int Index)

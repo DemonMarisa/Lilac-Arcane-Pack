@@ -68,9 +68,8 @@ namespace LAP.Core.MusicEvent
         public override void UpdateUI(GameTime gameTime)
         {
             // 服务器上不处理BGM
-            if (Main.dedServ)
+            if (Main.dedServ || PlayList.Count == 0)
                 return;
-
             if (CurrentEvent is null)
             {
                 for (int i = 0; i < PlayList.Count; i++)

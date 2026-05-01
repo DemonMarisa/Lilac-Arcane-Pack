@@ -1,12 +1,10 @@
-﻿using LAP.Content.Configs;
-using LAP.Core.Menus.Buttoms.Depth_1;
-using LAP.Core.MiscDate;
+﻿using LAP.Core.MiscDate;
 using LAP.Core.SystemsLoader;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -45,7 +43,7 @@ namespace LAP.Core.UISystem
             LAPInfo.MouseRectangle = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 4, 4);
             if (ActiveUI.Count != 0)
             {
-                for (int i = 0; i < ActiveUI.Count; i++)
+                for (int i = ActiveUI.Count - 1; i >= 0; i--)
                 {
                     LAPContent.GetUI(ActiveUI[i]).Update();
                 }
@@ -53,9 +51,7 @@ namespace LAP.Core.UISystem
             for (int i = 0; i < ActiveDepth.Length; i++)
             {
                 if (ActiveDepthCount[i] == 0)
-                {
                     ActiveDepth[i] = false;
-                }
                 else
                     ActiveDepth[i] = true;
             }
@@ -77,9 +73,11 @@ namespace LAP.Core.UISystem
                     layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP Custom UI", delegate ()
                     {
                         LAPUtilities.ReSetToBeginUI(BlendState.NonPremultiplied);
-                        for (int i = 0; i < ActiveUI.Count; i++)
+                        // 绘制前，获取所有活跃的 UI 并按 UIDepth 升序排序
+                        var sortedActiveUIs = ActiveUI.Select(type => LAPContent.GetUI(type)).OrderBy(ui => ui.UIDepth).ToList();
+                        for (int i = 0; i < sortedActiveUIs.Count; i++)
                         {
-                            LAPContent.GetUI(ActiveUI[i]).Draw(Main.spriteBatch);
+                            sortedActiveUIs[i].Draw(Main.spriteBatch);
                         }
                         LAPUtilities.ReSetToEndUI();
                         return true;

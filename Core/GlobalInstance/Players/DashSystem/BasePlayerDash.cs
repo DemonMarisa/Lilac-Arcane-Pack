@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LAP.Core.LAPUI.CustomCD;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -109,6 +110,10 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             Type = LAPDashPlayer.DashCollection.Count;
             LAPDashPlayer.DashCollection.Add(this);
+        }
+        public virtual BasePlayerDash Clone()
+        {
+            return (BasePlayerDash)MemberwiseClone();
         }
     }
 }

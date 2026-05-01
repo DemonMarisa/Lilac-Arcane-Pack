@@ -29,6 +29,10 @@ namespace LAP.Core.IDSets
         /// 判定为来自武器战技的射弹合集，这个表只打进去始终都是战技弹幕的
         /// </summary>
         public static HashSet<int> WeaponSkillProj = [];
+        /// <summary>
+        /// 不可被反弹的敌方弹幕，主要用于避免反弹激光弹幕，很多激光弹幕并没有顶点细分，反弹后会变成一大段线段，导致极大的伤害范围和不合理的弹道
+        /// </summary>
+        public static HashSet<int> CantReflectProj = [];
         public override void Load()
         {
             foreach (int a in LAPList.rangedProjectileExceptionList)

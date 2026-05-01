@@ -7,7 +7,10 @@ namespace LAP.Assets.Sounds
     {
         public static SoundStyle SPSwing => new($"{ZionSoundRoute}/SPSwing") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };
         public static SoundStyle SwingAttack => new($"{ZionSoundRoute}/SwingAttack") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };
-
+        #region 莉莉的
+        public static SoundStyle MagicHit02 => new ($"{ZenithSoundRoute}/magic-hit-02") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };
+        public static SoundStyle MagicTrigger02 => new($"{ZenithSoundRoute}/magic-trigger-02") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };
+        #endregion
         public static SoundStyle StormRulerAttack => new($"{DSSoundRoute}/StormRulerAttack") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };
         public static SoundStyle StormRulerCharge => new($"{DSSoundRoute}/StormRulerCharge") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };
         public static SoundStyle WeaponSkillSound => new($"{DSSoundRoute}/WeaponSkillSound") { Volume = 1f, Pitch = Main.rand.NextFloat(-0.2f, 0.2f) };

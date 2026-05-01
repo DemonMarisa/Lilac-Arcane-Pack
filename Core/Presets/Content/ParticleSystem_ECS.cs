@@ -11,5 +11,9 @@ namespace LAP.Core.Presets.Content
         {
             return LAPContent.NewParticle(LAPContent.ParticleType<GlowBall_T>(), lifetime, position, vel, color, 0, scale, Blendstate, speed);
         }
+        public static int NewGlowLozenge(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, int Blendstate = BlendStateID.Additive)
+        {
+            return LAPContent.NewParticle(LAPContent.ParticleType<GlowLozenge>(), lifetime, position, vel, color, 0, scale, Blendstate);
+        }
     }
 }

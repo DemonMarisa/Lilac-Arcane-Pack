@@ -16,17 +16,18 @@ namespace LAP.Core.SystemsLoader
             int curid = LAPPlayer.CurDashID;
             if (LAPDashPlayer.DashCollection.IndexInRange(curid))
             {
-                BasePlayerDash ActiveDash = LAPDashPlayer.DashCollection[curid];
                 LAPPlayer.DashTime = 0;
                 LAPPlayer.DashDelay = 0;
                 LAPPlayer.BeginDash = false;
-                ActiveDash.OnDashEnd(player);
+                BasePlayerDash ActiveDash = LAPPlayer.CurDash;
+                ActiveDash?.OnDashEnd(player);
             }
             LAPPlayer.OverideCurDashID = BeginDashID;
             BasePlayerDash newDash = LAPDashPlayer.DashCollection[BeginDashID];
-            newDash.OnDashStart(player);
-            LAPPlayer.DashTime = newDash.DashTime(player);
-            player.SetImmuneTimeForAllTypes(newDash.ImmuneTime(player));
+            LAPPlayer.CurDash = newDash.Clone();
+            LAPPlayer.CurDash.OnDashStart(player);
+            LAPPlayer.DashTime = LAPPlayer.CurDash.DashTime(player);
+            player.SetImmuneTimeForAllTypes(LAPPlayer.CurDash.ImmuneTime(player));
         }
         public static void SetLAPDash(this Player player, int DashID)
         {

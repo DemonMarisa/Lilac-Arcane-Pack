@@ -19,6 +19,8 @@ namespace LAP.Core.BaseClass
                 return;
             if (player.itemTime > 0)
                 return;
+            if (Item.LAP().SkillShoot == -1)
+                return;
             if (LAPKeybind.WeaponSkillHotKey.JustPressed && !Main.blockMouse)
             {
                 if (Main.playerInventory)

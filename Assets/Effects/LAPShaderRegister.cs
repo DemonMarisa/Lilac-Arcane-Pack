@@ -28,45 +28,31 @@ namespace LAP.Assets.Effects
         {
             if (Main.dedServ)
                 return;
-
             DisplacemenShader = LoadShader("DisplacemenShader");
-            RegisterMiscShader(DisplacemenShader, "LPADisplacementPass", "DisplacemenShader");
 
             MetaballShader = LoadShader("MetaBallShader");
-            RegisterMiscShader(MetaballShader, "LAPMetalBallPass", "MetaBallShader");
 
             EdgeMeltsShader = LoadShader("EdgeMeltsShader");
-            RegisterMiscShader(EdgeMeltsShader, "LAPEdgeMeltsPass", "EdgeMeltsShader");
 
             StandardFlowShader = LoadShader("StandardFlowShader");
-            RegisterMiscShader(StandardFlowShader, "LAPStandardFlowPass", "StandardFlowShader");
 
             FlowWithAShader = LoadShader("FlowWithAShader");
-            RegisterMiscShader(FlowWithAShader, "LAPFlowWithAPass", "FlowWithAShader");
 
             PolarDistortShader = LoadShader("PolarDistortShader");
-            RegisterMiscShader(PolarDistortShader, "LAPPolarDistortPass", "PolarDistortShader");
 
             PolarDistortShaderWithR = LoadShader("PolarDistortShaderWithR");
-            RegisterMiscShader(PolarDistortShaderWithR, "LAPPolarDistortPass", "PolarDistortShaderWithR");
 
             SlashTrailShader = LoadShader("SlashTrailShader");
-            RegisterMiscShader(SlashTrailShader, "LAPSlashTrailShaderPass", "SlashTrailShader");
 
             CDUIMeltShader = LoadShader("CDUIMeltShader");
-            RegisterMiscShader(CDUIMeltShader, "Pass0", "CDUIMeltShader");
 
             GassBlur = LoadShader("GassBlur");
-            RegisterMiscShader(GassBlur, "Pass0", "GassBlur");
 
             Fill = LoadShader("Fill");
-            RegisterMiscShader(Fill, "Pass0", "Fill");
-            
+
             FocusBar = LoadShader("FocusBar");
-            RegisterMiscShader(FocusBar, "Pass0", "FocusBar");
 
             ThresholdShader = LoadShader("ThresholdShader");
-            RegisterMiscShader(ThresholdShader, "Pass0", "ThresholdShader");
 
             LoadScreen();
 
@@ -98,11 +84,11 @@ namespace LAP.Assets.Effects
             return Request<Effect>($"{ShaderPath}{path}");
         }
 
-        public static void RegisterMiscShader(Asset<Effect> shader, string passName, string registrationName)
-        {
-            Asset<Effect> shaderPointer = shader;
-            MiscShaderData passParamRegistration = new(shaderPointer, passName);
-            GameShaders.Misc[$"{ShaderPrefix}{registrationName}"] = passParamRegistration;
-        }
+        //public static void RegisterMiscShader(Asset<Effect> shader, string passName, string registrationName)
+        //{
+        //    Asset<Effect> shaderPointer = shader;
+        //    MiscShaderData passParamRegistration = new(shaderPointer, passName);
+        //    GameShaders.Misc[$"{ShaderPrefix}{registrationName}"] = passParamRegistration;
+        //}
     }
 }

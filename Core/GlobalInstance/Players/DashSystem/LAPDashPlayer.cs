@@ -1,5 +1,5 @@
-﻿using CalamityMod;
-using LAP.Core.Keybind;
+﻿using LAP.Core.Keybind;
+using LAP.Core.NetCode.NetUtilities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
     public class LAPDashPlayer : ModPlayer
     {
         public static List<BasePlayerDash> DashCollection = [];
+        public BasePlayerDash CurDash;
         public int CurDashID;
         /// <summary>
         /// 这个覆盖后必须执行完此次冲刺才会重置
@@ -47,26 +48,31 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                 BasePlayerDash ActiveDash = DashCollection[Index];
                 // 监测是否开始冲刺
                 HandleDashBegin(out bool ThisCanDash);
+                if (ThisCanDash)
+                {
+                    CurDash = ActiveDash.Clone();
+                    Player.SyncedDash(CurDash.Type);
+                }
                 if (ThisCanDash && !BeginDash)
                 {
-                    if (!ActiveDash.CanUseDash(Player))
+                    if (!CurDash.CanUseDash(Player))
                         return;
                     BeginVelocity = Player.velocity;
                     // 如果开始冲刺，赋值并应用起始效果
-                    ActiveDash.OnDashStart(Player);
-                    DashTime = ActiveDash.DashTime(Player);
+                    CurDash.OnDashStart(Player);
+                    DashTime = CurDash.DashTime(Player);
                     BeginDash = true;
-                    Player.SetImmuneTimeForAllTypes(ActiveDash.ImmuneTime(Player));
+                    Player.SetImmuneTimeForAllTypes(CurDash.ImmuneTime(Player));
                 }
                 if (DashTime > 0)
                 {
-                    if (!ActiveDash.UseCustomDashSpeed)
+                    if (!CurDash.UseCustomDashSpeed)
                     {
-                        float PlayerXVel = ActiveDash.DashSpeed(Player);
+                        float PlayerXVel = CurDash.DashSpeed(Player);
                         // 这样写是因为DashTime是从最高值逐渐递减的
-                        float progress = ActiveDash.DashAmount(Player, DashTime, ActiveDash.DashTime(Player));
+                        float progress = CurDash.DashAmount(Player, DashTime, CurDash.DashTime(Player));
                         progress = MathHelper.Clamp(progress, 0f, 1f);
-                        float FianlXVel = MathHelper.Lerp(PlayerXVel * ActiveDash.DashEndSpeedMult(Player), PlayerXVel, progress);
+                        float FianlXVel = MathHelper.Lerp(PlayerXVel * CurDash.DashEndSpeedMult(Player), PlayerXVel, progress);
                         // 开始的时候会记录当前的玩家速度，如果要应用的冲刺速度低于玩家速度，则不会继续降低速度
                         // 并且如果太快，会强制应用新速度
                         if (MathF.Abs(BeginVelocity.X) < 1e3)
@@ -80,18 +86,22 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                             Player.velocity.X = MathF.Abs(FianlXVel) * BeginDirection;
                     }
                     else
-                        ActiveDash.ModifyDashSpeed(Player);
-                    ActiveDash.DuringDash(Player);
+                        CurDash.ModifyDashSpeed(Player);
+                    if (Main.myPlayer == Player.whoAmI)
+                    {
+                        CheckNPCHit(CurDash);
+                    }
+                    CurDash.DuringDash(Player);
                     BeginDash = true;
-                    CheckNPCHit(ActiveDash);
                 }
                 if (BeginDash && DashTime == 0)
                 {
-                    ActiveDash.OnDashEnd(Player);
+                    CurDash.OnDashEnd(Player);
                     BeginVelocity = Vector2.Zero;
-                    DashDelay = ActiveDash.DashDelay(Player);
+                    DashDelay = CurDash.DashDelay(Player);
                     BeginDash = false;
                     OverideCurDashID = -1;
+                    CurDash = null;
                 }
             }
         }
@@ -112,34 +122,36 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                         BeginDirection = 1;
                     CanDash = true;
                 }
-                return;
             }
-            // 原版的双击冲刺判定
-            bool vanillaLeftDashInput = Player.controlLeft && Player.releaseLeft;
-            bool vanillaRightDashInput = Player.controlRight && Player.releaseRight;
-            if (vanillaRightDashInput)
+            else
             {
-                if (VanillaDashInput > 0)
+                // 原版的双击冲刺判定
+                bool vanillaLeftDashInput = Player.controlLeft && Player.releaseLeft;
+                bool vanillaRightDashInput = Player.controlRight && Player.releaseRight;
+                if (vanillaRightDashInput)
                 {
-                    BeginDirection = 1;
-                    canDash = true;
-                    VanillaDashInput = 0;
+                    if (VanillaDashInput > 0)
+                    {
+                        BeginDirection = 1;
+                        canDash = true;
+                        VanillaDashInput = 0;
+                    }
+                    else
+                        VanillaDashInput = 15;
                 }
-                else
-                    VanillaDashInput = 15;
-            }
-            else if (vanillaLeftDashInput)
-            {
-                if (VanillaDashInput < 0)
+                else if (vanillaLeftDashInput)
                 {
-                    BeginDirection = -1;
-                    canDash = true;
-                    VanillaDashInput = 0;
+                    if (VanillaDashInput < 0)
+                    {
+                        BeginDirection = -1;
+                        canDash = true;
+                        VanillaDashInput = 0;
+                    }
+                    else
+                        VanillaDashInput = -15;
                 }
-                else
-                    VanillaDashInput = -15;
+                CanDash = canDash;
             }
-            CanDash = canDash;
         }
         public void CheckNPCImmuneTime()
         {
@@ -165,14 +177,14 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             if (Player.whoAmI != Main.myPlayer)
                 return;
-            Rectangle hitArea = new Rectangle((int)(Player.position.X + Player.velocity.X * 0.5 - 4f), (int)(Player.position.Y + Player.velocity.Y * 0.5 - 4), Player.width + 8, Player.height + 8);
+            Rectangle hitArea = new((int)(Player.position.X + Player.velocity.X * 0.5 - 4f), (int)(Player.position.Y + Player.velocity.Y * 0.5 - 4), Player.width + 8, Player.height + 8);
             foreach (NPC n in Main.ActiveNPCs)
             {
                 if (Player.dontHurtCritters && NPCID.Sets.CountsAsCritter[n.type])
                     continue;
                 if (NPCImmuneTime[n.whoAmI] > 0)
                     return;
-                // 这个ImmunityCooldown是从内往外穿的
+                // 这个ImmunityCooldown是从内往外传的
                 int cd = ImmunityCooldownID.General;
                 bool? hasModNPC = n.ModNPC?.CanHitPlayer(Player, ref cd);
                 if (hasModNPC is not null)

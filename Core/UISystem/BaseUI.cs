@@ -9,8 +9,7 @@ using Terraria.ModLoader;
 namespace LAP.Core.UISystem
 {
     /// <summary>
-    /// 必须分配深度
-    /// UI是否允许使用除了过对应函数外，还需要没有更高一级的深度的UI
+    /// 这一套只适合用于面板级的UI，不是用来做小组件的，虽然你完全可以用它来做小组件，但它的设计初衷是面板级UI，所以它有一个重要的设计就是层级关系
     /// 比如一个1级UI，当有2级UI时，1级UI就不会起效了
     /// </summary>
     public abstract class BaseUI : ModType
@@ -91,6 +90,7 @@ namespace LAP.Core.UISystem
 
             if (IsHover)
             {
+                Main.LocalPlayer.mouseInterface = true; // 阻止玩家使用物品
                 if (Main.mouseLeft && !PressMouseLeft)
                 {
                     OnLeftClick();

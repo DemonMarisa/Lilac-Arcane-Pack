@@ -48,6 +48,7 @@ namespace LAP.Core.Graphics.ScreenDistortion
                     Entities[i].ApplyShader();
                     Main.spriteBatch.Draw(screenTarget, Vector2.Zero, Color.White);
                     Main.spriteBatch.End();
+
                     screenTarget.SwapToTarget();
                     Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null);
                     Main.spriteBatch.Draw(screenTargetSwap, Vector2.Zero, Color.White);

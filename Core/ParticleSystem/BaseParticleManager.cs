@@ -1,4 +1,5 @@
 ﻿using LAP.Content.Configs;
+using LAP.Core.ParticleSystem_ECS;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,7 +28,6 @@ namespace LAP.Core.ParticleSystem
         public static List<BaseParticle> PriorityActiveParticlesAlpha = [];
         public static List<BaseParticle> PriorityActiveParticlesNonPremultiplied = [];
         public static List<BaseParticle> PriorityActiveParticlesAdditive = [];
-        public int TotalDust;
         #region 加载卸载
         //public override void Load()
         //{
@@ -60,7 +60,6 @@ namespace LAP.Core.ParticleSystem
             UpdateParticleList(PriorityActiveParticlesAlpha);
             UpdateParticleList(PriorityActiveParticlesNonPremultiplied);
             UpdateParticleList(PriorityActiveParticlesAdditive);
-            TotalDust = ActiveParticlesAlpha.Count + ActiveParticlesNonPremultiplied.Count + ActiveParticlesAdditive.Count + PriorityActiveParticlesAlpha.Count + PriorityActiveParticlesNonPremultiplied.Count + PriorityActiveParticlesAdditive.Count;
         }
         public static void UpdateParticleList(List<BaseParticle> list)
         {
@@ -137,7 +136,8 @@ namespace LAP.Core.ParticleSystem
         public static void DrawDebugInfo()
         {
             DynamicSpriteFont font = FontAssets.MouseText.Value;
-            string particleCount = $"粒子总数: {ActiveParticlesAlpha.Count + ActiveParticlesNonPremultiplied.Count + ActiveParticlesAdditive.Count + PriorityActiveParticlesAlpha.Count + PriorityActiveParticlesNonPremultiplied.Count + PriorityActiveParticlesAdditive.Count}";
+            int TotalDust = ActiveParticlesAlpha.Count + ActiveParticlesNonPremultiplied.Count + ActiveParticlesAdditive.Count + PriorityActiveParticlesAlpha.Count + PriorityActiveParticlesNonPremultiplied.Count + PriorityActiveParticlesAdditive.Count + ParticleDataManager.activePoint_add + ParticleDataManager.activePoint_alpha + ParticleDataManager.activePoint_Nonmult;
+            string particleCount = $"粒子总数: {TotalDust}";
             Vector2 stringsize = ChatManager.GetStringSize(font, particleCount, Vector2.One);
             ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, font, particleCount, LAPUtilities.ScreenCenter_Top() + new Vector2(0, 64),  Color.White, 0f, stringsize / 2, new Vector2(1f));
         }

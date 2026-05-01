@@ -202,14 +202,6 @@ namespace LAP.Core.Utilities
         {
             return proj.numUpdates == -1;
         }
-        public static void SetCantSplit(this Projectile proj)
-        {
-            proj.GetGlobalProjectile<LAPGlobalProj>().canSplit = false;
-        }
-        public static bool CantSplit(this Projectile proj)
-        {
-            return proj.GetGlobalProjectile<LAPGlobalProj>().canSplit;
-        }
         public static void SpawnLifeStealProj(this Player player, NPC target, IEntitySource Source, int projType, Vector2 Pos, Vector2 vel, int OverridehealAmt = 0, bool Useconditional = false, bool shared = true)
         {
             if (target == null)

@@ -1,6 +1,5 @@
-﻿// 标准的流动与淡入淡出shader，但是用于噪波的shader
-// 最终输出为 边缘透明度 * 输入颜色 * 噪波的R通道 乘第二次透明度
-// 用于Alpha裁切的材质
+﻿// 标准的流动与淡入淡出shader，用于非噪波的shader
+// 最终输出为 边缘透明度 * 输入颜色 * 你要覆盖的颜色 * 噪波的r通道
 sampler uTexture1 : register(s0);
 // 左侧淡出的长度比例, 例如 0.2 代表最后 20% 的长度会淡出
 float uFadeoutLeftLength;
@@ -9,6 +8,8 @@ float uFadeinTopLength;
 float uFadeinBottomLength;
 float2 UVOffset;
 float2 UVMult;
+
+float4 OverlayColor;
 
 struct VertexShaderOutput
 {
@@ -25,8 +26,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float fadeOutR = smoothstep(1.0, 1.0 - uFadeinRigtLength, coords.x);
     float fadeInT = smoothstep(0.0, uFadeinTopLength, coords.y);
     float fadeOutB = smoothstep(1.0, 1.0 - uFadeinBottomLength, coords.y);
-    float Opacity = fadeInL * fadeOutR * fadeInT * fadeOutB;
-    return Opacity * input.Color * baseColor.r;
+    float alphaMult = 1 * fadeInL * fadeOutR * fadeInT * fadeOutB;
+    return OverlayColor * alphaMult * input.Color * baseColor.r;
 }
 
 technique SpriteDrawing
