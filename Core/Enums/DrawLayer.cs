@@ -12,5 +12,6 @@ namespace LAP.Core.Enums
         BeforePlayer,
         AfterDusts,
         BeforeDusts,
+        EndCapture
     }
 }

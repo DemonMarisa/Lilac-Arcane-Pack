@@ -12,6 +12,7 @@ namespace UCA.Core.ILEditingManger
 {
     public class DrawLayerManger : ModSystem
     {
+        // 整体绘制顺序是 NPC - 射弹 - 玩家 - 粒子
         public override void Load()
         {
             On_Main.DrawDust += MetaBallManager.DrawRenderTarget;
@@ -22,6 +23,8 @@ namespace UCA.Core.ILEditingManger
             On_Main.DrawDust += ParticleDataManager.DrawParticle_ECS;
             On_Main.DrawPlayers_AfterProjectiles += PixelatedRenderManger.DrawTarget_BeforePlayers;
 
+            On_Main.DrawProjectiles += DeepGlow.Hook_AfterProjectile;
+            On_Main.DrawDust += DeepGlow.Hook_AfterDust;
             On_FilterManager.EndCapture += DeepGlow.DrawDeepGlow;
         }
         public override void Unload()
@@ -34,6 +37,8 @@ namespace UCA.Core.ILEditingManger
             On_Main.DrawDust -= ParticleDataManager.DrawParticle_ECS;
             On_Main.DrawPlayers_AfterProjectiles -= PixelatedRenderManger.DrawTarget_BeforePlayers;
 
+            On_Main.DrawProjectiles -= DeepGlow.Hook_AfterProjectile;
+            On_Main.DrawDust -= DeepGlow.Hook_AfterDust;
             On_FilterManager.EndCapture -= DeepGlow.DrawDeepGlow;
         }
     }

@@ -1,10 +1,10 @@
 ﻿using LAP.Assets.Effects;
+using LAP.Core.Enums;
 using LAP.Core.Graphics.RenderTargetsManager;
 using LAP.Core.MiscDate;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace LAP.Core.Graphics.DeepGlow
 {
-    public class DeepGlow : ModSystem
+    public partial class DeepGlow : ModSystem
     {
         public static Effect GlowEffect => LAPShaderRegister.DeepGlow.Value;
         // 降采样和升采样的渲染目标缓存
@@ -29,11 +29,21 @@ namespace LAP.Core.Graphics.DeepGlow
         public static float SoftKnee = 0.25f;
         public static Queue<Action> GlowRequests = new Queue<Action>();
         // 传进来发光绘制逻辑
-        public static void SubmitCustomGlow(Action drawAction)
+        /// <summary>
+        /// 只支持AfterProj和AfterDust，其它的没有制作适配
+        /// </summary>
+        /// <param name="drawAction"></param>
+        /// <param name="layer"></param>
+        public static void SubmitCustomGlow(Action drawAction, DrawLayer layer = DrawLayer.EndCapture)
         {
             if (Main.dedServ || drawAction == null) 
                 return;
-            GlowRequests.Enqueue(drawAction);
+            if (layer is DrawLayer.AfterProjectiles)
+                GlowRequests_AfterProjectile.Enqueue(drawAction);
+            else if (layer is DrawLayer.AfterDusts)
+                GlowRequests_AfterDust.Enqueue(drawAction);
+            else
+                GlowRequests.Enqueue(drawAction);
         }
         public override void Load()
         {
@@ -64,7 +74,7 @@ namespace LAP.Core.Graphics.DeepGlow
         #region 创建RT2D
         public static void BuildRenderTargets()
         {
-            Main.QueueMainThreadAction(() =>
+            Main.QueueMaigengxinThreadAction(() =>
             {
                 float width = Main.screenWidth;
                 float height = Main.screenHeight;
@@ -84,7 +94,7 @@ namespace LAP.Core.Graphics.DeepGlow
                 float width = Main.screenWidth;
                 float height = Main.screenHeight;
                 _upTargets = new RenderTarget2D[Iterations - 1];
-                // 反向遍历的同时还比迭代次数少一个元素
+                // 反向遍历的同时还比迭代次数少一个元素，这里很重要，因为UpTarget本就比DownTarget少一个元素
                 for (int i = Iterations - 2; i >= 0; i--)
                 {
                     width = Math.Max(1, width / 2);
