@@ -40,7 +40,7 @@ namespace LAP.Core.Graphics.DeepGlow
             if (Main.dedServ)
                 return;
             BuildRenderTargets();
-            On_FilterManager.EndCapture += DrawDeepGlow;
+            // On_FilterManager.EndCapture += DrawDeepGlow;
         }
         public override void Unload()
         {
@@ -58,7 +58,7 @@ namespace LAP.Core.Graphics.DeepGlow
                     _upTargets[i].Dispose();
                 }
             });
-            On_FilterManager.EndCapture -= DrawDeepGlow;
+            // On_FilterManager.EndCapture -= DrawDeepGlow;
             GlowRequests.Clear();
         }
         #region 创建RT2D

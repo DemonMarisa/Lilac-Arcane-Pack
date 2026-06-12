@@ -1,48 +1,30 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LAP.Core.Enums;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LAP.Core.Graphics.Primitives.Trail
 {
-    public struct TrailDrawData(Vector2 drawPos, Color drawColor, Vector2 primitivesHeight, float primitivesHeightRot)
+    // 记录轨迹点的数据
+    public readonly struct TrailDrawData(Vector2 pos, Color color, float height, float rot)
     {
-        /// <summary>
-        /// 传入的世界坐标
-        /// </summary>
-        public Vector2 PosData = drawPos;
-        /// <summary>
-        /// 传入每个点的颜色
-        /// </summary>
-        public Color DrawColor = drawColor;
-        /// <summary>
-        /// 顶点的偏移
-        /// </summary>
-        public Vector2 PrimitivesOffset = primitivesHeight;
-        /// <summary>
-        /// 顶点偏移的整体旋转
-        /// </summary>
-        public float PrimitivesHeightRot = primitivesHeightRot;
+        public readonly Vector2 Position = pos;
+        public readonly Color DrawColor = color;
+        public readonly float Height = height;
+        public readonly float Rotation = rot;
     }
 
-    public struct DrawSetting
+    public struct DrawSetting(Texture2D Texture, SamplerState samplerState = null, TrailEffects trailEffect = TrailEffects.None, bool smoothUV = false, int smoothSegments = -1, Effect effect = null, int applyPass = 0)
     {
-        public DrawSetting(Texture2D texture)
-        {
-            texture2d = texture;
-            sampler = SamplerState.PointWrap;
-        }
-        public DrawSetting(Texture2D texture, SamplerState samplerState)
-        {
-            texture2d = texture;
-            sampler = samplerState;
-        }
-        public DrawSetting(Texture2D texture, SamplerState samplerState, int smooth)
-        {
-            texture2d = texture;
-            sampler = samplerState;
-            smoothSegments = smooth;
-        }
-        public Texture2D texture2d;
-        public SamplerState sampler;
-        public int smoothSegments = 3;
+        public Texture2D texture = Texture;
+        public SamplerState samplerState = samplerState ?? SamplerState.LinearWrap;
+        public TrailEffects trailEffect = trailEffect;
+        // 是否对UV进行平滑处理，开启后会根据点之间的距离重新计算UV坐标，使纹理在拉伸时更均匀，减少明显的拉伸失真
+        public bool smoothUV = smoothUV;
+        // 平滑点的插值段数，默认为-1表示不进行位置平滑，设置为大于0的值会在原始点之间插入额外的点进行平滑处理，数值越大平滑效果越明显但性能开销也越大
+        public int smoothSegments = smoothSegments;
+        // shader
+        public Effect effect = effect;
+        // 需要应用的shader pass索引
+        public int applyPass = applyPass;
     }
 }
