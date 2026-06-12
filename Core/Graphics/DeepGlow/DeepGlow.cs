@@ -1,4 +1,7 @@
 ﻿using LAP.Assets.Effects;
+using LAP.Core.Graphics.RenderTargetsManager;
+using LAP.Core.MiscDate;
+using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -91,6 +94,14 @@ namespace LAP.Core.Graphics.DeepGlow
             });
         }
         #endregion
+        // 保持RT2D
+        public override void UpdateUI(GameTime gameTime)
+        {
+            if (Main.dedServ)
+                return;
+            if (RT2DManager.OldScreenSize != LAPInfo.ScreenSize)
+                BuildRenderTargets();
+        }
         #region 绘制DeepGlow
         public static void DrawDeepGlow(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget, RenderTarget2D screenTargetSwap, Color clearColor)
         {
@@ -134,7 +145,7 @@ namespace LAP.Core.Graphics.DeepGlow
             Main.spriteBatch.Draw(screenTarget, Vector2.Zero, Color.White);
             Main.spriteBatch.End();
         }
-        // 【新增】处理所有自定义光源的方法
+        // 处理所有自定义光源的方法
         public static void DrawCustomGlowsToHighlight()
         {
             if (GlowRequests.Count == 0)
@@ -225,21 +236,6 @@ namespace LAP.Core.Graphics.DeepGlow
             Main.spriteBatch.Draw(screenTargetSwap, Vector2.Zero, Color.White);
             Main.spriteBatch.Draw(target, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), DrawColor);
             Main.spriteBatch.End();
-        }
-    }
-    public static class GlowHelper
-    {
-        public static bool SwapToTarget(this RenderTarget2D rt)
-        {
-            GraphicsDevice gD = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            if (Main.gameMenu || Main.dedServ || spriteBatch is null || rt is null || gD is null)
-                return false;
-
-            gD.SetRenderTarget(rt);
-            gD.Clear(Color.Transparent);
-            return true;
         }
     }
 }

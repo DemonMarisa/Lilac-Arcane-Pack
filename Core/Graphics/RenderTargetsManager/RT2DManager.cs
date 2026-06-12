@@ -10,7 +10,7 @@ namespace LAP.Core.Graphics.RenderTargetsManager
 {
     public class RT2DManager : ModSystem
     {
-        public Vector2 OldScreenSize;
+        public static Vector2 OldScreenSize;
         public static List<RenderTarget2D> RT2D_ScreenSize = [];
         public static List<RenderTarget2D> RT2D_Normal = [];
         public override void Load()

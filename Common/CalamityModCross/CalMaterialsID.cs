@@ -8,7 +8,6 @@ namespace LAP.Common.CalamityModCross
         public static int ArmoredShellID;// 装甲外壳
         public static int RuinousSoulID;// 毁灭之灵
         public static int LifeAlloyID;// 生命合金
-        public static int GalacticaSingularityID;// 星系异石
         public static int LivingShardID;// 生命碎片
         public static int CosmiliteBarID;// 星宇锭
         public override void OnModLoad()
@@ -24,7 +23,6 @@ namespace LAP.Common.CalamityModCross
             ArmoredShellID = ItemType<ArmoredShell>();
             RuinousSoulID = ItemType<RuinousSoul>();
             LifeAlloyID = ItemType<LifeAlloy>();
-            GalacticaSingularityID = ItemType<GalacticaSingularity>();
             LivingShardID = ItemType<LivingShard>();
             CosmiliteBarID = ItemType<CosmiliteBar>();
         }

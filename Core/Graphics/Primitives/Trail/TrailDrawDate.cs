@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LAP.Core.Graphics.Primitives.Trail
 {
-    public struct TrailDrawDate(Vector2 drawPos, Color drawColor, Vector2 primitivesHeight, float primitivesHeightRot)
+    public struct TrailDrawData(Vector2 drawPos, Color drawColor, Vector2 primitivesHeight, float primitivesHeightRot)
     {
         /// <summary>
         /// 传入的世界坐标
         /// </summary>
-        public Vector2 PosDate = drawPos;
+        public Vector2 PosData = drawPos;
         /// <summary>
         /// 传入每个点的颜色
         /// </summary>
@@ -35,7 +35,14 @@ namespace LAP.Core.Graphics.Primitives.Trail
             texture2d = texture;
             sampler = samplerState;
         }
+        public DrawSetting(Texture2D texture, SamplerState samplerState, int smooth)
+        {
+            texture2d = texture;
+            sampler = samplerState;
+            smoothSegments = smooth;
+        }
         public Texture2D texture2d;
         public SamplerState sampler;
+        public int smoothSegments = 3;
     }
 }
