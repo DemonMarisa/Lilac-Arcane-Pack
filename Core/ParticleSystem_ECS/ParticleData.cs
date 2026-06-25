@@ -14,6 +14,7 @@ namespace LAP.Core.ParticleSystem_ECS
         public Vector2 Velocity;
         public Vector2 Origin;
         public Color DrawColor;
+        public float Opacity;
         public float Rotation;
         public float Scale = 1f;
         public Vector2 Scale2 = Vector2.One;

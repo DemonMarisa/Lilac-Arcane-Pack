@@ -13,7 +13,7 @@ namespace LAP.Core.Graphics.Primitives.Trail
         public readonly float Rotation = rot;
     }
 
-    public struct DrawSetting(Texture2D Texture, SamplerState samplerState = null, TrailEffects trailEffect = TrailEffects.None, bool smoothUV = false, int smoothSegments = -1, Effect effect = null, int applyPass = 0)
+    public struct DrawSetting(Texture2D Texture, bool smoothUV = false, int smoothSegments = -1, TrailEffects trailEffect = TrailEffects.None, SamplerState samplerState = null, Effect effect = null, int applyPass = 0, float xuvOffset = 0)
     {
         public Texture2D texture = Texture;
         public SamplerState samplerState = samplerState ?? SamplerState.LinearWrap;
@@ -26,5 +26,7 @@ namespace LAP.Core.Graphics.Primitives.Trail
         public Effect effect = effect;
         // 需要应用的shader pass索引
         public int applyPass = applyPass;
+        // 用于移动贴图
+        public float xuvOffset = xuvOffset;
     }
 }

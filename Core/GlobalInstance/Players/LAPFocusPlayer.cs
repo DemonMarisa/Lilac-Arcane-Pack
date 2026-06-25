@@ -1,4 +1,4 @@
-﻿using LAP.Content.Particles;
+﻿
 using LAP.Core.LAPConditions;
 using LAP.Core.MiscDate;
 using Terraria;
@@ -9,6 +9,7 @@ namespace LAP.Core.GlobalInstance.Players
 {
     public partial class LAPPlayer : ModPlayer
     {
+
         /// <summary>
         /// 是否使用消耗专注值的物品，必须和FocusRegenRate一同为0才可以恢复
         /// </summary>

@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 
 namespace LAP.Core.Graphics.Primitives.Trail
 {
@@ -123,8 +122,8 @@ namespace LAP.Core.Graphics.Primitives.Trail
                 float progress = 0f;
                 if (pointCount > 0)
                     progress = CurrentSetting.smoothUV ? (totalDistance == 0 ? 0 : DistanceBuffer[i] / totalDistance) : (float)i / (pointCount - 1);
-                Vector3 upUV = new(progress, 1f, 0f);
-                Vector3 downUV = new(progress, 0f, 0f);
+                Vector3 upUV = new(progress + CurrentSetting.xuvOffset, 1f, 0f);
+                Vector3 downUV = new(progress + CurrentSetting.xuvOffset, 0f, 0f);
                 // 翻转UV
                 FlipUV(ref upUV, ref downUV, progress);
                 vertexArray[vertexCount++] = new VertexPositionColorTexture2D(data.Position + offset, data.DrawColor, upUV);

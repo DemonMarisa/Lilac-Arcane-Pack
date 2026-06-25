@@ -8,15 +8,18 @@ namespace LAP.Assets.Effects
     {
         public static Asset<Effect> Pixelation { get; private set; }
         public static Asset<Effect> ScreenDistortion { get; private set; }
+        public static Asset<Effect> DeepGlow { get; private set; }
         public static void LoadScreen()
         {
             Pixelation = LoadScreenShader("Pixelation");
             ScreenDistortion = LoadScreenShader("ScreenDistortion");
+            DeepGlow = LoadScreenShader("DeepGlow");
         }
         public static void UnLoadScreen()
         {
             Pixelation = null;
             ScreenDistortion = null;
+            DeepGlow = null;
         }
         public static Asset<Effect> LoadScreenShader(string path)
         {

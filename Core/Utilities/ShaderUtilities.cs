@@ -1,4 +1,5 @@
 ﻿using LAP.Assets.Effects;
+using LAP.Core.SystemsLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -61,6 +62,11 @@ namespace LAP.Core.Utilities
             effect2.Parameters["UVOffset"].SetValue(UV);
             effect2.Parameters["UVMult"].SetValue(UVMult);
             effect2.CurrentTechnique.Passes[0].Apply();
+        }
+        public static void ApplyDefaultShader()
+        {
+            var effect = LAPShaderRegister.DefaultShader.Value;
+            effect.CurrentTechnique.Passes[0].Apply();
         }
         public static void SetTexture(Texture2D texture2D, int Index)
         {

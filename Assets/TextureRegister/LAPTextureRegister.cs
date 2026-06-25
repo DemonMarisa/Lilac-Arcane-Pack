@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CalamityMod.Items.Potions.Alcohol;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -34,6 +35,7 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath InvisibleProj { get; private set; }
         public static Tex2DWithPath WhiteCircle { get; private set; }
         public static Tex2DWithPath WhiteCube { get; private set; }
+        public static Tex2DWithPath WhiteRing { get; private set; }
         public static Tex2DWithPath BigWhiteCube { get; private set; }
         public override void Load()
         {
@@ -41,6 +43,7 @@ namespace LAP.Assets.TextureRegister
             WhiteCircle = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteCircle");
             WhiteCube = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteCube");
             BigWhiteCube = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/BigWhiteCube");
+            WhiteRing = new Tex2DWithPath($"LAP/Assets/TextureRegister/Textures/WhiteRing");
             LoadMAGNOLIATextures();
             LoadExp33Texture();
             LoadExtraTexture();
@@ -54,6 +57,7 @@ namespace LAP.Assets.TextureRegister
             WhiteCircle = null;
             WhiteCube = null;
             BigWhiteCube = null;
+            WhiteRing = null;
             UnloadMAGNOLIATextures();
             UnloadExp33Textures();
             UnloadExtraTextures();

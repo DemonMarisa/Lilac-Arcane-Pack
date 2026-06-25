@@ -1,5 +1,5 @@
 ﻿using LAP.Core.GlobalInstance.Players.DashSystem;
-using LAP.Core.Graphics.DrawNode;
+using LAP.Core.Graphics.VFX;
 using LAP.Core.LAPUI.CustomCD;
 using LAP.Core.MetaBallsSystem;
 using LAP.Core.NetCode;
@@ -17,13 +17,12 @@ namespace LAP.Core.SystemsLoader
         public static int PackHandleType<T>() where T : BaseLAPHandlePack => GetInstance<T>()?.Type ?? 0;
         public static int UIType<T>() where T : BaseUI => GetInstance<T>()?.Type ?? 0;
         public static int ParticleType<T>() where T : ParticleBehaviors => GetInstance<T>()?.Type ?? 0;
-        public static int GetTotalNode()
-        {
-            return NodeManager.PostDustAlpha.Count + NodeManager.PostDustNonPreMult.Count + NodeManager.PostDustAdd.Count + NodeManager.PreProjectileAlpha.Count + NodeManager.PreProjectileNonPreMult.Count + NodeManager.PreProjectileAdd.Count;
-        }
+        public static int VFXType<T>() where T : VFXBehavior => GetInstance<T>()?.Type ?? 0;
         public static int GetTotalParticle()
         {
-            return BaseParticleManager.ActiveParticlesAlpha.Count + BaseParticleManager.ActiveParticlesNonPremultiplied.Count + BaseParticleManager.ActiveParticlesAdditive.Count + BaseParticleManager.PriorityActiveParticlesAlpha.Count + BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Count + BaseParticleManager.PriorityActiveParticlesAdditive.Count;
+            return BaseParticleManager.ActiveParticlesAlpha.Count + BaseParticleManager.ActiveParticlesNonPremultiplied.Count + 
+                BaseParticleManager.ActiveParticlesAdditive.Count + BaseParticleManager.PriorityActiveParticlesAlpha.Count + 
+                BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Count + BaseParticleManager.PriorityActiveParticlesAdditive.Count;
         }
     }
 }

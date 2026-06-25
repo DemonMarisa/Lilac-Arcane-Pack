@@ -1,6 +1,5 @@
-﻿using LAP.Core.Presets.Content;
-using LAP.Core.UISystem;
-using LAP.Core.Utilities;
+﻿
+using LAP.Core.Graphics.Lightning;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -42,6 +41,7 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            LightningBuilder.SpawnLightning(Main.MouseWorld, Main.MouseWorld + Vector2.UnitY * 1000, Color.White, Color.Wheat, 10, 2, 15, 4);
             return false;
         }
     }

@@ -94,13 +94,13 @@ namespace LAP.Core.ParticleSystem
             #region 渲染粒子
             #region 渲染优先粒子
             DrawParticles(PriorityActiveParticlesAlpha, BlendState.AlphaBlend);
-            DrawParticles(PriorityActiveParticlesAdditive, BlendState.Additive);
             DrawParticles(PriorityActiveParticlesNonPremultiplied, BlendState.NonPremultiplied);
+            DrawParticles(PriorityActiveParticlesAdditive, BlendState.Additive);
             #endregion
             #region 渲染常规粒子
             DrawParticles(ActiveParticlesAlpha, BlendState.AlphaBlend);
-            DrawParticles(ActiveParticlesAdditive, BlendState.Additive);
             DrawParticles(ActiveParticlesNonPremultiplied, BlendState.NonPremultiplied);
+            DrawParticles(ActiveParticlesAdditive, BlendState.Additive);
             #endregion
             #endregion
         }

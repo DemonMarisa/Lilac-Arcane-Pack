@@ -15,6 +15,7 @@ namespace LAP.Core.Graphics.DeepGlow
 {
     public partial class DeepGlow : ModSystem
     {
+        public static int OtherLayerSave = -1;
         public static Effect GlowEffect => LAPShaderRegister.DeepGlow.Value;
         // 降采样和升采样的渲染目标缓存
         public static RenderTarget2D HightLightTarget;
@@ -30,7 +31,7 @@ namespace LAP.Core.Graphics.DeepGlow
         public static Queue<Action> GlowRequests = new Queue<Action>();
         // 传进来发光绘制逻辑
         /// <summary>
-        /// 只支持AfterProj和AfterDust，其它的没有制作适配
+        /// 只支持AfterProj，BeforeTile和AfterDust，其它的没有制作适配
         /// </summary>
         /// <param name="drawAction"></param>
         /// <param name="layer"></param>
@@ -74,7 +75,8 @@ namespace LAP.Core.Graphics.DeepGlow
         #region 创建RT2D
         public static void BuildRenderTargets()
         {
-            Main.QueueMaigengxinThreadAction(() =>
+            RT2DManager.RequestScreenSizeRT2D(out OtherLayerSave);
+            Main.QueueMainThreadAction(() =>
             {
                 float width = Main.screenWidth;
                 float height = Main.screenHeight;

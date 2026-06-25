@@ -10,14 +10,14 @@ namespace LAP.Assets.Effects
         public static Asset<Effect> AlphaFade_Noise { get; private set; }
         public static Asset<Effect> AlphaFade_Noise_OColor { get; private set; }
         public static Asset<Effect> AlphaFade_OColor { get; private set; }
-        public static Asset<Effect> DeepGlow { get; private set; }
+        public static Asset<Effect> LightningShader { get; private set; }
         public static void Load2()
         {
             AlphaFade = LoadShader("AlphaFade/AlphaFade");
             AlphaFade_Noise = LoadShader("AlphaFade/AlphaFade_Noise");
             AlphaFade_Noise_OColor = LoadShader("AlphaFade/AlphaFade_Noise_OColor");
             AlphaFade_OColor = LoadShader("AlphaFade/AlphaFade_OColor");
-            DeepGlow = LoadScreenShader("DeepGlow");
+            LightningShader = LoadShader("LightningShader");
         }
         public static void UnLoad2()
         {
@@ -25,7 +25,7 @@ namespace LAP.Assets.Effects
             AlphaFade_Noise = null;
             AlphaFade_Noise_OColor = null;
             AlphaFade_OColor = null;
-            DeepGlow = null;
+            LightningShader = null;
         }
     }
 }

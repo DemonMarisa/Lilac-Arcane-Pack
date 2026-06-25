@@ -24,6 +24,7 @@ namespace LAP.Assets.Effects
         public static Asset<Effect> Fill { get; private set; }
         public static Asset<Effect> FocusBar { get; private set; }
         public static Asset<Effect> ThresholdShader { get; private set; }
+        public static Asset<Effect> DefaultShader { get; private set; }
         public override void Load()
         {
             if (Main.dedServ)
@@ -53,6 +54,8 @@ namespace LAP.Assets.Effects
             FocusBar = LoadShader("FocusBar");
 
             ThresholdShader = LoadShader("ThresholdShader");
+
+            DefaultShader = LoadShader("DefaultShader");
 
             LoadScreen();
 

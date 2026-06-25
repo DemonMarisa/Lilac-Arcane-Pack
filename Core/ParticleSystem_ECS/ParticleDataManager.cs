@@ -69,12 +69,13 @@ namespace LAP.Core.ParticleSystem_ECS
                     }
                 }
             });
-            for (int i = 0; i < point; i++)
+            for (int i = point - 1; i >= 0; i--)
             {
                 if (!particleDates[i].Active)
                 {
                     PAICollection[particleDates[i].Type].OnKill(ref particleDates[i]);
                     particleDates[i] = particleDates[point - 1];
+                    particleDates[i].whoAmI = i;
                     point--;
                 }
             }
@@ -83,8 +84,8 @@ namespace LAP.Core.ParticleSystem_ECS
         {
             orig(self);
             DrawParticles(activePoint_alpha, particleData_alpha, BlendState.AlphaBlend);
-            DrawParticles(activePoint_add, particleData_add, BlendState.Additive);
             DrawParticles(activePoint_Nonmult, particleData_nopremult, BlendState.NonPremultiplied);
+            DrawParticles(activePoint_add, particleData_add, BlendState.Additive);
         }
         public static void DrawParticles(int point, ParticleData[] particleDates, BlendState bl)
         {

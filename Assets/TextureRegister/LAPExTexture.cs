@@ -22,6 +22,11 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath StandardFlow2 { get; private set; }
         public static Tex2DWithPath StandardFlow3 { get; private set; }
         public static Tex2DWithPath StandardGradient { get; private set; }
+        public static Tex2DWithPath OpticalFlaresLine { get; private set; }
+        public static Tex2DWithPath DeathRay_T { get; private set; }
+        public static Tex2DWithPath GigaBeam_T { get; private set; }
+        public static Tex2DWithPath Lightning_T { get; private set; }
+        public static Tex2DWithPath Lightning2_T { get; private set; }
         public static void LoadExtraTexture()
         {
             ShadowNebula = new Tex2DWithPath($"{ExtraPath}/MetaBallBG/ShadowNebula");
@@ -41,6 +46,11 @@ namespace LAP.Assets.TextureRegister
             StandardFlow2 = new Tex2DWithPath($"{ExtraPath}/StandardFlow2");
             StandardFlow3 = new Tex2DWithPath($"{ExtraPath}/StandardFlow3");
             StandardGradient = new Tex2DWithPath($"{ExtraPath}/StandardGradient");
+            OpticalFlaresLine = new Tex2DWithPath($"{ExtraPath}/OpticalFlaresLine");
+            DeathRay_T = new Tex2DWithPath($"{ExtraPath}/DeathRay_T");
+            GigaBeam_T = new Tex2DWithPath($"{ExtraPath}/GigaBeam_T");
+            Lightning_T = new Tex2DWithPath($"{ExtraPath}/Lightning_T");
+            Lightning2_T = new Tex2DWithPath($"{ExtraPath}/Lightning2_T");
         }
         public static void UnloadExtraTextures()
         {
@@ -60,6 +70,11 @@ namespace LAP.Assets.TextureRegister
             StandardFlow2 = null;
             StandardFlow3 = null;
             StandardGradient = null;
+            OpticalFlaresLine = null;
+            DeathRay_T = null;
+            GigaBeam_T = null;
+            Lightning_T = null;
+            Lightning2_T = null;
         }
     }
 }
