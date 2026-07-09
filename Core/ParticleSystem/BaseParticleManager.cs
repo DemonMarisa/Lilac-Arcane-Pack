@@ -1,4 +1,5 @@
 ﻿using LAP.Content.Configs;
+using LAP.Core.DebugSystem;
 using LAP.Core.ParticleSystem_ECS;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
@@ -117,29 +118,6 @@ namespace LAP.Core.ParticleSystem
                 }
                 Main.spriteBatch.End();
             }
-        }
-        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {
-            int mouseIndex = layers.FindIndex(layer => layer.Name == "Vanilla: Mouse Text");
-            if (mouseIndex != -1)
-            {
-                if (LAPConfig.Instance.DeBugInfo)
-                {
-                    layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP ParticleDebug Info UI", delegate ()
-                    {
-                        DrawDebugInfo();
-                        return true;
-                    }, InterfaceScaleType.UI));
-                }
-            }
-        }
-        public static void DrawDebugInfo()
-        {
-            DynamicSpriteFont font = FontAssets.MouseText.Value;
-            int TotalDust = ActiveParticlesAlpha.Count + ActiveParticlesNonPremultiplied.Count + ActiveParticlesAdditive.Count + PriorityActiveParticlesAlpha.Count + PriorityActiveParticlesNonPremultiplied.Count + PriorityActiveParticlesAdditive.Count + ParticleDataManager.activePoint_add + ParticleDataManager.activePoint_alpha + ParticleDataManager.activePoint_Nonmult;
-            string particleCount = $"粒子总数: {TotalDust}";
-            Vector2 stringsize = ChatManager.GetStringSize(font, particleCount, Vector2.One);
-            ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, font, particleCount, LAPUtilities.ScreenCenter_Top() + new Vector2(0, 64),  Color.White, 0f, stringsize / 2, new Vector2(1f));
         }
     }
 }

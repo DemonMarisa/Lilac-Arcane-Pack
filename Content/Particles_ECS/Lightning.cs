@@ -1,5 +1,6 @@
 ﻿using LAP.Assets.TextureRegister;
 using LAP.Core.Enums;
+using LAP.Core.Graphics.DeepGlow;
 using LAP.Core.ParticleSystem;
 using LAP.Core.ParticleSystem_ECS;
 using LAP.Core.Utilities;
@@ -30,6 +31,16 @@ namespace LAP.Content.Particles_ECS
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, frame, Color.White * particle.Opacity, particle.Rotation, origin, particle.Scale, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, frame, particle.DrawColor * particle.Opacity, particle.Rotation, origin, particle.Scale, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, frame, particle.DrawColor * particle.Opacity, particle.Rotation, origin, particle.Scale, SpriteEffects.None, 0f);
+            if (particle.aibool0)
+            {
+                ParticleData data = particle;
+                DeepGlow.SubmitCustomGlow(() =>
+                {
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, frame, Color.White * data.Opacity, data.Rotation, origin, data.Scale, SpriteEffects.None, 0f);
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, frame, data.DrawColor * data.Opacity, data.Rotation, origin, data.Scale, SpriteEffects.None, 0f);
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, frame, data.DrawColor * data.Opacity, data.Rotation, origin, data.Scale, SpriteEffects.None, 0f);
+                });
+            }
         }
     }
     public class Lightning02 : ParticleBehaviors
@@ -43,6 +54,15 @@ namespace LAP.Content.Particles_ECS
             Texture2D texture = LAPTextureRegister.Lightning02.Value;
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, null, particle.DrawColor * particle.Opacity, particle.Rotation, texture.Size() / 2, particle.Scale, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, null, particle.DrawColor * particle.Opacity, particle.Rotation, texture.Size() / 2, particle.Scale, SpriteEffects.None, 0f);
+            if (particle.aibool0)
+            {
+                ParticleData data = particle;
+                DeepGlow.SubmitCustomGlow(() =>
+                {
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, null, data.DrawColor * data.Opacity, data.Rotation, texture.Size() / 2, data.Scale, SpriteEffects.None, 0f);
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, null, data.DrawColor * data.Opacity, data.Rotation, texture.Size() / 2, data.Scale, SpriteEffects.None, 0f);
+                });
+            }
         }
     }
     public class Lightning03 : ParticleBehaviors
@@ -63,6 +83,15 @@ namespace LAP.Content.Particles_ECS
             Vector2 origin = frame.Size() * 0.5f;
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, frame, Color.White * particle.Opacity, particle.Rotation, origin, particle.Scale, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture, particle.Position - Main.screenPosition, frame, particle.DrawColor * particle.Opacity, particle.Rotation, origin, particle.Scale, SpriteEffects.None, 0f);
+            if (particle.aibool0)
+            {
+                ParticleData data = particle;
+                DeepGlow.SubmitCustomGlow(() =>
+                {
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, frame, data.DrawColor * data.Opacity, data.Rotation, origin, data.Scale, SpriteEffects.None, 0f);
+                    Main.spriteBatch.Draw(texture, data.Position - Main.screenPosition, frame, data.DrawColor * data.Opacity, data.Rotation, origin, data.Scale, SpriteEffects.None, 0f);
+                });
+            }
         }
     }
 }

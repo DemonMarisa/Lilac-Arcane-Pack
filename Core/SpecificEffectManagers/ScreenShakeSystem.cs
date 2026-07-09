@@ -1,18 +1,29 @@
 ﻿using LAP.Content.Configs;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace LAP.Core.SpecificEffectManagers
 {
-    public class ScreenShakeInfo(Vector2 ShakePosition, float ShakeStrength, int ShakeTime, float ShakeDirection, float ShakeAngleOffset, bool useDiatanceFade, int ShakeEffectDistance)
+    public static class ScreenShakeType
     {
+        public const int Random = 0;
+        public const int PunchSin = 1;
+        public const int PunchCos = 2;
+    }
+
+
+    public class ScreenShakeInfo(Vector2 ShakePosition, float ShakeStrength, int ShakeTime, float ShakeDirection, float ShakeAngleOffset, bool useDistanceFade,
+        int ShakeEffectDistance, int type = ScreenShakeType.Random, float vibrations = 3f)
+    {
+        public int Type = type;
         /// <summary>
         /// 是否使用震动衰减
         /// </summary>
-        public bool UseDiatanceFade = useDiatanceFade;
+        public bool UseDistanceFade = useDistanceFade;
         /// <summary>
         /// 震动存在时间
         /// </summary>
@@ -40,19 +51,41 @@ namespace LAP.Core.SpecificEffectManagers
         /// 基础的位置
         /// </summary>
         public Vector2 ShakePosition = ShakePosition;
+        /// <summary>
+        /// 震动周期数，控制往复运动的次数
+        /// </summary>
+        public float Vibrations = vibrations;
         public void Update()
         {
-            float Shake = MathHelper.Lerp(ShakeStrength, 0, EasingHelper.EaseOutCubic(ShakeTime / (float)ShakeLifeTime));
-            if (UseDiatanceFade)
-            {
-                // 计算与本地玩家的距离
-                Player player = Main.LocalPlayer;
+            float progress = ShakeTime / (float)ShakeLifeTime;
 
+            float currentStrength = MathHelper.Lerp(ShakeStrength, 0, EasingHelper.EaseOutCubic(progress));
+
+            if (UseDistanceFade)
+            {
+                Player player = Main.LocalPlayer;
                 float toPlayerLength = (ShakePosition - player.Center).Length();
-                Shake *= MathHelper.Clamp(1 - (toPlayerLength / ShakeEffectDistance), 0, 1);
+                // 距离越远，强度越弱
+                currentStrength *= MathHelper.Clamp(1f - (toPlayerLength / ShakeEffectDistance), 0f, 1f);
             }
 
-            Main.screenPosition += Vector2.UnitX.RotatedBy(ShakeDirection).RotatedByRandom(ShakeAngleOffset) * Shake * LAPConfig.Instance.ScreenShakeStrength;
+            Vector2 offset = Vector2.Zero;
+            switch (Type)
+            {
+                case ScreenShakeType.Random:
+                    offset = Vector2.UnitX.RotatedBy(ShakeDirection).RotatedByRandom(ShakeAngleOffset) * currentStrength;
+                    break;
+                case ScreenShakeType.PunchCos:
+                    float vibrationMultiplierCos = (float)Math.Cos(progress * MathHelper.TwoPi * Vibrations);
+                    offset = Vector2.UnitX.RotatedBy(ShakeDirection) * currentStrength * vibrationMultiplierCos;
+                    break;
+                case ScreenShakeType.PunchSin:
+                    float vibrationMultiplierSin = (float)Math.Sin(progress * MathHelper.TwoPi * Vibrations);
+                    offset = Vector2.UnitX.RotatedBy(ShakeDirection) * currentStrength * vibrationMultiplierSin;
+                    break;
+            }
+
+            Main.screenPosition += offset * LAPConfig.Instance.ScreenShakeStrength;
             ShakeTime++;
         }
     }
@@ -70,10 +103,23 @@ namespace LAP.Core.SpecificEffectManagers
             }
             ScreenShakes.RemoveAll(s => s.ShakeTime >= s.ShakeLifeTime);
         }
-        public static void AddScreenShakes(Vector2 shakePosition, float shakeStrength, int shakeLifeTime, float shakeDirection, float randomAngleoffset = MathHelper.TwoPi, bool useDistanceFade = true,int ShakeEffectDistance = 1000)
+        public static void AddScreenShakes(Vector2 shakePosition, float shakeStrength, int shakeLifeTime, float shakeDirection, float randomAngleoffset = MathHelper.TwoPi, bool useDistanceFade = true, int ShakeEffectDistance = 1000)
         {
             ScreenShakeInfo screenShakeInfo = new ScreenShakeInfo(shakePosition, shakeStrength, shakeLifeTime, shakeDirection, randomAngleoffset, useDistanceFade, ShakeEffectDistance);
             ScreenShakes.Add(screenShakeInfo);
+        }
+        /// <summary>
+        /// 添加定向周期震屏
+        /// </summary>
+        public static void AddScreenShake_Sin(Vector2 position, float strength, int lifeTime, float direction, float vibrations = 3f, bool useDistanceFade = true, int effectDistance = 1000)
+        {
+            var info = new ScreenShakeInfo(position, strength, lifeTime, direction, 0f, useDistanceFade, effectDistance, ScreenShakeType.PunchSin, vibrations);
+            ScreenShakes.Add(info);
+        }
+        public static void AddScreenShake_Cos(Vector2 position, float strength, int lifeTime, float direction, float vibrations = 3f, bool useDistanceFade = true, int effectDistance = 1000)
+        {
+            var info = new ScreenShakeInfo(position, strength, lifeTime, direction, 0f, useDistanceFade, effectDistance, ScreenShakeType.PunchCos, vibrations);
+            ScreenShakes.Add(info);
         }
     }
 }

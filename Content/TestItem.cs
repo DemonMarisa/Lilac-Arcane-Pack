@@ -41,7 +41,15 @@ namespace LAP.Content
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            LightningBuilder.SpawnLightning(Main.MouseWorld, Main.MouseWorld + Vector2.UnitY * 1000, Color.White, Color.Wheat, 10, 2, 15, 4);
+            LightningBuilder.SpawnLightning(Main.MouseWorld - Vector2.UnitY * 1000, Main.MouseWorld, Color.White, Color.Gold, 50, 2, 15, 4);
+            LightningBuilder.SpawnLightning(Main.MouseWorld - Vector2.UnitY * 1000, Main.MouseWorld, Color.White, Color.Gold, 75, 1, 15, 4);
+            LightningBuilder.SpawnLightning(Main.MouseWorld - Vector2.UnitY * 1000, Main.MouseWorld, Color.White, Color.Gold, 75, 1, 15, 4);
+            LightningBuilder.SpawnLightning(Main.MouseWorld - Vector2.UnitY * 1000, Main.MouseWorld, Color.White, Color.Gold, 25, 3, 15, 4);
+            for (int i = 0; i < 6; i++)
+            {
+                Vector2 EndPos = -Vector2.UnitY.RotateRandom(MathHelper.PiOver4 * 1.6f) * Main.rand.NextFloat(100f, 150f);
+                LightningBuilder.SpawnLightning(Main.MouseWorld, Main.MouseWorld + EndPos, Color.White, Color.Gold, 25, 1, 20, 2);
+            }
             return false;
         }
     }

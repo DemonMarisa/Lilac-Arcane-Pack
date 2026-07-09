@@ -27,17 +27,23 @@ namespace LAP.Core.Presets.Content
         {
             return LAPContent.NewParticle(LAPContent.ParticleType<DustGlow>(), lifetime, position, vel, color, rot, scale, Blendstate, scale, rotspeed);
         }
-        public static int NewLightning01(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, float rotation = 0)
+        public static int NewLightning01(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, float rotation = 0, bool useBloom = false)
         {
-            return LAPContent.NewParticle(LAPContent.ParticleType<Lightning01>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
+            int index = LAPContent.NewParticle(LAPContent.ParticleType<Lightning01>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
+            ParticleSystem_ECS.ParticleDataManager.particleData_add[index].aibool0 = useBloom;
+            return index;
         }
-        public static int NewLightning02(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, float rotation = 0)
+        public static int NewLightning02(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, float rotation = 0, bool useBloom = false)
         {
-            return LAPContent.NewParticle(LAPContent.ParticleType<Lightning02>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
+            int index = LAPContent.NewParticle(LAPContent.ParticleType<Lightning02>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
+            ParticleSystem_ECS.ParticleDataManager.particleData_add[index].aibool0 = useBloom;
+            return index;
         }
-        public static int NewLightning03(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, float rotation = 0)
+        public static int NewLightning03(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, float rotation = 0, bool useBloom = false)
         {
-            return LAPContent.NewParticle(LAPContent.ParticleType<Lightning03>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
+            int index = LAPContent.NewParticle(LAPContent.ParticleType<Lightning03>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
+            ParticleSystem_ECS.ParticleDataManager.particleData_add[index].aibool0 = useBloom;
+            return index;
         }
     }
 }

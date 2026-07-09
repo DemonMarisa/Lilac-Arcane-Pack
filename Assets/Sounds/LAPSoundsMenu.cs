@@ -7,6 +7,7 @@ namespace LAP.Assets.Sounds
     {
         public static string AttackSoundRoute => "LAP/Assets/Sounds/Attacks";
         public static string DSSoundRoute => "LAP/Assets/Sounds/DarkSouls";
+        public static string ERSoundRoute => "LAP/Assets/Sounds/ER";
         public static string ZionSoundRoute => "LAP/Assets/Sounds/MAGNOLIA";
         public static string ZenithSoundRoute => "LAP/Assets/Sounds/EnderLilies";
         public static string WeaponsSoundRoute => "LAP/Assets/Sounds/Items/Weapons";

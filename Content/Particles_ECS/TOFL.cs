@@ -12,25 +12,27 @@ namespace LAP.Content.Particles_ECS
     public class TOFL : ParticleBehaviors
     {
         public float Speed;
-        public float BeginScale;
         public float TurIntensity = 0f;
         public override void OnSpawn(ref ParticleData data)
         {
-            data.aifloat2 = data.Scale;
+            data.aifloat1 = data.Scale;
+            data.aifloat3 = data.Velocity.ToRotation();
             data.aiint0 = Main.rand.Next(0, 100000);
         }
         public override void Update(ref ParticleData data)
         {
             float Speed = data.aifloat0;
             float BeginScale = data.aifloat1;
+            float TurIntensity = data.aifloat2;
+            float Forward = data.aifloat3;
+
             if (Speed != 0)
             {
-                Vector2 idealVelocity = -Vector2.UnitY.RotatedBy(MathHelper.Lerp(-MathHelper.TwoPi, MathHelper.TwoPi, (float)Math.Sin(data.Time / 36f + data.aiint0) * 0.5f + 0.5f)) * Speed;
+                Vector2 idealVelocity = Vector2.UnitY.RotatedBy(Utils.AngleLerp(Forward - TurIntensity, Forward + TurIntensity, (float)Math.Sin(data.Time / 36f + data.aiint0) * 0.5f + 0.5f)) * Speed;
                 float movementInterpolant = MathHelper.Lerp(0.01f, 0.25f, Utils.GetLerpValue(0, data.Lifetime / 2, data.Time, true));
                 data.Velocity = Vector2.Lerp(data.Velocity, idealVelocity, movementInterpolant);
                 data.Velocity = data.Velocity.SafeNormalize(-Vector2.UnitY) * Speed;
             }
-            data.Velocity *= 0.9f;
             data.Scale = MathHelper.Lerp(BeginScale, 0, EasingHelper.EaseOutCubic(data.LifetimeRatio));
         }
         public override void Draw(ref ParticleData data)

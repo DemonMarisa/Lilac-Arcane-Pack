@@ -1,4 +1,5 @@
-﻿using LAP.Core.Enums;
+﻿using LAP.Core.DebugSystem;
+using LAP.Core.Enums;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
 using System.Collections.Generic;
@@ -97,18 +98,21 @@ namespace LAP.Core.Graphics.VFX
         }
         public static void DrawVFXs(VFXInstance[] updatelist, BlendState state, DrawLayer layer)
         {
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, state, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            for (int i = 0; i < updatelist.Length; i++)
+            if (HasAnyVFX)
             {
-                VFXInstance vfx = updatelist[i];
-                if (vfx == null || !vfx.Active)
-                    continue;
-                if (vfx.Behavior.BlendState == state && vfx.Behavior.Layer == layer)
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, state, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                for (int i = 0; i < updatelist.Length; i++)
                 {
-                    vfx.Behavior.Draw();
+                    VFXInstance vfx = updatelist[i];
+                    if (vfx == null || !vfx.Active)
+                        continue;
+                    if (vfx.Behavior.BlendState == state && vfx.Behavior.Layer == layer)
+                    {
+                        vfx.Behavior.Draw();
+                    }
                 }
+                Main.spriteBatch.End();
             }
-            Main.spriteBatch.End();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace LAP.Content.Particles
         {
             if (TSpeed != 0)
             {
-                Vector2 idealVelocity = -Vector2.UnitY.RotatedBy(MathHelper.Lerp(TToward - TAngle, TToward + TAngle, (float)Math.Sin(Time / 36f + SeedOffset) * 0.5f + 0.5f)) * TSpeed;
+                Vector2 idealVelocity = -Vector2.UnitY.RotatedBy(Utils.AngleLerp(TToward - TAngle, TToward + TAngle, (float)Math.Sin(Time / 36f + SeedOffset) * 0.5f + 0.5f)) * TSpeed;
                 float movementInterpolant = MathHelper.Lerp(0.01f, 0.1f, Utils.GetLerpValue(0, Lifetime, Time, true));
                 Velocity = Vector2.Lerp(Velocity, idealVelocity, movementInterpolant);
                 Velocity = Velocity.SafeNormalize(-Vector2.UnitY) * TSpeed;

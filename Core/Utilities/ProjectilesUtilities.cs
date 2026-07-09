@@ -4,6 +4,7 @@ using LAP.Core.IDSets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -324,6 +325,21 @@ namespace LAP.Core.Utilities
         {
             if (!LAPIDSet.WeaponSkillProj.Contains(proj.type))
                 LAPIDSet.WeaponSkillProj.Add(proj.type);
+        }
+        /// <summary>
+        /// 根据射弹的extraUpdates和numUpdates计算出玩家本帧的实际位移，可以用于修正射弹的跟随玩家的平滑度
+        /// </summary>
+        /// <param name="proj"></param>
+        /// <returns></returns>
+        public static Vector2 GetOwnerStepFromEu(this Projectile proj)
+        {
+            int k = proj.extraUpdates - proj.numUpdates;
+            int totalUpdates = proj.extraUpdates + 1;
+            // 玩家本帧真正的物理位移
+            Vector2 realFrameVelocity = proj.Owner().position - proj.Owner().oldPosition;
+            // 基于上一帧的绝对位置进行精准线性分步
+            Vector2 smoothVel = realFrameVelocity * ((float)(k + 1) / totalUpdates);
+            return smoothVel;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace LAP.Core.ParticleSystem_ECS
         public float aifloat2;
         public int aiint2;
         public bool aibool2;
+        public float aifloat3;
         public readonly float LifetimeRatio => Time / Lifetime;
     }
 }

@@ -21,13 +21,14 @@ namespace LAP.Core.Graphics.VFX
         public Vector2 Scale2D;
         public float Opacity;
 
-        public float[] AiFloat = new float[4];
+        public float[] AiFloat = new float[6];
         public int[] AiInt = new int[4];
         public bool[] AiBool = new bool[4];
         public Vector2[] AiVector2 = new Vector2[4];
 
         public List<Vector2> OldPos = new List<Vector2>();
         public List<float> OldRot = new List<float>();
+        public List<float> Oldfloat = new List<float>();
         public float LifetimeRatio => Lifetime == 0 ? 0f : (float)Time / Lifetime;
         public void Reset()
         {
@@ -59,6 +60,7 @@ namespace LAP.Core.Graphics.VFX
 
             OldPos.Clear();
             OldRot.Clear();
+            Oldfloat.Clear();
         }
     }
 }

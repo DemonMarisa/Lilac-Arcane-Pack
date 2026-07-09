@@ -71,21 +71,32 @@ namespace LAP.Core.Graphics.Lightning
             List<Vector2> points = new List<Vector2>();
             points.Add(BeginPoint);
             points.Add(EndPoint);
+
+            float currentStrength = strength; // 用于在迭代中衰减的强度
+
             for (int gen = 0; gen < generations; gen++)
             {
                 _pathBuffer.Clear();
                 _pathBuffer.Add(points[0]);
-
                 for (int i = 0; i < points.Count - 1; i++)
                 {
                     Vector2 start = points[i];
                     Vector2 end = points[i + 1];
                     Vector2 mid = (start + end) * 0.5f;
-                    mid += Main.rand.NextVector2CircularEdge(strength, strength);
+
+                    // 计算该线段的法线向量（垂直方向）
+                    Vector2 direction = Vector2.Normalize(end - start);
+                    Vector2 normal = new Vector2(-direction.Y, direction.X);
+
+                    // 沿着法线方向进行随机偏移，而不是在一个圆内随机
+                    float offset = Main.rand.NextFloat(-currentStrength, currentStrength);
+                    mid += normal * offset;
+
                     _pathBuffer.Add(mid);
                     _pathBuffer.Add(end);
                 }
                 points = [.. _pathBuffer];
+                currentStrength *= 0.6f;
             }
             return points;
         }

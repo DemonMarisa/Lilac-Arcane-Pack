@@ -11,7 +11,6 @@ using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -276,36 +275,21 @@ namespace LAP.Core.LAPUI.CustomCD
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            int mouseIndex = layers.FindIndex(layer => layer.Name == "Vanilla: Mouse Text");
-            if (mouseIndex != -1)
+            if (GlobalOpacity != 0)
             {
-                if (LAPConfig.Instance.DeBugInfo)
+                int mouseIndex = layers.FindIndex(layer => layer.Name == "Vanilla: Mouse Text");
+                if (mouseIndex != -1)
                 {
-                    layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP CDDebug Info UI", delegate ()
+                    if (GlobalOpacity != 0)
                     {
-                        DrawDebugInfo();
-                        return true;
-                    }, InterfaceScaleType.UI));
-                }
-                if (GlobalOpacity != 0)
-                {
-                    layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP CD Info UI", delegate ()
-                    {
-                        DrawAllCD();
-                        return true;
-                    }, InterfaceScaleType.UI));
+                        layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP CD Info UI", delegate ()
+                        {
+                            DrawAllCD();
+                            return true;
+                        }, InterfaceScaleType.UI));
+                    }
                 }
             }
-        }
-        public static void DrawDebugInfo()
-        {
-            DynamicSpriteFont font = FontAssets.MouseText.Value;
-            string particleCount = $"当前CD总数: {ActiveCD.Count}";
-            Vector2 stringsize = ChatManager.GetStringSize(font, particleCount, Vector2.One);
-            ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, font, particleCount, LAPUtilities.ScreenCenter_Top() + new Vector2(0, 96), Color.White, 0f, stringsize / 2, new Vector2(1f));
-            string cdCount = $"注册了多少cd: {CDCollection.Count}";
-            Vector2 cdCountsize = ChatManager.GetStringSize(font, cdCount, Vector2.One);
-            ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, font, cdCount, LAPUtilities.ScreenCenter_Top() + new Vector2(0, 128), Color.White, 0f, cdCountsize / 2, new Vector2(1f));
         }
     }
 }

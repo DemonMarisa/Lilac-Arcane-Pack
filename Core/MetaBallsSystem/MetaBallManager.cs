@@ -1,4 +1,5 @@
-﻿using LAP.Core.Graphics.RenderTargetsManager;
+﻿using LAP.Core.DebugSystem;
+using LAP.Core.Graphics.RenderTargetsManager;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -54,7 +55,6 @@ namespace LAP.Core.MetaBallsSystem
                 orig();
                 return;
             }
-
             if (Main.gameMenu)
             {
                 orig();

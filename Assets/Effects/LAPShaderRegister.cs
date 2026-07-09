@@ -25,6 +25,7 @@ namespace LAP.Assets.Effects
         public static Asset<Effect> FocusBar { get; private set; }
         public static Asset<Effect> ThresholdShader { get; private set; }
         public static Asset<Effect> DefaultShader { get; private set; }
+        public static Asset<Effect> UVRot { get; private set; }
         public override void Load()
         {
             if (Main.dedServ)
@@ -57,6 +58,8 @@ namespace LAP.Assets.Effects
 
             DefaultShader = LoadShader("DefaultShader");
 
+            UVRot = LoadShader("UVRot");
+
             LoadScreen();
 
             Load2();
@@ -76,6 +79,8 @@ namespace LAP.Assets.Effects
             Fill = null;
             FocusBar = null;
             ThresholdShader = null;
+            DefaultShader = null;
+            UVRot = null;
 
             UnLoadScreen();
 

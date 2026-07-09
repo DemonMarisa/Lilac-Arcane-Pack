@@ -68,6 +68,13 @@ namespace LAP.Core.Utilities
             var effect = LAPShaderRegister.DefaultShader.Value;
             effect.CurrentTechnique.Passes[0].Apply();
         }
+        public static void ApplyUVRot(Vector4 cut, float TimeMult)
+        {
+            Effect effect = LAPShaderRegister.UVRot.Value;
+            effect.Parameters["uRotBy"].SetValue(Main.GlobalTimeWrappedHourly * TimeMult);
+            effect.Parameters["Cut"].SetValue(cut);
+            effect.CurrentTechnique.Passes[0].Apply();
+        }
         public static void SetTexture(Texture2D texture2D, int Index)
         {
             Main.graphics.GraphicsDevice.Textures[Index] = texture2D;

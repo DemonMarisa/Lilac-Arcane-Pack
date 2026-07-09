@@ -1,4 +1,5 @@
-﻿using LAP.Core.Enums;
+﻿using LAP.Core.DebugSystem;
+using LAP.Core.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -25,12 +26,14 @@ namespace LAP.Core.Graphics.Primitives.Trail
         {
             if (drawData == null || drawData.Count < 2)
                 return;
+
             CurrentSetting = drawSetting;
             Reset();
             SmoothPoint(drawData, drawSetting.smoothSegments);
             CheckArraySize(drawData.Count);
             BuildVertex();
             DrawTrail();
+
         }
         public static void Reset()
         {

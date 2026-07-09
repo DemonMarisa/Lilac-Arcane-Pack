@@ -17,8 +17,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Sounds\Items\Weapons\Melee\" />
+	  <Folder Include="Common\Blance\" />
 	  <Folder Include="Content\VFXs\" />
-	  <Folder Include="Core\GameContent\" />
+	  <Folder Include="Core\Graphics\RadialBlur\" />
 	</ItemGroup>
 	
 	<ItemGroup>

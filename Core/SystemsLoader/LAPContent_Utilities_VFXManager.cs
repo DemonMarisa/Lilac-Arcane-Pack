@@ -8,9 +8,12 @@ namespace LAP.Core.SystemsLoader
         public static void Kill(this VFXInstance vfx)
         {
             vfx.Time = vfx.Lifetime;
+            vfx.Active = false;
+            vfx.Behavior.OnKill();
         }
         public static VFXInstance SpawnVFX(int Type, Vector2 position, Vector2 velocity, Color drawColor, float rotation = 0, float scale = 0, float aio = 0, float ai1 = 0, float ai2 = 0)
         {
+            // return VFXManager.VFXInstances[0];
             for (int i = 0; i < VFXManager.MaxVFXPerPool; i++)
             {
                 VFXInstance vfx = VFXManager.VFXInstances[i];

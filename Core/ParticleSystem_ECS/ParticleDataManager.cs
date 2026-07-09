@@ -1,4 +1,5 @@
-﻿using LAP.Core.Utilities;
+﻿using LAP.Core.DebugSystem;
+using LAP.Core.Utilities;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
 using System.Collections.Generic;

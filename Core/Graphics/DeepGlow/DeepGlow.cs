@@ -1,4 +1,5 @@
 ﻿using LAP.Assets.Effects;
+using LAP.Core.DebugSystem;
 using LAP.Core.Enums;
 using LAP.Core.Graphics.RenderTargetsManager;
 using LAP.Core.MiscDate;
@@ -163,7 +164,7 @@ namespace LAP.Core.Graphics.DeepGlow
             if (GlowRequests.Count == 0)
                 return;
             HightLightTarget.SwapToTarget();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             while (GlowRequests.Count > 0)
             {
                 Action drawAction = GlowRequests.Dequeue();
