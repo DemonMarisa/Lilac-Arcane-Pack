@@ -18,6 +18,9 @@ namespace LAP.Content.RecipeGroupAdd
         public static string AnyArkhalis;
         public static string AnyDartGun;
         public static string AnyCursedFlameIchor;
+        public static string AnyEvilBlock;
+        public static string AnyHardmodeForge;
+        public static string AnyHardmodeAnvil;
         public override void AddRecipeGroups()
         {
             int[] anyCopperBar = [ItemID.CopperBar, ItemID.TinBar];
@@ -52,6 +55,16 @@ namespace LAP.Content.RecipeGroupAdd
 
             int[] anyCursedFlameIchor = [ItemID.CursedFlame, ItemID.Ichor];
             AnyCursedFlameIchor = LAPUtilities.CreatRecipeGroup(PreFix + "AnyCursedFlameIchor", anyCursedFlameIchor);
+
+            int[] anyEvilBlock = [ItemID.EbonstoneBlock, ItemID.CrimstoneBlock, ItemID.PurpleIceBlock, ItemID.RedIceBlock, ItemID.EbonsandBlock, ItemID.CrimsandBlock,
+                ItemID.CorruptHardenedSand, ItemID.CrimsonHardenedSand, ItemID.CorruptSandstone, ItemID.CrimsonSandstone];
+            AnyEvilBlock = LAPUtilities.CreatRecipeGroup(PreFix + "AnyEvilBlock", anyEvilBlock);
+
+            int[] anyHardmodeForge = [ItemID.AdamantiteForge, ItemID.TitaniumForge];
+            AnyHardmodeForge = LAPUtilities.CreatRecipeGroup(PreFix + "AnyHardmodeForge", anyHardmodeForge);
+
+            int[] anyHardmodeAnvil = [ItemID.MythrilAnvil, ItemID.OrichalcumAnvil];
+            AnyHardmodeAnvil = LAPUtilities.CreatRecipeGroup(PreFix + "AnyHardmodeAnvil", anyHardmodeAnvil);
         }
         public override void Unload()
         {
@@ -66,6 +79,9 @@ namespace LAP.Content.RecipeGroupAdd
             AnyArkhalis = null;
             AnyDartGun = null;
             AnyCursedFlameIchor = null;
+            AnyEvilBlock = null;
+            AnyHardmodeForge = null;
+            AnyHardmodeAnvil = null;
         }
     }
 }

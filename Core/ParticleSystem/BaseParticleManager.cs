@@ -1,17 +1,9 @@
-﻿using LAP.Content.Configs;
-using LAP.Core.DebugSystem;
-using LAP.Core.ParticleSystem_ECS;
-using LAP.Core.Utilities;
-using Microsoft.Xna.Framework;
+﻿using LAP.Core.Utilities;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using ReLogic.Threading;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
-using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace LAP.Core.ParticleSystem
 {
@@ -22,13 +14,13 @@ namespace LAP.Core.ParticleSystem
     /// </summary>
     public partial class BaseParticleManager : ModSystem
     {
-        public static List<BaseParticle> ActiveParticlesAlpha = [];
-        public static List<BaseParticle> ActiveParticlesNonPremultiplied = [];
-        public static List<BaseParticle> ActiveParticlesAdditive = [];
+        public static List<BaseParticle> ActiveParticlesAlpha = new List<BaseParticle>(1000);
+        public static List<BaseParticle> ActiveParticlesNonPremultiplied = new List<BaseParticle>(1000);
+        public static List<BaseParticle> ActiveParticlesAdditive = new List<BaseParticle>(1000);
         // 先绘制先更新的粒子
-        public static List<BaseParticle> PriorityActiveParticlesAlpha = [];
-        public static List<BaseParticle> PriorityActiveParticlesNonPremultiplied = [];
-        public static List<BaseParticle> PriorityActiveParticlesAdditive = [];
+        public static List<BaseParticle> PriorityActiveParticlesAlpha = new List<BaseParticle>(1000);
+        public static List<BaseParticle> PriorityActiveParticlesNonPremultiplied = new List<BaseParticle>(1000);
+        public static List<BaseParticle> PriorityActiveParticlesAdditive = new List<BaseParticle>(1000);
         #region 加载卸载
         //public override void Load()
         //{

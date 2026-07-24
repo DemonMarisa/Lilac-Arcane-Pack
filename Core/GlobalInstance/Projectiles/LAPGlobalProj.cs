@@ -10,6 +10,7 @@ namespace LAP.Core.GlobalInstance.Projectiles
         public override bool InstancePerEntity => true;
         public bool OnceHitEffect = true;
         public bool FirstFrame = true;
+        public bool BeParry = false;
         public AniHelper aniHelper = new AniHelper(5);
         public Vector2[] ai_vector2 = new Vector2[5];
         public override void AI(Projectile projectile)

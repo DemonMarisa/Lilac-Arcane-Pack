@@ -5,11 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.Animations;
 
 namespace LAP.Core.Graphics.Primitives.Trail
 {
     public class TrailRender
     {
+        private static Texture2D _lastTexture;
+        private static SamplerState _lastSamplerState;
         public static GraphicsDevice graphicsDevice => Main.graphics.GraphicsDevice;
         private const int MaxVertex = 4096;
         private const int MaxPoints = 2048;
@@ -22,32 +25,41 @@ namespace LAP.Core.Graphics.Primitives.Trail
         private static int vertexCount = 0;
 
         private static DrawSetting CurrentSetting;
-        public static void RenderTrail(IReadOnlyList<TrailDrawData> drawData, DrawSetting drawSetting)
+        public unsafe static void RenderTrail(IReadOnlyList<TrailDrawData> drawData, DrawSetting drawSetting)
         {
             if (drawData == null || drawData.Count < 2)
                 return;
-
             CurrentSetting = drawSetting;
             Reset();
+            CheckArraySize(PointsCount, drawSetting.smoothSegments);
             SmoothPoint(drawData, drawSetting.smoothSegments);
-            CheckArraySize(drawData.Count);
             BuildVertex();
             DrawTrail();
-
         }
         public static void Reset()
         {
             PointsCount = 0;
             vertexCount = 0;
         }
-        public static void CheckArraySize(int datalength)
+        public static void CheckArraySize(int rawDataCount, int segments)
         {
             // 动态扩容
-            if (datalength >= PointsBuffer.Length)
+            // 提前计算需要的最大点数和顶点数
+            int requiredPoints = (segments > 0) ? (rawDataCount * segments) + 1 : rawDataCount;
+            int requiredVertices = requiredPoints * 2;
+
+            if (requiredPoints >= PointsBuffer.Length)
             {
-                Array.Resize(ref vertexArray, vertexArray.Length * 2);
-                Array.Resize(ref DistanceBuffer, DistanceBuffer.Length * 2);
-                Array.Resize(ref PointsBuffer, PointsBuffer.Length * 2);
+                // 直接扩容到足够的大小，而不是盲目 *2
+                int newPointSize = Math.Max(PointsBuffer.Length * 2, requiredPoints + 128);
+                Array.Resize(ref PointsBuffer, newPointSize);
+                Array.Resize(ref DistanceBuffer, newPointSize);
+            }
+
+            if (requiredVertices >= vertexArray.Length)
+            {
+                int newVertexSize = Math.Max(vertexArray.Length * 2, requiredVertices + 256);
+                Array.Resize(ref vertexArray, newVertexSize);
             }
         }
         public static void SmoothPoint(IReadOnlyList<TrailDrawData> rawData, int segments)
@@ -120,20 +132,20 @@ namespace LAP.Core.Graphics.Primitives.Trail
             {
                 TrailDrawData data = PointsBuffer[i];
                 // 计算垂直于朝向的偏移量
-                Vector2 offset = Vector2.UnitY.RotatedBy(data.Rotation) * data.Height;
+                Vector2 offset = new Vector2(-(float)Math.Sin(data.Rotation), (float)Math.Cos(data.Rotation)) * data.Height;
                 // 计算进度
                 float progress = 0f;
                 if (pointCount > 0)
                     progress = CurrentSetting.smoothUV ? (totalDistance == 0 ? 0 : DistanceBuffer[i] / totalDistance) : (float)i / (pointCount - 1);
-                Vector3 upUV = new(progress + CurrentSetting.xuvOffset, 1f, 0f);
-                Vector3 downUV = new(progress + CurrentSetting.xuvOffset, 0f, 0f);
+                Vector3 upUV = new(progress + CurrentSetting.xOffset, 1f, 0f);
+                Vector3 downUV = new(progress + CurrentSetting.xOffset, 0f, 0f);
                 // 翻转UV
                 FlipUV(ref upUV, ref downUV, progress);
                 vertexArray[vertexCount++] = new VertexPositionColorTexture2D(data.Position + offset, data.DrawColor, upUV);
                 vertexArray[vertexCount++] = new VertexPositionColorTexture2D(data.Position - offset, data.DrawColor, downUV);
             }
         }
-        public static void DrawTrail()
+        public unsafe static void DrawTrail()
         {
             // 应用shader
             Effect effect = CurrentSetting.effect;

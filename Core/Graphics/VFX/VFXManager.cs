@@ -60,9 +60,11 @@ namespace LAP.Core.Graphics.VFX
                 return;
             }
             orig(self);
+            PerformanceMonitorSystem.StartTimer("VFX绘制延迟");
             DrawVFXs(VFXInstances, BlendState.AlphaBlend, DrawLayer.AfterDusts);
             DrawVFXs(VFXInstances, BlendState.NonPremultiplied, DrawLayer.AfterDusts);
             DrawVFXs(VFXInstances, BlendState.Additive, DrawLayer.AfterDusts);
+            PerformanceMonitorSystem.StopTimer("VFX绘制延迟");
         }
         public static void UpdateNode(VFXInstance[] updatelist)
         {

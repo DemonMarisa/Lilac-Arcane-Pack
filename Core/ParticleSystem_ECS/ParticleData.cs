@@ -2,8 +2,12 @@
 
 namespace LAP.Core.ParticleSystem_ECS
 {
-    public struct ParticleData()
+    public unsafe struct ParticleData()
     {
+        public fixed float oldPosX[20];
+        public fixed float oldPosY[20];
+        public fixed float oldRot[20];
+        public bool ExtraUpdate;
         public int Type;
         public int whoAmI;
         public bool Active;
@@ -29,5 +33,11 @@ namespace LAP.Core.ParticleSystem_ECS
         public bool aibool2;
         public float aifloat3;
         public readonly float LifetimeRatio => Time / Lifetime;
+        public Vector2 GetOldPos(int index)
+        {
+            if (index > 20)
+                index = 20;
+            return new Vector2(oldPosX[index], oldPosY[index]);
+        }
     }
 }

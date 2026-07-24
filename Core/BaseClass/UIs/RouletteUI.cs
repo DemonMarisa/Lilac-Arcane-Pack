@@ -1,6 +1,8 @@
 ﻿using LAP.Core.UISystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
 
 namespace LAP.Core.BaseClass.UIs
 {
@@ -11,13 +13,14 @@ namespace LAP.Core.BaseClass.UIs
     public abstract class RouletteUI : BaseUI
     {
         public float BeginSctorCenterRot;
+        public override bool BlockMouseInput => false;
         public override void OnActive()
         {
             int sectorNum = Subset.Count;
             float angle = MathHelper.TwoPi / sectorNum;
             for (int i = 0; i < Subset.Count; i++)
             {
-                BaseUI ui = UIManager.UICollection[Subset[i]];
+                BaseUI ui = Subset[i];
                 ui.SectorCenterRot = angle * i + BeginSctorCenterRot;
                 ui.SectorRot = angle;
                 ui.OnActive();
@@ -28,24 +31,15 @@ namespace LAP.Core.BaseClass.UIs
         {
 
         }
-        public override bool PreSetDepth()
-        {
-            for (int i = 0; i < Subset.Count; i++)
-            {
-                BaseUI ui = UIManager.UICollection[Subset[i]];
-                ui.Update();
-            }
-            return true;
-        }
         public override bool Colliding(Rectangle rectangle, Rectangle mouseRectangle) => true;
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw()
         {
             if (PreDraw())
             {
                 for (int i = 0; i < Subset.Count; i++)
                 {
-                    BaseUI ui = UIManager.UICollection[Subset[i]];
-                    ui.Draw(spriteBatch);
+                    BaseUI ui = Subset[i];
+                    ui.Draw();
                 }
             }
             PostDraw();
@@ -56,7 +50,6 @@ namespace LAP.Core.BaseClass.UIs
         }
         public virtual void PostDraw()
         {
-
         }
     } 
 }

@@ -25,9 +25,13 @@ namespace LAP.Core.BaseClass.UIs
                 CenterAngle -= MathHelper.TwoPi;
             }
             if (LAPUtilities.IsAngleInSector(mousetoCenterAngle, CenterAngle, HalfAngleAdd))
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
 }

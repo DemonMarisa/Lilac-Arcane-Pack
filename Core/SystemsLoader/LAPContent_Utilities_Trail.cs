@@ -31,7 +31,7 @@ namespace LAP.Core.SystemsLoader
             for (int i = 0; i < getPos.Count; i++)
             {
                 if (i < getPos.Count - 1)
-                    rot = LAPUtilities.GetVector2(getPos[i], getPos[i + 1]).ToRotation();
+                    rot = LAPUtilities.GetVector2(getPos[i], getPos[i + 1], false).ToRotation();
                 trailDrawData.Add(new TrailDrawData(getPos[i] + offset - Main.screenPosition, color, height, rot));
             }
             TrailRender.RenderTrail(trailDrawData, setting);
@@ -59,7 +59,7 @@ namespace LAP.Core.SystemsLoader
             for (int i = 0; i < getPos.Count; i++)
             {
                 if (i < getPos.Count - 1)
-                    rot = LAPUtilities.GetVector2(getPos[i], getPos[i + 1]).ToRotation();
+                    rot = LAPUtilities.GetVector2(getPos[i], getPos[i + 1], false).ToRotation();
                 trailDrawData.Add(new TrailDrawData(getPos[i] + offset - Main.screenPosition, color, height[i], rot));
             }
             TrailRender.RenderTrail(trailDrawData, setting);

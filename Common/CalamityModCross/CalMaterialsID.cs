@@ -9,6 +9,8 @@ namespace LAP.Common.CalamityModCross
         public static int RuinousSoulID;// 毁灭之灵
         public static int LifeAlloyID;// 生命合金
         public static int LivingShardID;// 生命碎片
+        public static int AuricBarID;// 金源
+
         public static int CosmiliteBarID;// 星宇锭
         public override void OnModLoad()
         {
@@ -24,6 +26,8 @@ namespace LAP.Common.CalamityModCross
             RuinousSoulID = ItemType<RuinousSoul>();
             LifeAlloyID = ItemType<LifeAlloy>();
             LivingShardID = ItemType<LivingShard>();
+            AuricBarID = ItemType<AuricBar>();
+
             CosmiliteBarID = ItemType<CosmiliteBar>();
         }
     }

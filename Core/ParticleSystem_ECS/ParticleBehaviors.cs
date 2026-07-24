@@ -8,6 +8,11 @@ namespace LAP.Core.ParticleSystem_ECS
     public abstract class ParticleBehaviors : ModType
     {
         public int Type;
+        /// <summary>
+        /// 最高只支持20个OldPos
+        /// </summary>
+        public virtual int MaxOldData => 0;
+        public virtual int ExtraUpdate => 0;
         protected override void Register()
         {
             Type = ParticleDataManager.PAICollection.Count;

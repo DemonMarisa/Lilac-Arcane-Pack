@@ -64,7 +64,7 @@ namespace LAP.Core.ParticleSystem
         /// <returns></returns>
         public BaseParticle Spawn()
         {
-            if (Main.netMode == NetmodeID.Server)
+            if (Main.netMode == NetmodeID.Server || LAPConfig.Instance.ParticleLimit == 0)
                 return this;
             if (UseBlendStateID == BlendStateID.Alpha)
             {
@@ -93,7 +93,7 @@ namespace LAP.Core.ParticleSystem
         /// <returns></returns>
         public BaseParticle SpawnToPriority()
         {
-            if (Main.netMode == NetmodeID.Server)
+            if (Main.netMode == NetmodeID.Server || LAPConfig.Instance.ParticleLimit == 0)
                 return this;
             if (UseBlendStateID == BlendStateID.Alpha)
             {
@@ -118,7 +118,7 @@ namespace LAP.Core.ParticleSystem
         }
         public BaseParticle SpawnToPriorityNonPreMult()
         {
-            if (Main.netMode == NetmodeID.Server)
+            if (Main.netMode == NetmodeID.Server || LAPConfig.Instance.ParticleLimit == 0)
                 return this;
             // 初始化时间
             if (!Important && BaseParticleManager.PriorityActiveParticlesNonPremultiplied.Count > LAPConfig.Instance.ParticleLimit)
@@ -130,7 +130,7 @@ namespace LAP.Core.ParticleSystem
         }
         public BaseParticle SpawnToNonPreMult()
         {
-            if (Main.netMode == NetmodeID.Server)
+            if (Main.netMode == NetmodeID.Server || LAPConfig.Instance.ParticleLimit == 0)
                 return this;
             // 初始化时间
             if (!Important && BaseParticleManager.ActiveParticlesNonPremultiplied.Count > LAPConfig.Instance.ParticleLimit)

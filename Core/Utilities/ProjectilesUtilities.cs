@@ -220,6 +220,19 @@ namespace LAP.Core.Utilities
             else
                 Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, player.whoAmI, OverridehealAmt, targetplayer);
         }
+        public static void SpawnHealProj(this Player player, IEntitySource Source, int projType, Vector2 Pos, Vector2 vel, int OverridehealAmt = 0, bool Useconditional = false, bool shared = true)
+        {
+            int targetplayer = player.whoAmI;
+            if (shared)
+                targetplayer = FindLowerHPPlayer(player).whoAmI;
+            if (Useconditional)
+            {
+                if (player.moonLeech)
+                    Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, player.whoAmI, OverridehealAmt, targetplayer);
+            }
+            else
+                Projectile.NewProjectile(Source, Pos, vel, projType, 0, 0f, player.whoAmI, OverridehealAmt, targetplayer);
+        }
         public static Player FindLowerHPPlayer(this Player player)
         {
             if (Main.netMode != NetmodeID.SinglePlayer)

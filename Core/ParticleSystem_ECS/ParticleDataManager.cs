@@ -50,7 +50,7 @@ namespace LAP.Core.ParticleSystem_ECS
             UpdateParticle(ref activePoint_add, particleData_add);
             UpdateParticle(ref activePoint_Nonmult, particleData_nopremult);
         }
-        public static void UpdateParticle(ref int point, ParticleData[] particleDates)
+        public static unsafe void UpdateParticle(ref int point, ParticleData[] particleDates)
         {
             if (point == 0)
                 return;
@@ -61,15 +61,67 @@ namespace LAP.Core.ParticleSystem_ECS
                     ref ParticleData particle = ref particleDates[i];
                     if (particle.Active)
                     {
-                        PAICollection[particle.Type].Update(ref particle);
-                        particle.Position += particle.Velocity;
-                        particle.Time++;
-                        // 交换删除
-                        if (particle.Time >= particle.Lifetime)
-                            particle.Active = false;
+                        if (PAICollection[particle.Type].ExtraUpdate != 0)
+                        {
+                            for (int g = 0; g < PAICollection[particle.Type].ExtraUpdate;g++)
+                            {
+                                if (g == 0)
+                                    particle.ExtraUpdate = false;
+                                else
+                                    particle.ExtraUpdate = true;
+                                PAICollection[particle.Type].Update(ref particle);
+                                particle.Position += particle.Velocity;
+                                particle.Time++;
+                                // 保存旧位置
+                                int olddata = PAICollection[particle.Type].MaxOldData;
+                                if (olddata > 0)
+                                {
+                                    if (olddata > 20)
+                                        olddata = 20;
+                                    for (int w = olddata - 1; w > 0; w--)
+                                    {
+                                        particle.oldPosX[w] = particle.oldPosX[w - 1];
+                                        particle.oldPosY[w] = particle.oldPosY[w - 1];
+                                        particle.oldRot[w] = particle.oldRot[w - 1];
+                                    }
+                                    particle.oldPosX[0] = particle.Position.X;
+                                    particle.oldPosY[0] = particle.Position.Y;
+                                    particle.oldRot[0] = particle.Rotation;
+                                }
+                                if (particle.Time >= particle.Lifetime)
+                                {
+                                    particle.Active = false;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            PAICollection[particle.Type].Update(ref particle);
+                            particle.Position += particle.Velocity;
+                            particle.Time++;
+                            int olddata = PAICollection[particle.Type].MaxOldData;
+                            if (olddata > 0)
+                            {
+                                if (olddata > 20)
+                                    olddata = 20;
+                                for (int w = olddata - 1; w > 0; w--)
+                                {
+                                    particle.oldPosX[w] = particle.oldPosX[w - 1];
+                                    particle.oldPosY[w] = particle.oldPosY[w - 1];
+                                    particle.oldRot[w] = particle.oldRot[w - 1];
+                                }
+                                particle.oldPosX[0] = particle.Position.X;
+                                particle.oldPosY[0] = particle.Position.Y;
+                                particle.oldRot[0] = particle.Rotation;
+                            }
+                            if (particle.Time >= particle.Lifetime)
+                                particle.Active = false;
+                        }
                     }
                 }
             });
+            // 交换删除
             for (int i = point - 1; i >= 0; i--)
             {
                 if (!particleDates[i].Active)

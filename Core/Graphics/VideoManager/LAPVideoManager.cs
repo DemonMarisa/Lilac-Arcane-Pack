@@ -1,16 +1,4 @@
-﻿using LAP.Assets.Movies;
-using LAP.Content.Configs;
-using LAP.Core.SystemsLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
-using ReLogic.Content;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI;
-
-namespace LAP.Core.Graphics.VideoManager
+﻿namespace LAP.Core.Graphics.VideoManager
 {
     //public class LAPVideoManager : ModSystem
     //{

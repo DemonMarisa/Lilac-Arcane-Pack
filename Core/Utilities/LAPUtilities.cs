@@ -55,5 +55,12 @@ namespace LAP.Core.Utilities
             vector = vector.SafeNormalize(Vector2.UnitX);
             return vector;
         }
+        public static Vector2 GetVector2(Vector2 BeginPos, Vector2 EndPos, bool Normalize = true)
+        {
+            Vector2 vector = EndPos - BeginPos;
+            if (Normalize)
+                vector = vector.SafeNormalize(Vector2.UnitX);
+            return vector;
+        }
     }
 }

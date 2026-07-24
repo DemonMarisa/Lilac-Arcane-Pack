@@ -31,7 +31,6 @@ namespace LAP.Core.Graphics.DeepGlow
         }
         public static void RenderLayerGlow(ref Queue<Action> action)
         {
-            return;
             if (action.Count == 0)
                 return;
             if (_downTargets == null || HightLightTarget == null || GlowEffect == null || Iterations < 2)

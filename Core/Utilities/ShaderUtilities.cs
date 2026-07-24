@@ -1,5 +1,4 @@
 ﻿using LAP.Assets.Effects;
-using LAP.Core.SystemsLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;

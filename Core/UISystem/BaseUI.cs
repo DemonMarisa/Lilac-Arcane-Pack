@@ -1,7 +1,5 @@
-﻿using LAP.Core.AnimationHandle;
-using LAP.Core.MiscDate;
+﻿using LAP.Core.MiscDate;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -14,35 +12,29 @@ namespace LAP.Core.UISystem
     /// </summary>
     public abstract class BaseUI : ModType
     {
-        public AniHelper AniProgress;
         public bool Active;
-        public int FadeProgress;
-        public int MaxFadeProgress;
-        public int Type;
+        public int Type { get; internal set; }
         public Vector2 Position;
-        public Vector2 Scale;
-        public float Scale2;
-        public Vector2 Orig;
-        public float Rotation;
+        public Vector2 Scale = Vector2.One;
+        public float Scale2 = 1f;
+        public Vector2 Orig = Vector2.Zero;
+        public float Rotation = 0f;
         public float Opacity = 1f;
-        public Color color;
+        public Color color = Color.White;
         public Rectangle Rectangle;
-        public bool IsHover;
-        public bool IntoHover;
-        public bool PressMouseLeft;
-        public bool PressMouseRight;
+        public bool IsHover { get; private set; }
+        public bool IntoHover { get; private set; }
+        public bool PressMouseLeft { get; private set; }
+        public bool PressMouseRight { get; private set; }
         public bool CanClose = false;
-        public int Parent;
-        public List<int> Subset = [];
-        // 这两个属性会在你绑定好后自动设置，用于扇形UI的判定
-        // 扇区中心
-        public float SectorCenterRot;
-        // 一个扇形的角度
-        public float SectorRot;
-        /// <summary>
-        /// 必须分配一个深度
-        /// </summary>
+        public BaseUI ParentUI;
+        public List<BaseUI> Subset = new();
         public virtual int UIDepth => 0;
+        // 是否阻挡下层 UI 的鼠标事件（默认开启）
+        public virtual bool BlockMouseInput => true;
+        // 轮盘UI的数据
+        public float SectorCenterRot;
+        public float SectorRot;
         protected sealed override void Register()
         {
             Type = UIManager.UICollection.Count;
@@ -57,140 +49,108 @@ namespace LAP.Core.UISystem
             Orig = Vector2.Zero;
             Rotation = 0f;
             color = Color.White;
-            Rectangle = new Rectangle(0, 0, 0, 0);
+            Rectangle = Rectangle.Empty;
             IsHover = false;
+            IntoHover = false;
         }
-        public void Update()
+        /// <summary>
+        /// 更新逻辑。返回 true 表示拦截了鼠标，下层 UI 将无法被交互。
+        /// </summary>
+        public bool UpdateUI(bool mouseConsumed)
         {
-            if (PreSetDepth())
-                UIManager.ActiveDepthCount[UIDepth] = 2;
-
-            IsHover = Colliding(Rectangle, LAPInfo.MouseRectangle);
-
-            bool CanUpdate = PreUpdateHover() && !UIManager.ActiveDepth[UIDepth + 1] && UIManager.BlockAllUI == 0;
-
-            if (!CanUpdate)
+            // 如果鼠标已经被更高层级的 UI 占用，或者全局禁用 UI
+            bool canUpdate = PreUpdateHover() && !mouseConsumed && UIManager.BlockAllUI <= 0;
+            // 检测碰撞
+            bool isColliding = canUpdate && Colliding(Rectangle, LAPInfo.MouseRectangle);
+            if (isColliding)
             {
-                IsHover = false;
-                IntoHover = false;
-            }
-
-            MouseHover(IsHover);
-
-            if (IsHover && !IntoHover)
-            {
-                StartHover();
-                IntoHover = true;
-            }
-            if (!IsHover && IntoHover)
-            {
-                OutHover();
-                IntoHover = false;
-            }
-
-            if (IsHover)
-            {
-                Main.LocalPlayer.mouseInterface = true; // 阻止玩家使用物品
-                if (Main.mouseLeft && !PressMouseLeft)
-                {
-                    OnLeftClick();
-                    PressMouseLeft = true;
-                }
-                if (!Main.mouseLeft && PressMouseLeft)
-                {
-                    OnMouseLeftRelease();
-                    PressMouseLeft = false;
-                }
-                if (Main.mouseLeft)
-                    MouseLeft();
-
-                if (Main.mouseRight && !PressMouseRight)
-                {
-                    OnRightClick();
-                    PressMouseRight = true;
-                }
-                if (!Main.mouseRight && PressMouseRight)
-                {
-                    OnMouseRightRelease();
-                    PressMouseRight = false;
-                }
-                if (Main.mouseRight)
-                    MouseRight();
+                IsHover = true;
+                if (Main.LocalPlayer is not null)
+                    Main.LocalPlayer.mouseInterface = true; // 阻止玩家使用物品
             }
             else
             {
+                IsHover = false;
+            }
+            MouseHover(IsHover);
+            if (UIManager.BlockAllUI <= 0)
+            {
+                // 处理悬停状态切换
+                if (IsHover && !IntoHover)
+                {
+                    StartHover();
+                    IntoHover = true;
+                }
+                else if (!IsHover && IntoHover)
+                {
+                    OutHover();
+                    IntoHover = false;
+                }
+                // 处理鼠标点击事件
+                if (IsHover)
+                {
+                    HandleMouseInput();
+                }
+                else
+                {
+                    // 如果不在悬停状态，处理拖拽到一半移出UI的情况
+                    if (PressMouseLeft)
+                        PressMouseLeft = false;
+                    if (PressMouseRight)
+                        PressMouseRight = false;
+                }
+                PostUpdate(mouseConsumed);
+
+            }
+            // 告诉管理器，当前 UI 是否消耗了鼠标事件
+            return isColliding && BlockMouseInput;
+        }
+
+        private void HandleMouseInput()
+        {
+            // 左键逻辑
+            if (Main.mouseLeft && !PressMouseLeft)
+            {
+                OnLeftClick();
+                PressMouseLeft = true;
+            }
+            else if (!Main.mouseLeft && PressMouseLeft)
+            {
+                OnMouseLeftRelease();
                 PressMouseLeft = false;
+            }
+
+            if (Main.mouseLeft) MouseLeft();
+
+            // 右键逻辑
+            if (Main.mouseRight && !PressMouseRight)
+            {
+                OnRightClick();
+                PressMouseRight = true;
+            }
+            else if (!Main.mouseRight && PressMouseRight)
+            {
+                OnMouseRightRelease();
                 PressMouseRight = false;
             }
 
-            PostUpdate();
+            if (Main.mouseRight)
+                MouseRight();
         }
-        /// <summary>
-        /// 是否更新悬停效果，true为更新，false为完全不更新
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool PreUpdateHover()
-        {
-            return true;
-        }
-        public virtual bool Colliding(Rectangle rectangle, Rectangle mouseRectangle)
-        {
-            return rectangle.Contains(Main.MouseScreen.ToPoint());
-        }
-        /// <summary>
-        /// 检测鼠标碰撞
-        /// </summary>
-        public virtual void MouseHover(bool isHover)
-        {
-        }
-        public virtual void StartHover()
-        {
-        }
-        public virtual void OutHover()
-        {
-        }
-        /// <summary>
-        /// 常驻更新
-        /// </summary>
-        public virtual void PostUpdate()
-        {
-        }
-        public virtual void OnLeftClick()
-        {
-        }
-        public virtual void MouseLeft()
-        {
-        }
-        public virtual void OnRightClick()
-        {
-        }
-        public virtual void MouseRight()
-        {
-        }
-        public virtual void OnMouseLeftRelease()
-        {
-        }
-        public virtual void OnMouseRightRelease()
-        {
-        }
-        public virtual void OnActive()
-        {
-
-        }
-        public virtual bool PreDeActive()
-        {
-            return true;
-        }
-        /// <summary>
-        /// 绘制
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-        }
-        public virtual bool PreSetDepth()
-        {
-            return true;
-        }
+        public virtual bool PreUpdateHover() => true;
+        public virtual bool Colliding(Rectangle rectangle, Rectangle mouseRectangle) => rectangle.Contains(Main.MouseScreen.ToPoint());
+        public virtual void MouseHover(bool isHover) { }
+        public virtual void StartHover() { }
+        public virtual void OutHover() { }
+        public virtual void PostUpdate(bool mouseConsumed) { }
+        public virtual void OnLeftClick() { }
+        public virtual void MouseLeft() { }
+        public virtual void OnRightClick() { }
+        public virtual void MouseRight() { }
+        public virtual void OnMouseLeftRelease() { }
+        public virtual void OnMouseRightRelease() { }
+        public virtual void OnActive() { }
+        public virtual bool PreDeActive() => true;
+        public virtual void Draw() { }
     }
 }

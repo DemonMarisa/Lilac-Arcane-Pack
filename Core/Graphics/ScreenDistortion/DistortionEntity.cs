@@ -21,7 +21,7 @@ namespace LAP.Core.Graphics.ScreenDistortion
             float Progress = Time / (float)MaxTime;
             if (Progress < 0.5f)
             {
-                Radius = MathHelper.Lerp(Radius, TargetRadius, EasingHelper.EaseOutCubic(Progress * 2));
+                Radius = MathHelper.Lerp(0f, TargetRadius, EasingHelper.EaseOutCubic(Progress * 2));
             }
             else
             {

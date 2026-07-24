@@ -25,5 +25,14 @@
 
             HasFinish = new bool[TotalAniUnit];
         }
+        public void Reset(int index, bool ResetMaxAni = false)
+        {
+            AniProgress[index] = 0;
+            Auxfloat[index] = 0;
+            BreakTime[index] = 0;
+            HasFinish[index] = false;
+            if (ResetMaxAni)
+                MaxAniProgress[index] = 0;
+        }
     }
 }

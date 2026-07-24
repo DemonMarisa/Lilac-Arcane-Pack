@@ -27,6 +27,6 @@ namespace LAP.Core.Graphics.Primitives.Trail
         // 需要应用的shader pass索引
         public int applyPass = applyPass;
         // 用于移动贴图
-        public float xuvOffset = xuvOffset;
+        public float xOffset = xuvOffset;
     }
 }

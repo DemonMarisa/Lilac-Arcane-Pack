@@ -19,9 +19,15 @@ namespace LAP.Core.Presets.Content
         {
             return LAPContent.NewParticle(LAPContent.ParticleType<GlowBall_T_M>(), lifetime, position, vel, color, 0, scale, Blendstate, speed);
         }
-        public static int NewGlowLozenge(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, int Blendstate = BlendStateID.Additive)
+        public static int NewGlowLozenge(Vector2 position, Vector2 vel, Color color, int lifetime, float scale,int Blendstate = BlendStateID.Additive)
         {
             return LAPContent.NewParticle(LAPContent.ParticleType<GlowLozenge>(), lifetime, position, vel, color, 0, scale, Blendstate);
+        }
+        public static int NewGlowLozenge_FastF(Vector2 position, Vector2 vel, Color color, int lifetime, Vector2 scale)
+        {
+            int index = LAPContent.NewParticle(LAPContent.ParticleType<GlowLozenge_FastFade>(), lifetime, position, vel, color, 0, 1f, BlendStateID.Additive);
+            ParticleSystem_ECS.ParticleDataManager.particleData_add[index].Scale2 = scale;
+            return index;
         }
         public static int NewDustGlow(Vector2 position, Vector2 vel, float rot, Color color, int lifetime, float scale, float rotspeed, int Blendstate = BlendStateID.Additive)
         {
@@ -43,6 +49,12 @@ namespace LAP.Core.Presets.Content
         {
             int index = LAPContent.NewParticle(LAPContent.ParticleType<Lightning03>(), lifetime, position, vel, color, rotation, scale, BlendStateID.Additive);
             ParticleSystem_ECS.ParticleDataManager.particleData_add[index].aibool0 = useBloom;
+            return index;
+        }
+        public static int NewTrailGlowBall(Vector2 position, Vector2 vel, Color color, int lifetime, float scale, bool SlowFadeOut = false)
+        {
+            int index = LAPContent.NewParticle(LAPContent.ParticleType<TrailGlowBall_E>(), lifetime, position, vel, color, 0, scale, BlendStateID.Additive, scale);
+            ParticleSystem_ECS.ParticleDataManager.particleData_add[index].aibool0 = SlowFadeOut;
             return index;
         }
     }

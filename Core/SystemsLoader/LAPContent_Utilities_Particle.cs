@@ -1,4 +1,5 @@
-﻿using LAP.Core.Enums;
+﻿using LAP.Content.Configs;
+using LAP.Core.Enums;
 using LAP.Core.ParticleSystem_ECS;
 using Microsoft.Xna.Framework;
 
@@ -8,6 +9,8 @@ namespace LAP.Core.SystemsLoader
     {
         public static int NewParticle(int Type, int timeLeft, Vector2 position, Vector2 velocity, Color drawColor, float rotation = 0, float scale = 0, int blendstate = BlendStateID.Alpha, float ai0 = 0, float ai1 = 0, float ai2 = 0)
         {
+            if (LAPConfig.Instance.ParticleLimit == 0)
+                return -1;
             ParticleBehaviors p = ParticleDataManager.PAICollection[Type];
             if (blendstate == BlendStateID.Alpha)
             {
@@ -57,6 +60,7 @@ namespace LAP.Core.SystemsLoader
             particleDate.DrawColor = drawColor;
             particleDate.Rotation = rotation;
             particleDate.Scale = scale;
+            particleDate.Opacity = 1f;
             particleDate.aifloat0 = ai0;
             particleDate.aifloat1 = ai1;
             particleDate.aifloat2 = ai2;

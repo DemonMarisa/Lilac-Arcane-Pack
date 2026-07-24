@@ -70,7 +70,6 @@ namespace LAP.Core.DebugSystem
             if (FrameMetrics.Count == 0)
             {
                 string noMetricsText = "No performance metrics recorded.";
-                var size = ChatManager.GetStringSize(font, noMetricsText, Vector2.One);
                 ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, font, noMetricsText, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, Vector2.One);
                 return;
             }

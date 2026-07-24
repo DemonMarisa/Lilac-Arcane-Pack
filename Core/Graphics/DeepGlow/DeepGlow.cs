@@ -1,4 +1,5 @@
 ﻿using LAP.Assets.Effects;
+using LAP.Content.Configs;
 using LAP.Core.DebugSystem;
 using LAP.Core.Enums;
 using LAP.Core.Graphics.RenderTargetsManager;
@@ -38,7 +39,7 @@ namespace LAP.Core.Graphics.DeepGlow
         /// <param name="layer"></param>
         public static void SubmitCustomGlow(Action drawAction, DrawLayer layer = DrawLayer.EndCapture)
         {
-            if (Main.dedServ || drawAction == null) 
+            if (Main.dedServ || drawAction == null || LAPConfig.Instance.PerformanceMode) 
                 return;
             if (layer is DrawLayer.AfterProjectiles)
                 GlowRequests_AfterProjectile.Enqueue(drawAction);
@@ -118,7 +119,7 @@ namespace LAP.Core.Graphics.DeepGlow
         #region 绘制DeepGlow
         public static void DrawDeepGlow(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget, RenderTarget2D screenTargetSwap, Color clearColor)
         {
-            if (Main.dedServ)
+            if (Main.dedServ || LAPConfig.Instance.PerformanceMode)
             {
                 orig(self, finalTexture, screenTarget, screenTargetSwap, clearColor);
                 return;

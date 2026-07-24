@@ -28,6 +28,7 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath Lightning_T { get; private set; }
         public static Tex2DWithPath Lightning2_T { get; private set; }
         public static Tex2DWithPath NoiseLine { get; private set; }
+        public static Tex2DWithPath Distortion01 { get; private set; }
         public static void LoadExtraTexture()
         {
             ShadowNebula = new Tex2DWithPath($"{ExtraPath}/MetaBallBG/ShadowNebula");
@@ -53,6 +54,7 @@ namespace LAP.Assets.TextureRegister
             Lightning_T = new Tex2DWithPath($"{ExtraPath}/Lightning_T");
             Lightning2_T = new Tex2DWithPath($"{ExtraPath}/Lightning2_T");
             NoiseLine = new Tex2DWithPath($"{ExtraPath}/NoiseLine");
+            Distortion01 = new Tex2DWithPath($"{ExtraPath}/Distortion01");
         }
         public static void UnloadExtraTextures()
         {
@@ -78,6 +80,7 @@ namespace LAP.Assets.TextureRegister
             Lightning_T = null;
             Lightning2_T = null;
             NoiseLine = null;
+            Distortion01 = null;
         }
     }
 }
