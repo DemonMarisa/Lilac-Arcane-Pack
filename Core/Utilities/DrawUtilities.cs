@@ -1,6 +1,5 @@
 ﻿using LAP.Assets.TextureRegister;
-using LAP.Content.Particles;
-using LAP.Core.MiscDate;
+using LAP.Core.Presets.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -51,6 +50,15 @@ namespace LAP.Core.Utilities
             SpriteEffects flipSprite = (proj.spriteDirection * Main.player[proj.owner].gravDir == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             Main.spriteBatch.Draw(texture, drawPosition, null, lightColor, drawRotation + rotOffset, rotationPoint, proj.scale * Main.player[proj.owner].gravDir * scale, flipSprite, 0f);
+        }
+        public static void BaseProjPreDraw(this Projectile proj, Texture2D texture, Color lightColor, Vector2 posOffset,float rotOffset = 0f, float scale = 1f)
+        {
+            Vector2 drawPosition = proj.Center - Main.screenPosition;
+            float drawRotation = proj.rotation + (proj.spriteDirection == -1 ? MathHelper.Pi : 0f);
+            Vector2 rotationPoint = texture.Size() / 2f;
+            SpriteEffects flipSprite = (proj.spriteDirection * Main.player[proj.owner].gravDir == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            Main.spriteBatch.Draw(texture, drawPosition + posOffset, null, lightColor, drawRotation + rotOffset, rotationPoint, proj.scale * Main.player[proj.owner].gravDir * scale, flipSprite, 0f);
         }
 
         public static void SetRasterizerState()
@@ -371,6 +379,16 @@ namespace LAP.Core.Utilities
             float B = 2 - Math.Abs(H * 6 - 4);
             return new Color(R, G, B);
         }
+        // 获取普通的以向右为正方向的弹幕的绘制数据
+        public static void GetProjDrawInfo_Normal(this Projectile proj, out Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
+        {
+            texture = TextureAssets.Projectile[proj.type].Value;
+            drawPosition = proj.Center - Main.screenPosition;
+            drawRotation = proj.rotation;
+            rotationPoint = texture.Size() / 2;
+            flipSprite = proj.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        }
+        // 获取斜45度的近战武器的数据
         public static void GetProjDrawInfo_Melee(this Projectile proj, out Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
         {
             texture = TextureAssets.Projectile[proj.type].Value;
@@ -379,6 +397,7 @@ namespace LAP.Core.Utilities
             rotationPoint = proj.spriteDirection == -1 ? new Vector2(texture.Width, texture.Height) : new Vector2(0, texture.Height);
             flipSprite = proj.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         }
+        // 获取法杖的数据（以中心点旋转）
         public static void GetProjDrawInfo_Staff(this Projectile proj, out Texture2D texture, out Vector2 drawPosition, out float drawRotation, out Vector2 rotationPoint, out SpriteEffects flipSprite)
         {
             texture = TextureAssets.Projectile[proj.type].Value;
@@ -392,7 +411,7 @@ namespace LAP.Core.Utilities
             for (int i = 0; i < GenStep; i++)
             {
                 Vector2 SpawnVector = Vector2.Lerp(BeginPos, EndPos, i / GenStep);
-                new SmallGlowBall(SpawnVector, Vector2.Zero, Color.SkyBlue, LifeTime, scale, 0).Spawn();
+                ParticlePreset.NewTGlowBall(SpawnVector, Vector2.Zero, Color.SkyBlue, LifeTime, scale, 0);
             }
         }
     }

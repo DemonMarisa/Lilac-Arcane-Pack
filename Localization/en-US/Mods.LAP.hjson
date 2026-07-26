@@ -14,3 +14,8 @@ Keybinds: {
 	WeaponSkill.DisplayName: Weapon Skill
 	DashHotKey.DisplayName: Dash Hot Key, it only affect the dash added by this mod.
 }
+
+DamageClasses: {
+	TrueMelee.DisplayName: True Melee
+	TrueMeleeNoSpeed.DisplayName: True Melee No Speed
+}

@@ -14,3 +14,8 @@ Keybinds: {
 	WeaponSkill.DisplayName: 武器战技按键
 	DashHotKey.DisplayName: 单击冲刺，目前只会影响这个Mod添加的冲刺
 }
+
+DamageClasses: {
+	// TrueMelee.DisplayName: True Melee
+	// TrueMeleeNoSpeed.DisplayName: True Melee No Speed
+}
