@@ -5,6 +5,7 @@ using LAP.Core.MiscDate;
 using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -29,7 +30,6 @@ namespace LAP.Core.Graphics.PixelatedRender
         public static bool BeginDrawBeforePlayers_Add = false;
         public static List<IPixelatedRenderer> BeforeDusts_Add = [];
         public static bool BeginDrawBeforeDusts_Add = false;
-        // public static Matrix PixelRenderMatrix;
         public override void Load()
         {
             if (Main.dedServ)

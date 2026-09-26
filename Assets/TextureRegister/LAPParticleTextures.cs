@@ -18,6 +18,7 @@ namespace LAP.Assets.TextureRegister
         public static Tex2DWithPath BloomCircle { get; private set; }
         public static Tex2DWithPath Sparkle { get; private set; }
         public static Tex2DWithPath Lozenge_Glow { get; private set; }
+        public static Tex2DWithPath CrossGlow { get; private set; }
         public static void LoadParticleTextures()
         {
             PointLight = new Tex2DWithPath($"{ParticlePath}/PointLight01");
@@ -33,6 +34,7 @@ namespace LAP.Assets.TextureRegister
             BloomCircle = new Tex2DWithPath($"{ParticlePath}/BloomCircle");
             Sparkle = new Tex2DWithPath($"{ParticlePath}/Sparkle");
             Lozenge_Glow = new Tex2DWithPath($"{ParticlePath}/Lozenge_Glow");
+            CrossGlow = new Tex2DWithPath($"{ParticlePath}/CrossGlow");
         }
         public static void UnloadParticleTextures()
         {
@@ -49,6 +51,7 @@ namespace LAP.Assets.TextureRegister
             BloomCircle = null;
             Sparkle = null;
             Lozenge_Glow = null;
+            CrossGlow = null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using LAP.Content.Configs;
 using LAP.Core.LAPConditions;
 using LAP.Core.MiscDate;
 using Terraria;
@@ -36,18 +37,32 @@ namespace LAP.Core.GlobalInstance.Players
         /// 用于设置恢复专注值的延迟，用于没使用物品，但是也不给恢复的情况
         /// </summary>
         public int FocusRegenRate = 0;
+        /// <summary>
+        /// 基础速度
+        /// </summary>
         public int BaseFocusRegen = 2;
+        /// <summary>
+        /// 脱战乘数
+        /// </summary>
         public float OutBattleFocusRegenMult = 5f;
         // 用于储存专注值的恢复，以FocusRegen / 60获取的每帧应该恢复多少，当超过1时，增加1点专注值，并减少相应的池子
         public float FocusRegenPool = 0;
         /// <summary>
-        /// 战技效率
+        /// 专注值效率
         /// </summary>
         public float FocusCost = 1f;
         /// <summary>
-        /// 战技恢复效率
+        /// 专注值恢复效率
         /// </summary>
         public float FocusRegenMult = 1f;
+        /// <summary>
+        /// 最大专注值的额外增加量
+        /// </summary>
+        public int MaxFocusAdd = 0;
+        /// <summary>
+        /// 最大专注值的额外乘数
+        /// </summary>
+        public float MaxFocusMult = 0;
         public void SaveFP(TagCompound tag)
         {
             tag.Add("LAPStatFocus", statFocus);
@@ -65,6 +80,7 @@ namespace LAP.Core.GlobalInstance.Players
             statFocusMax2 = statFocusMax;
             FocusRegen = BaseFocusRegen;
             FocusCost = 1f;
+            FocusRegenMult = 1f;
             if (FocusRegenRate > 0)
                 FocusRegenRate--;
             if (UseFocus > 0)
@@ -72,33 +88,18 @@ namespace LAP.Core.GlobalInstance.Players
         }
         public void UpdateMaxFocus_ResetEffect()
         {
-            if (NPC.downedBoss3)
-                statFocusMax2 += 50;
-            if (Main.hardMode)
-                statFocusMax2 += 50;
-            if (LAPCondition.DownedAllMechBoss.IsMet())
-                statFocusMax2 += 50;
-            if (NPC.downedPlantBoss)
-                statFocusMax2 += 50;
-            if (NPC.downedGolemBoss)
-                statFocusMax2 += 100;
-            if (NPC.downedMoonlord)
-                statFocusMax2 += 100;
+            statFocusMax2 += MaxFocusAdd;
+            statFocusMax2 += (int)(statFocusMax * MaxFocusMult);
+            MaxFocusAdd = 0;
+            MaxFocusMult = 0;
         }
         public void UpdateMaxFocusRenge_ResetEffect()
         {
-            if (NPC.downedBoss3)
-                FocusRegen += 1;
-            if (Main.hardMode)
-                FocusRegen += 1;
-            if (LAPCondition.DownedAllMechBoss.IsMet())
-                FocusRegen += 1;
-            if (NPC.downedPlantBoss)
-                FocusRegen += 1;
-            if (NPC.downedGolemBoss)
-                FocusRegen += 2;
-            if (NPC.downedMoonlord)
-                FocusRegen += 2;
+        }
+        public void PostUpdateFocus()
+        {
+            if (LAPConfig.Instance.DeBugInfo)
+                statFocus = statFocusMax2;
         }
         public void RegenFocus_PostUpdate()
         {
@@ -108,7 +109,7 @@ namespace LAP.Core.GlobalInstance.Players
             if (!LAPInfo.AnyBossHere)
                 ThisFrameRegen = ThisFrameRegen * OutBattleFocusRegenMult;
 
-            FocusRegenPool += ThisFrameRegen;
+            FocusRegenPool += ThisFrameRegen * FocusRegenMult;
 
             int RegenHowMany = (int)FocusRegenPool;
 

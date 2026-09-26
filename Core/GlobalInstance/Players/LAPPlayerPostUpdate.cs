@@ -9,6 +9,7 @@ namespace LAP.Core.GlobalInstance.Players
             UpdateNet();
             RegenFocus_PostUpdate();
             ClampMaxFocus_PostUpdate();
+            UpdateInfiniteFlight_PostUpdate();
         }
     }
 }

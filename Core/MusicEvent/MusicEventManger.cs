@@ -11,7 +11,7 @@ using Terraria.UI.Chat;
 namespace LAP.Core.MusicEvent
 {
     // 此处音乐事件为手动在外部添加，而不是采用和灾厄一样的提前生成并遍历条件
-    public record class MusicEventEntry(string Song, TimeSpan Length, TimeSpan OutroSilence, Func<bool> ShouldPlay);
+    public record class MusicEventEntry(int Song, TimeSpan Length, TimeSpan OutroSilence, Func<bool> ShouldPlay);
     public class MusicEventManger : ModSystem
     {
         // 待播放列表
@@ -31,7 +31,7 @@ namespace LAP.Core.MusicEvent
         /// 存储上一次更新的现实世界时间，用于计算时间差。
         /// </summary>
         public static DateTime lastUpdateTime;
-        public static void AddMusicEventEntry(string musicPath, TimeSpan length, Func<bool> shouldPlay, TimeSpan outroSilence)
+        public static void AddMusicEventEntry(int musicID, TimeSpan length, Func<bool> shouldPlay, TimeSpan outroSilence)
         {
             if (Main.dedServ)
                 return;
@@ -40,16 +40,18 @@ namespace LAP.Core.MusicEvent
                 return;
             if (CurrentEvent is not null)
             {
-                if (CurrentEvent.Song == musicPath)
+                if (CurrentEvent.Song == musicID)
                     return;
             }
             // 添加时候不能添加相同的BGM，防止因为条件问题出问题
             foreach (MusicEventEntry musicEventEntry in PlayList)
             {
-                if (musicEventEntry.Song == musicPath)
+                if (musicEventEntry.Song == musicID)
                     return;
             }
-            MusicEventEntry entry = new(musicPath, length, outroSilence, shouldPlay);
+            MusicEventEntry entry = new(musicID, length, outroSilence, shouldPlay);
+            if (PlayList.Contains(entry))
+                return;
             PlayList.Add(entry);
         }
         public override void OnModLoad()
@@ -68,7 +70,7 @@ namespace LAP.Core.MusicEvent
         public override void UpdateUI(GameTime gameTime)
         {
             // 服务器上不处理BGM
-            if (Main.dedServ || PlayList.Count == 0)
+            if (Main.dedServ)
                 return;
             if (CurrentEvent is null)
             {
@@ -76,7 +78,7 @@ namespace LAP.Core.MusicEvent
                 {
                     if (PlayList[i].ShouldPlay())
                     {
-                        CurrentEvent = PlayList[i];
+                        CurrentEvent = new MusicEventEntry(PlayList[i].Song, PlayList[i].Length, PlayList[i].OutroSilence, PlayList[i].ShouldPlay);
                         PlayList.Remove(PlayList[i]);
                     }
                 }
@@ -84,7 +86,7 @@ namespace LAP.Core.MusicEvent
             }
             else
             {
-                int MusicID = MusicLoader.GetMusicSlot(CurrentEvent.Song);
+                int MusicID = CurrentEvent.Song;
                 // 如果当前事件的播放条件突然变为false，立即停止它。
                 if (!CurrentEvent.ShouldPlay())
                 {

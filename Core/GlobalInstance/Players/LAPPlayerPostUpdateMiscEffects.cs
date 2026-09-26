@@ -8,7 +8,7 @@ namespace LAP.Core.GlobalInstance.Players
         public override void PostUpdateMiscEffects()
         {
             UpdatePlayerAttackMult();
-            UpdatePlayerMainBuff();
+            UpdatePlayerMainBuff_PostUpdateMisc();
         }
         // 更新设置里的伤害增幅
         public void UpdatePlayerAttackMult()

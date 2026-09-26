@@ -173,14 +173,6 @@ namespace LAP.Core.Graphics.DeepGlow
             }
             Main.spriteBatch.End();
         }
-        //public static void CatchHighLight(RenderTarget2D screenTarget, float Threshold = 0.5f)
-        //{
-        //    HightLightTarget.SwapToTarget();
-        //    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone);
-        //    GlowEffect.CurrentTechnique.Passes["Prefilter2"].Apply();
-        //    Main.spriteBatch.Draw(screenTarget, Vector2.Zero, Color.White);
-        //    Main.spriteBatch.End();
-        //}
         public static void DownSampler()
         {
             for (int i = 0; i < Iterations; i++)

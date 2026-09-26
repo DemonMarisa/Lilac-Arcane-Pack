@@ -5,11 +5,12 @@ namespace LAP.Core.Enums
     [Flags]
     public enum DrawLayer
     {
+        BeforePlayer,
+        AfterPlayer,
         BeforeTiles,
         BeforeNPCs,
         AfterProjectiles,
         BeforeProjectiles,
-        BeforePlayer,
         AfterDusts,
         BeforeDusts,
         EndCapture

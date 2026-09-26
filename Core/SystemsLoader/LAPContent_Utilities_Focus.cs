@@ -37,7 +37,7 @@ namespace LAP.Core.SystemsLoader
         /// <returns></returns>
         public static void RestoreFocus(this Player player, int amount)
         {
-            int regen = (int)(amount * player.LAP().FocusRegenMult);
+            int regen = (int)(amount);
             player.LAP().statFocus += regen;
             if (Main.myPlayer == player.whoAmI)
                 player.FocusEffect(regen);
@@ -79,9 +79,9 @@ namespace LAP.Core.SystemsLoader
         {
             return player.LAP().statFocusMax;
         }
-        public static int FocusRegen(this Player player)
+        public static float FocusRegen(this Player player)
         {
-            return player.LAP().FocusRegen;
+            return player.LAP().FocusRegen * player.LAP().FocusRegenMult;
         }
         public static float FocusCost(this Player player)
         {

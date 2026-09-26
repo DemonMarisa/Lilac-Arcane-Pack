@@ -1,4 +1,5 @@
 ﻿using LAP.Core.GlobalInstance.Players.DashSystem;
+using LAP.Core.NetCode.NetUtilities;
 using System;
 using Terraria;
 
@@ -12,22 +13,11 @@ namespace LAP.Core.SystemsLoader
         /// <param name="player"></param>
         public static void ImmediatelyDash(this Player player, int BeginDashID)
         {
+            // 必须本地调用
+            if (player.whoAmI != Main.myPlayer)
+                return;
             LAPDashPlayer LAPPlayer = player.GetModPlayer<LAPDashPlayer>();
-            int curid = LAPPlayer.CurDashID;
-            if (LAPDashPlayer.DashCollection.IndexInRange(curid))
-            {
-                LAPPlayer.DashTime = 0;
-                LAPPlayer.DashDelay = 0;
-                LAPPlayer.BeginDash = false;
-                BasePlayerDash ActiveDash = LAPPlayer.CurDash;
-                ActiveDash?.OnDashEnd(player);
-            }
-            LAPPlayer.OverideCurDashID = BeginDashID;
-            BasePlayerDash newDash = LAPDashPlayer.DashCollection[BeginDashID];
-            LAPPlayer.CurDash = newDash.Clone();
-            LAPPlayer.CurDash.OnDashStart(player);
-            LAPPlayer.DashTime = LAPPlayer.CurDash.DashTime(player);
-            player.SetImmuneTimeForAllTypes(LAPPlayer.CurDash.ImmuneTime(player));
+            LAPPlayer.ImmediatelyDashID = BeginDashID;
         }
         public static void SetLAPDash(this Player player, int DashID)
         {

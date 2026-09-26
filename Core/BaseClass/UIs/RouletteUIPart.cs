@@ -7,7 +7,7 @@ namespace LAP.Core.BaseClass.UIs
 {
     public abstract class RouletteUIPart : BaseUI
     {
-        public override bool Colliding(Rectangle rectangle, Rectangle mouseRectangle)
+        public override bool Colliding(Rectangle rectangle, Point mouseRectangle)
         {
             Vector2 vectorToMouse = LAPUtilities.GetVector2(LAPUtilities.ScreenCenter(), Main.MouseScreen);
             // 规范化到π, 3π方便比较

@@ -61,7 +61,7 @@ namespace LAP.Core.UISystem
             // 如果鼠标已经被更高层级的 UI 占用，或者全局禁用 UI
             bool canUpdate = PreUpdateHover() && !mouseConsumed && UIManager.BlockAllUI <= 0;
             // 检测碰撞
-            bool isColliding = canUpdate && Colliding(Rectangle, LAPInfo.MouseRectangle);
+            bool isColliding = canUpdate && Colliding(Rectangle, Main.MouseScreen.ToPoint());
             if (isColliding)
             {
                 IsHover = true;
@@ -138,7 +138,7 @@ namespace LAP.Core.UISystem
                 MouseRight();
         }
         public virtual bool PreUpdateHover() => true;
-        public virtual bool Colliding(Rectangle rectangle, Rectangle mouseRectangle) => rectangle.Contains(Main.MouseScreen.ToPoint());
+        public virtual bool Colliding(Rectangle rectangle, Point mouseRectangle) => rectangle.Contains(mouseRectangle);
         public virtual void MouseHover(bool isHover) { }
         public virtual void StartHover() { }
         public virtual void OutHover() { }

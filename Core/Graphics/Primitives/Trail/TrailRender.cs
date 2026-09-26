@@ -1,18 +1,14 @@
-﻿using LAP.Core.DebugSystem;
-using LAP.Core.Enums;
+﻿using LAP.Core.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Animations;
 
 namespace LAP.Core.Graphics.Primitives.Trail
 {
     public class TrailRender
     {
-        private static Texture2D _lastTexture;
-        private static SamplerState _lastSamplerState;
         public static GraphicsDevice graphicsDevice => Main.graphics.GraphicsDevice;
         private const int MaxVertex = 4096;
         private const int MaxPoints = 2048;

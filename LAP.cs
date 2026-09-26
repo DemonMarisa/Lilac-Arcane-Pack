@@ -12,6 +12,7 @@ namespace LAP
 	public class LAP : Mod
     {
         public static LAP Instance;
+        public Mod HFPS = null;
         public Mod InfernumMode = null;
         public Mod CalamityInheritance = null;
         public Mod UCA = null;
@@ -33,6 +34,9 @@ namespace LAP
         public override void Load()
         {
             Instance = this;
+
+            HFPS = null;
+            ModLoader.TryGetMod("HighFPSSupport", out HFPS);
 
             CalamityMod = null;
             ModLoader.TryGetMod("CalamityMod", out CalamityMod);

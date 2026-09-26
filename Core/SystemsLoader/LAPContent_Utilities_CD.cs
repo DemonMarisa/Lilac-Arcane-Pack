@@ -12,7 +12,7 @@ namespace LAP.Core.SystemsLoader
         public static bool HasCD<T>(this Player player) where T : BaseCD
         {
             int Type = CDType<T>();
-            return player.LAPCD().ActiveCDType.Contains(Type);
+            return player.LAPCD().ActiveCD.Contains(CustomCDManger.CDCollection[Type]);
         }
         public static BaseCD AddCD(this Player player, int Type, int Timeleft, bool Syned = true)
         {
@@ -52,7 +52,7 @@ namespace LAP.Core.SystemsLoader
         /// <param name="player"></param>
         public static void RemoveCD(this Player player, int Type, bool Syned = true, bool Complete = true)
         {
-            if (!player.LAPCD().ActiveCDType.Contains(Type))
+            if (!player.LAPCD().ActiveCD.Contains(CustomCDManger.CDCollection[Type]))
                 return;
             for (int i = 0; i < player.LAPCD().ActiveCD.Count; i++)
             {

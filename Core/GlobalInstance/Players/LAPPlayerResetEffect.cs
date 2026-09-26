@@ -14,6 +14,10 @@ namespace LAP.Core.GlobalInstance.Players
             UpdateMaxFocus_ResetEffect();
             // 更新专注值恢复速度
             UpdateMaxFocusRenge_ResetEffect();
+            // 最终专注值恢复
+            PostUpdateFocus();
+            // 减血
+            MinusMaxLife_ResetEffect();
         }
     }
 }

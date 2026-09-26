@@ -40,8 +40,6 @@ namespace LAP.Core.UISystem
         public static void PostUpdateUI(On_Main.orig_UpdateUIStates orig, GameTime gameTime)
         {
             orig(gameTime);
-            // 此处建议使用 Main.mouseX/Y 而不是 MouseScreen，因为在某些缩放或全屏模式下 MouseScreen 可能不准
-            LAPInfo.MouseRectangle = new Rectangle(Main.mouseX, Main.mouseY, 1, 1);
             if (BlockAllUI > 0)
                 BlockAllUI--;
             MouseConsumed = false;

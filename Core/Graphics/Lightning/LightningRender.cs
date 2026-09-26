@@ -1,6 +1,5 @@
 ﻿using LAP.Assets.Effects;
 using LAP.Assets.TextureRegister;
-using LAP.Core.DebugSystem;
 using LAP.Core.Enums;
 using LAP.Core.Graphics.Primitives.Trail;
 using LAP.Core.Utilities;
@@ -8,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using static CalamityMod.Skies.ExoMechsSky;
 
 namespace LAP.Core.Graphics.Lightning
 {

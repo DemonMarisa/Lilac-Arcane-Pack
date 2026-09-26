@@ -15,7 +15,7 @@ namespace LAP.Core.NetCode.NetUtilities
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 ModPacket packet = LAP.Instance.GetPacket();
-                packet.Write(LAPContent.PackHandleType<ReadCustomCD>());
+                packet.Write(LAPContent.PackHandleType<ReadRFocus>());
                 packet.Write(player.whoAmI);
                 packet.Write(amount);
                 packet.Send();

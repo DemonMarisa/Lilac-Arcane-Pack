@@ -9,8 +9,12 @@ namespace LAP.Core.Utilities
         {
             if (npc.type == ModContent.NPCType<T>())
                 return true;
-
             return false;
+        }
+        public static void SetDR(this NPC npc, float DR)
+        {
+            npc.LAP().StateDR = DR;
+            npc.LAP().TargetDR = DR;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using LAP.Core.Graphics.DeepGlow;
+using LAP.Core.Graphics.LAPCustomSky;
+using LAP.Core.Graphics.LAPPostProgress;
 using LAP.Core.Graphics.Lightning;
 using LAP.Core.Graphics.PixelatedRender;
 using LAP.Core.Graphics.VFX;
@@ -17,9 +19,9 @@ namespace UCA.Core.ILEditingManger
         public override void Load()
         {
             On_Main.DrawDust += MetaBallManager.DrawRenderTarget;
-            // ECS的版本一般用于绘制大量的粒子所以靠前
-            On_Main.DrawDust += ParticleDataManager.DrawParticle_ECS;
+
             On_Main.DrawDust += BaseParticleManager.DrawParticles;
+            On_Main.DrawDust += ParticleDataManager.DrawParticle_ECS;
 
             On_Main.DrawProjectiles += VFXManager.DrawVFXInstance_PreProjectiles;
             // 保证VFX系统的Add绘制在最高层级
@@ -34,12 +36,18 @@ namespace UCA.Core.ILEditingManger
             On_Main.DoDraw_Tiles_Solid += DeepGlow.Hook_BeforeTile;
             On_Main.DrawDust += DeepGlow.Hook_AfterDust;
             On_FilterManager.EndCapture += DeepGlow.DrawDeepGlow;
+
+            On_Main.DrawBG += LAPCustomSkyManager.DrawLAPBG;
+            On_Main.DrawUnderworldBackground += LAPCustomSkyManager.DrawUnderworldBackgroundLAPBG;
+
+            On_FilterManager.EndCapture += LAPPostProgressManager.On_FilterManager_EndCapture;
         }
         public override void Unload()
         {
             On_Main.DrawDust -= MetaBallManager.DrawRenderTarget;
-            On_Main.DrawDust -= ParticleDataManager.DrawParticle_ECS;
+
             On_Main.DrawDust -= BaseParticleManager.DrawParticles;
+            On_Main.DrawDust -= ParticleDataManager.DrawParticle_ECS;
 
             On_Main.DrawProjectiles -= VFXManager.DrawVFXInstance_PreProjectiles;
             // 保证VFX系统的Add绘制在最高层级
@@ -54,6 +62,11 @@ namespace UCA.Core.ILEditingManger
             On_Main.DoDraw_Tiles_Solid -= DeepGlow.Hook_BeforeTile;
             On_Main.DrawDust -= DeepGlow.Hook_AfterDust;
             On_FilterManager.EndCapture -= DeepGlow.DrawDeepGlow;
+
+            On_Main.DrawBG -= LAPCustomSkyManager.DrawLAPBG;
+            On_Main.DrawUnderworldBackground -= LAPCustomSkyManager.DrawUnderworldBackgroundLAPBG;
+
+            On_FilterManager.EndCapture -= LAPPostProgressManager.On_FilterManager_EndCapture;
         }
     }
 }

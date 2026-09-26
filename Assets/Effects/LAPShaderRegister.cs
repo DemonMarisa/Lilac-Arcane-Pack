@@ -10,6 +10,7 @@ namespace LAP.Assets.Effects
     {        
         private const string ShaderPath = "LAP/Assets/Effects/Overlays/";
         private const string ScreenShaderPath = "LAP/Assets/Effects/ScreenShaders/";
+        private const string ColorShadersPath = "LAP/Assets/Effects/ColorShaders/";
         internal const string ShaderPrefix = "LAP:";
         public static Asset<Effect> MetaballShader { get; private set; }
         public static Asset<Effect> EdgeMeltsShader { get; private set; }
@@ -63,6 +64,8 @@ namespace LAP.Assets.Effects
             LoadScreen();
 
             Load2();
+
+            LoadColor();
         }
         public override void Unload()
         {
@@ -85,6 +88,8 @@ namespace LAP.Assets.Effects
             UnLoadScreen();
 
             UnLoad2();
+
+            UnLoadColor();
         }
 
         public static Asset<Effect> LoadShader(string path)

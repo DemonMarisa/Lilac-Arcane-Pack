@@ -3,6 +3,7 @@ using LAP.Core.Utilities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -91,12 +92,32 @@ namespace LAP.Core.SpecificEffectManagers
     }
     public class ScreenShakeSystem : ModSystem
     {
+        // 为什么HFPS也会反复调用modifyscreenpos，无语了
+        private static Stopwatch _realTimeTimer;
+        private const double TargetUpdateIntervalMs = 1000.0 / 60.0;
         public static readonly List<ScreenShakeInfo> ScreenShakes = [];
+        public override void OnModLoad()
+        {
+            if (LAP.Instance.HFPS is not null)
+            {
+                _realTimeTimer = new Stopwatch();
+                _realTimeTimer?.Start();
+            }
+        }
+        public override void Unload()
+        {
+            _realTimeTimer = null;
+        }
         public override void ModifyScreenPosition()
         {
             if (ScreenShakes.Count == 0)
                 return;
-
+            if (LAP.Instance.HFPS is not null)
+            {
+                if (_realTimeTimer.Elapsed.TotalMilliseconds < TargetUpdateIntervalMs)
+                    return;
+                _realTimeTimer.Restart();
+            }
             foreach (ScreenShakeInfo shake in ScreenShakes)
             {
                 shake.Update();

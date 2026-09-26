@@ -142,7 +142,6 @@ namespace LAP.Core.Utilities
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
         }
-
         public static void ReSetToEndUI()
         {
             Main.spriteBatch.End();

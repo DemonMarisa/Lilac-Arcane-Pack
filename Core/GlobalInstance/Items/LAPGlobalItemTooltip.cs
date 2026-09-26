@@ -16,14 +16,14 @@ namespace LAP.Core.GlobalInstance.Items
             {
                 tooltips.IntegrateHotkey(LAPKeybind.WeaponSkillHotKey);
             }
-            if (WeaponSkillManaCost >= 0)
+            if (WeaponSkillRealManaCost >= 0)
             {
-                int RealMana = Main.LocalPlayer.GetRealManaCost(WeaponSkillManaCost);
+                int RealMana = Main.LocalPlayer.GetRealManaCost(WeaponSkillRealManaCost);
                 tooltips.ReplaceManaCost(RealMana);
             }
-            if (WeaponSkillFocusCost >= 0)
+            if (WeaponSkillRealFocusCost >= 0)
             {
-                int RealFocus = Main.LocalPlayer.GetRealFocusCost(WeaponSkillFocusCost);
+                int RealFocus = Main.LocalPlayer.GetRealFocusCost(WeaponSkillRealFocusCost);
                 tooltips.ReplaceFocusCost(RealFocus);
             }
         }

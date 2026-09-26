@@ -63,7 +63,19 @@ namespace LAP.Core.BaseClass
                         player.CheckMana(player.ActiveItem(), Item.LAP().WeaponSkillRealManaCost, true);
                 }
                 WeaponSkill(player, soure, position, velocity, type, damage, knockback);
+                SetSkillUse(player);
             }
+        }
+        public void SetSkillUse(Player player)
+        {
+            player.SetItemAnimation((int)(Item.LAP().WeaponSkillTime * player.GetWeaponAttackSpeed(Item)));
+            player.SetItemTime((int)(Item.LAP().WeaponSkillTime * player.GetWeaponAttackSpeed(Item)));
+            player.SetUseFocus((int)(Item.LAP().WeaponSkillTime * player.GetWeaponAttackSpeed(Item)));
+            if (player.LocalMouseWorld().X > player.Center.X)
+                player.ChangeDir(1);
+            else
+                player.ChangeDir(-1);
+            player.itemRotation = LAPUtilities.GetVector2(player.Center, player.LocalMouseWorld(), false).ToRotation();
         }
         public virtual bool PreCheckFocus(Player player, int focusCost)
         {

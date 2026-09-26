@@ -126,7 +126,7 @@ namespace LAP.Core.LAPUI.FocusBar
                 LocalizedText NoUseFocusText = Language.GetText("Mods.LAP.MouseMessage.NoUseFocusText");
                 LocalizedText TestInfo = Language.GetText("Mods.LAP.MouseMessage.TestInfo");
                 string show = $"{DisplayName}" + Main.LocalPlayer.LAP().statFocus + "/" + Main.LocalPlayer.LAP().statFocusMax2;
-                string Regen = $"{FocusRegen}{Main.LocalPlayer.FocusRegen()} FP/s";
+                string Regen = $"{FocusRegen}{((int)(Main.LocalPlayer.FocusRegen() * 100f) / 100f)} FP/s";
                 if (Main.keyState.IsKeyDown(Keys.LeftShift))
                 {
                     if (UseFocus)

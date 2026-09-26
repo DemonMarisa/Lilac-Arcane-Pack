@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.BackupIO;
 
 namespace LAP.Core.GlobalInstance.Players.DashSystem
 {
@@ -13,11 +14,15 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
     {
         public static List<BasePlayerDash> DashCollection = [];
         public BasePlayerDash CurDash;
-        public int CurDashID;
+        public int CurDashID = -1;
         /// <summary>
         /// 这个覆盖后必须执行完此次冲刺才会重置
         /// </summary>
         public int OverideCurDashID = -1;
+        /// <summary>
+        /// 立即冲刺
+        /// </summary>
+        public int ImmediatelyDashID = -1;
         // 冲刺计时
         public int DashTime = 0;
         // 冲刺冷却
@@ -37,7 +42,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             if (DashCollection.Count == 0)
                 return;
-            if (CurDashID == -1 && OverideCurDashID == -1)
+            if (CurDashID == -1 && OverideCurDashID == -1 && ImmediatelyDashID == -1 && DashTime == 0)
                 return;
             // 这两个原版源码判了
             if (Player.grappling[0] == -1 && !Player.tongued)
@@ -45,13 +50,29 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                 int Index = CurDashID;
                 if (OverideCurDashID != -1)
                     Index = OverideCurDashID;
-                BasePlayerDash ActiveDash = DashCollection[Index];
+                bool ThisCanDash = false;
                 // 监测是否开始冲刺
-                HandleDashBegin(out bool ThisCanDash);
+                // 如果外部发出了立即冲刺指令，则处理冲刺
+                if (ImmediatelyDashID != -1)
+                {
+                    Index = ImmediatelyDashID;
+                    ThisCanDash = true;
+                    HandleImmediatelyDash();
+                    // 这是为了保证只调用一次
+                    ImmediatelyDashID = -1;
+                }
+                else if (Main.myPlayer == Player.whoAmI)
+                {
+                    HandleDashBegin(out bool NormalDash);
+                    ThisCanDash = NormalDash;
+                }
                 if (ThisCanDash)
                 {
+                    BasePlayerDash ActiveDash = DashCollection[Index];
                     CurDash = ActiveDash.Clone();
-                    Player.SyncedDash(CurDash.Type);
+                    // 如果以后再有改动，注意查看一遍多人同步代码
+                    if (Main.myPlayer == Player.whoAmI)
+                        Player.SyncedDash(CurDash.Type);
                 }
                 if (ThisCanDash && !BeginDash)
                 {
@@ -88,9 +109,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                     else
                         CurDash.ModifyDashSpeed(Player);
                     if (Main.myPlayer == Player.whoAmI)
-                    {
                         CheckNPCHit(CurDash);
-                    }
                     CurDash.DuringDash(Player);
                     BeginDash = true;
                 }
@@ -100,7 +119,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                     BeginVelocity = Vector2.Zero;
                     DashDelay = CurDash.DashDelay(Player);
                     BeginDash = false;
-                    OverideCurDashID = -1;
+                    ImmediatelyDashID = -1;
                     CurDash = null;
                 }
             }
@@ -109,6 +128,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
         {
             bool canDash = false;
             CanDash = canDash;
+            // 这一段判定只在本地判定
             if (DashTime > 0 || DashDelay > 0 || BeginDash) // 冲刺或CD时时始终不可再次冲刺
                 return;
             BeginDirection = Player.direction;
@@ -153,6 +173,16 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
                 CanDash = canDash;
             }
         }
+        public void HandleImmediatelyDash()
+        {
+            BeginDash = false;
+            CurDash?.OnDashEnd(Player);
+            BeginDirection = Player.direction;
+            if (Player.controlLeft)
+                BeginDirection = -1;
+            else if (Player.controlRight)
+                BeginDirection = 1;
+        }
         public void CheckNPCImmuneTime()
         {
             for (int i = 0; i < NPCImmuneTime.Length; i++)
@@ -172,6 +202,7 @@ namespace LAP.Core.GlobalInstance.Players.DashSystem
             else if (VanillaDashInput > 0)
                 VanillaDashInput--;
             CurDashID = -1;
+            OverideCurDashID = -1;
         }
         public void CheckNPCHit(BasePlayerDash ActiveDash)
         {

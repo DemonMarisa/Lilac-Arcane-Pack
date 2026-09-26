@@ -14,6 +14,10 @@ namespace LAP.Core.GlobalInstance.Items
         // 绘制UCA的小图标
         public bool DrawUCASmallIcon = false;
         /// <summary>
+        /// 战技的使用时间
+        /// </summary>
+        public int WeaponSkillTime = 30;
+        /// <summary>
         /// 大于0时会自动插入一次魔力消耗，你需要手动计算这个值
         /// </summary>
         public int WeaponSkillManaCost = -1;

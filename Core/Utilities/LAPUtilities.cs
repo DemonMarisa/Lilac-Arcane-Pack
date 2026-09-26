@@ -1,5 +1,6 @@
 ﻿using LAP.Core.AnimationHandle;
 using LAP.Core.GlobalInstance.Items;
+using LAP.Core.GlobalInstance.NPCs;
 using LAP.Core.GlobalInstance.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -12,10 +13,13 @@ namespace LAP.Core.Utilities
         {
             return proj.GetGlobalProjectile<LAPGlobalProj>();
         }
-
         public static LAPGlobalItem LAP(this Item item)
         {
             return item.GetGlobalItem<LAPGlobalItem>();
+        }
+        public static LAPGlobalNPC LAP(this NPC npc)
+        {
+            return npc.GetGlobalNPC<LAPGlobalNPC>();
         }
 
         public static bool PressLeftAndRightClick()

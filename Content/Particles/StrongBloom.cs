@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 
-namespace LAP.Content.Particles.CalParticiles
+namespace LAP.Content.Particles
 {
     public class StrongBloom : BaseParticle
     {

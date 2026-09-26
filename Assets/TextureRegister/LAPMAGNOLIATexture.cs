@@ -1,5 +1,4 @@
 ﻿using Terraria.ModLoader;
-using static CalamityMod.Skies.ExoMechsSky;
 
 namespace LAP.Assets.TextureRegister
 {

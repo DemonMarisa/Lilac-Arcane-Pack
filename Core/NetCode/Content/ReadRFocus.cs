@@ -1,4 +1,5 @@
 ﻿using LAP.Core.SystemsLoader;
+using LAP.Core.Utilities;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -25,7 +26,7 @@ namespace LAP.Core.NetCode.Content
             {
                 // 其它玩家收到包并添加后不需要再发送包了
                 Player player = Main.player[playerIndex];
-                player.FocusEffect(amount);
+                player.FocusEffect((int)(amount));
             }
         }
     }

@@ -31,7 +31,7 @@ namespace LAP.Core.BaseClass.UIs
         {
 
         }
-        public override bool Colliding(Rectangle rectangle, Rectangle mouseRectangle) => true;
+        public override bool Colliding(Rectangle rectangle, Point mouseRectangle) => true;
         public override void Draw()
         {
             if (PreDraw())
