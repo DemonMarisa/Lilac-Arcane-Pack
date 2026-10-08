@@ -111,10 +111,6 @@ namespace LAP.Core.LAPUI.CustomCD
                 }
                 ActiveCD[i].UpdateHover();
             }
-            if (HoverCD is not null)
-            {
-                Main.instance.MouseText(HoverCD.DisplayName().ToString());
-            }
         }
         #region 更新CD部件
         public static void UpdateCDPart()
@@ -285,6 +281,8 @@ namespace LAP.Core.LAPUI.CustomCD
                         layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP CD Info UI", delegate ()
                         {
                             DrawAllCD();
+                            if (HoverCD is not null)
+                                Main.instance.MouseText(HoverCD.DisplayName().ToString());
                             return true;
                         }, InterfaceScaleType.UI));
                     }

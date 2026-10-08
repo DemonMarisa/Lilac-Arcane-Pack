@@ -16,7 +16,7 @@ namespace LAP.Core.MetaBallsSystem
         // 这个元球对应的渲染目标
         public int AlphaTextureIndex;
         // 这个元球对应的背景
-        public virtual Texture2D BgTexture => LAPTextureRegister.ShadowNebula.Value;
+        public virtual Texture2D BgTexture => LAPTextureRegister.InvisibleProj.Value;
 
         public virtual RenderTarget2D AlphaTexture => RT2DManager.RT2D_ScreenSize[AlphaTextureIndex];
 

@@ -56,6 +56,10 @@ namespace LAP.Core.SpecificEffectManagers
         /// 震动周期数，控制往复运动的次数
         /// </summary>
         public float Vibrations = vibrations;
+        /// <summary>
+        /// 屏幕最终计算出来的添加量，这样做是因为HFPS会多次调用ModifyScreenPosition
+        /// </summary>
+        public Vector2 ShakePositionAdd = Vector2.Zero;
         public void Update()
         {
             float progress = ShakeTime / (float)ShakeLifeTime;
@@ -86,43 +90,37 @@ namespace LAP.Core.SpecificEffectManagers
                     break;
             }
 
-            Main.screenPosition += offset * LAPConfig.Instance.ScreenShakeStrength;
+            ShakePositionAdd = offset * LAPConfig.Instance.ScreenShakeStrength;
             ShakeTime++;
         }
     }
     public class ScreenShakeSystem : ModSystem
     {
         // 为什么HFPS也会反复调用modifyscreenpos，无语了
-        private static Stopwatch _realTimeTimer;
         private const double TargetUpdateIntervalMs = 1000.0 / 60.0;
         public static readonly List<ScreenShakeInfo> ScreenShakes = [];
         public override void OnModLoad()
         {
-            if (LAP.Instance.HFPS is not null)
-            {
-                _realTimeTimer = new Stopwatch();
-                _realTimeTimer?.Start();
-            }
         }
         public override void Unload()
         {
-            _realTimeTimer = null;
         }
-        public override void ModifyScreenPosition()
+        public override void PostUpdateEverything()
         {
             if (ScreenShakes.Count == 0)
                 return;
-            if (LAP.Instance.HFPS is not null)
-            {
-                if (_realTimeTimer.Elapsed.TotalMilliseconds < TargetUpdateIntervalMs)
-                    return;
-                _realTimeTimer.Restart();
-            }
             foreach (ScreenShakeInfo shake in ScreenShakes)
             {
                 shake.Update();
             }
             ScreenShakes.RemoveAll(s => s.ShakeTime >= s.ShakeLifeTime);
+        }
+        public override void ModifyScreenPosition()
+        {
+            foreach (ScreenShakeInfo shake in ScreenShakes)
+            {
+                Main.screenPosition += shake.ShakePositionAdd;
+            }
         }
         public static void AddScreenShakes(Vector2 shakePosition, float shakeStrength, int shakeLifeTime, float shakeDirection, float randomAngleoffset = MathHelper.TwoPi, bool useDistanceFade = true, int ShakeEffectDistance = 1000)
         {

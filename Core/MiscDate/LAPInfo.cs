@@ -8,12 +8,9 @@ namespace LAP.Core.MiscDate
     {
         public static bool AnyBossHere = false;
         public static Vector2 ScreenSize = new Vector2(Main.screenWidth, Main.screenHeight);
-        public override void UpdateUI(GameTime gameTime)
-        {
-            ScreenSize = new Vector2(Main.screenWidth, Main.screenHeight);
-        }
         public override void PreUpdateWorld()
         {
+            ScreenSize = new Vector2(Main.screenWidth, Main.screenHeight);
             AnyBossHere = false;
             foreach (NPC npc in Main.ActiveNPCs)
             {

@@ -18,7 +18,7 @@ namespace LAP.Core.Graphics.LAPCustomSky
             // On_Main.DrawBG -= DrawLAPBG;
             // On_Main.DrawUnderworldBackground -= DrawUnderworldBackgroundLAPBG;
         }
-        public override void PostUpdateWorld()
+        public override void PostUpdateEverything()
         {
             if (ActiveCustomSkies.Count != 0)
             {

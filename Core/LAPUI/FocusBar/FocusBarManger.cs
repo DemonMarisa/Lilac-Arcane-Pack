@@ -102,7 +102,10 @@ namespace LAP.Core.LAPUI.FocusBar
             BarRatio = MathHelper.Lerp(BarRatio, TargetRatio, 0.2f);
             if (ReduceTimer <= 0)
                 OldBarRatio = MathHelper.Lerp(OldBarRatio, TargetRatio, 0.2f);
-
+            OldFocus = Main.LocalPlayer.StatFocus();
+        }
+        public static void SetMouseTest()
+        {
             Vector2 DrawPos = FinalDrawPos + new Vector2(LAPUIConfig.Instance.FocusBarOffsetX, LAPUIConfig.Instance.FocusBarOffsetY);
             Rectangle barRec = Utils.CenteredRectangle(DrawPos, new Vector2(320, 30));
 
@@ -139,7 +142,6 @@ namespace LAP.Core.LAPUI.FocusBar
                     Main.instance.MouseText($"{show}\n" + $"{Regen}\n" + $"{Shift}\n");
                 }
             }
-            OldFocus = Main.LocalPlayer.StatFocus();
         }
         public static void PrepareRenderTarget(On_Main.orig_CheckMonoliths orig)
         {
@@ -207,6 +209,7 @@ namespace LAP.Core.LAPUI.FocusBar
                 layers.Insert(mouseIndex, new LegacyGameInterfaceLayer("LAP Focus Bar UI", delegate ()
                 {
                     DrawBar();
+                    SetMouseTest();
                     return true;
                 }, InterfaceScaleType.UI));
             }

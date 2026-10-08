@@ -56,7 +56,6 @@ namespace LAP.Core.Graphics.ScreenCaustics
         {
             Vector2 drawPos = Vector2.Transform(Position - Main.screenPosition, Main.GameViewMatrix.TransformationMatrix);
             float zoom = Main.GameViewMatrix.Zoom.X;
-
             Effect effect = LAPShaderRegister.ScreenCausticsShader.Value;
             effect.Parameters["uCenter"].SetValue(drawPos / LAPInfo.ScreenSize);
             effect.Parameters["uRadius"].SetValue(Radius * zoom);
